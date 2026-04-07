@@ -22,3 +22,6 @@ package-lock.json
 
 # ignore .astro directory
 .astro
+
+# worktrees
+.worktrees/
