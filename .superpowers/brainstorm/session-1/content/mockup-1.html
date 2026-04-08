@@ -1,0 +1,62 @@
+<h2>博客重构视觉预览</h2>
+<p class="subtitle">请您预览全新 Home 页（极简文学风格）与 Blog 页（单侧时间轴）的排版设计。</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="home" onclick="toggleSelect(this)">
+    <div class="letter">1</div>
+    <div class="content">
+      <h3>首页 (Home)</h3>
+      <p>极简阅读区与标签云设计</p>
+      
+      <div class="mockup" style="margin-top: 1rem;">
+        <div class="mockup-header">/index</div>
+        <div class="mockup-body" style="text-align: center; padding: 4rem 2rem;">
+            <p style="font-size: 1.5rem; color: #333; font-style: italic; line-height: 2;">
+                “当我沉默着的时候，我觉得充实；<br/>我将开口，同时感到空虚。”
+            </p>
+            <p style="color: #888; margin-top: 1rem;">—— 鲁迅</p>
+            
+            <div style="margin-top: 5rem; border-top: 1px solid #eee; padding-top: 3rem;">
+                <p class="label" style="margin-bottom: 1.5rem;">标签探索 (Tags)</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <span style="padding: 0.5rem 1rem; background: #f5f5f5; border-radius: 4px; font-size: 0.875rem;">文学</span>
+                    <span style="padding: 0.5rem 1rem; background: #f5f5f5; border-radius: 4px; font-size: 0.875rem;">随笔</span>
+                    <span style="padding: 0.5rem 1rem; background: #f5f5f5; border-radius: 4px; font-size: 0.875rem;">生活</span>
+                    <span style="padding: 0.5rem 1rem; background: #f5f5f5; border-radius: 4px; font-size: 0.875rem;">技术</span>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="blog" onclick="toggleSelect(this)">
+    <div class="letter">2</div>
+    <div class="content">
+      <h3>博客页 (Timeline)</h3>
+      <p>单侧极简时间轴布局</p>
+      
+      <div class="mockup" style="margin-top: 1rem;">
+        <div class="mockup-header">/blog</div>
+        <div class="mockup-body" style="padding: 2rem;">
+            <div style="border-left: 2px solid #eaeaea; margin-left: 1rem; padding-left: 2rem;">
+                <!-- Node 1 -->
+                <div style="position: relative; margin-bottom: 2.5rem;">
+                    <div style="position: absolute; left: -2.4rem; top: 0.25rem; width: 12px; height: 12px; border-radius: 50%; background: #3b82f6; border: 3px solid white; box-shadow: 0 0 0 1px #3b82f6;"></div>
+                    <p style="font-size: 0.875rem; color: #888; margin-bottom: 0.5rem;">2026年4月7日</p>
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.25rem; color: #111;">从前的日色变得慢</h4>
+                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6; margin: 0;">这是关于过去时光的怀旧与思索，缓慢的节奏让生活显出原本的质感...</p>
+                </div>
+                <!-- Node 2 -->
+                <div style="position: relative; margin-bottom: 2.5rem;">
+                    <div style="position: absolute; left: -2.4rem; top: 0.25rem; width: 12px; height: 12px; border-radius: 50%; background: #d1d5db; border: 3px solid white; box-shadow: 0 0 0 1px #d1d5db;"></div>
+                    <p style="font-size: 0.875rem; color: #888; margin-bottom: 0.5rem;">2026年3月15日</p>
+                    <h4 style="margin: 0 0 0.5rem 0; font-size: 1.25rem; color: #111;">边城的风与水</h4>
+                    <p style="color: #666; font-size: 0.95rem; line-height: 1.6; margin: 0;">凡事都有偶然的凑巧，结果却又若有宿命的必然。流水带走光阴的故事...</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

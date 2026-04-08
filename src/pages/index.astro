@@ -1,22 +1,42 @@
 ---
-import Posts from "@/components/Posts.astro";
-import config from "@/config/config.json";
 import Base from "@/layouts/Base.astro";
-import Pagination from "@/layouts/components/Pagination.astro";
-import { getSinglePage } from "@/lib/contentParser.astro";
-import { sortByDate } from "@/lib/utils/sortFunctions";
+import Excerpts from "@/helpers/Excerpts";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import { humanize } from "@/lib/utils/textConverter";
+import { FaHashtag } from "react-icons/fa";
 
-const posts = await getSinglePage("posts");
-const sortedPosts = sortByDate(posts);
-const totalPages = Math.ceil(posts.length / config.settings.pagination);
-const currentPosts = sortedPosts.slice(0, config.settings.pagination);
+const tags = await getTaxonomy("posts", "tags");
 ---
 
 <Base>
-  <section class="section">
+  <section class="section pb-0">
     <div class="container">
-      <Posts posts={currentPosts} className="mb-16" />
-      <Pagination currentPage={1} totalPages={totalPages} />
+      <Excerpts client:load />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container text-center">
+      <div style="margin-top: 5rem; border-top: 1px solid #eee; padding-top: 3rem;">
+        <p class="mb-12 text-sm font-bold uppercase tracking-widest text-text">
+          标签探索 (Tags)
+        </p>
+        <ul class="flex flex-wrap justify-center gap-4">
+          {
+            tags.map((tag) => (
+              <li class="inline-block">
+                <a
+                  href={`/tags/${tag}`}
+                  class="flex items-center rounded-lg bg-light px-6 py-3 text-dark transition duration-300 hover:bg-primary hover:text-white group"
+                >
+                  <FaHashtag className="mr-2 text-primary transition duration-300 group-hover:text-white" />
+                  {humanize(tag || "")}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
     </div>
   </section>
 </Base>
