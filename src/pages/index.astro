@@ -3,34 +3,49 @@ import Base from "@/layouts/Base.astro";
 import Excerpts from "@/helpers/Excerpts";
 import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import { humanize } from "@/lib/utils/textConverter";
-import { FaHashtag } from "react-icons/fa";
 
 const tags = await getTaxonomy("posts", "tags");
 ---
 
 <Base>
-  <section class="section pb-0">
-    <div class="container">
-      <Excerpts client:load />
-    </div>
-  </section>
+  <section class="section relative overflow-hidden flex flex-col justify-center min-h-[85vh] bg-[radial-gradient(circle_at_50%_50%,rgba(255,248,230,0.4)_0%,rgba(255,255,255,0)_70%)]">
+    <!-- Grainy Texture Overlay -->
+    <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
 
-  <section class="section">
-    <div class="container text-center">
-      <div style="margin-top: 5rem; border-top: 1px solid #eee; padding-top: 3rem;">
-        <p class="mb-12 text-sm font-bold uppercase tracking-widest text-text">
-          标签探索 (Tags)
+    <!-- Floating Decor Elements -->
+    <div class="absolute top-1/4 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-400/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    
+    <div class="container relative z-10 text-center">
+      <!-- 1. Staggered Entrance: Excerpts -->
+      <div class="max-w-4xl mx-auto animate-intro-top">
+        <Excerpts client:load />
+      </div>
+      
+      <!-- 2. Staggered Entrance: Vertical Line -->
+      <div class="w-[1px] h-24 bg-gradient-to-b from-primary/30 to-transparent mx-auto mt-8 mb-12 animate-grow-y"></div>
+      
+      <!-- 3. Staggered Entrance: Slogan -->
+      <div class="mb-16 animate-intro-bottom inline-block" style="animation-delay: 0.6s;">
+        <p class="text-lg md:text-xl font-medium tracking-[0.1em] text-text/70 mb-4">
+          尝试从底层原理的角度去理解和解释技术问题
         </p>
-        <ul class="flex flex-wrap justify-center gap-4">
+        <div class="w-full h-[2px] bg-green-500/40 rounded-full"></div>
+      </div>
+      
+      <!-- 4. Staggered Entrance: Tags -->
+      <div class="mt-8 animate-intro-bottom" style="animation-delay: 1s;">
+        <ul class="flex flex-wrap justify-center gap-x-12 gap-y-8 max-w-4xl mx-auto">
           {
             tags.map((tag) => (
               <li class="inline-block">
                 <a
                   href={`/tags/${tag}`}
-                  class="flex items-center rounded-lg bg-light px-6 py-3 text-dark transition duration-300 hover:bg-primary hover:text-white group"
+                  class="relative text-xl font-medium text-text/50 hover:text-primary transition-all duration-500 group"
                 >
-                  <FaHashtag className="mr-2 text-primary transition duration-300 group-hover:text-white" />
-                  {humanize(tag || "")}
+                  <span class="relative z-10">{humanize(tag || "")}</span>
+                  <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full"></span>
+                  <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-primary/5 rounded-full transition-all duration-500 group-hover:w-16 group-hover:h-16"></span>
                 </a>
               </li>
             ))
@@ -39,4 +54,31 @@ const tags = await getTaxonomy("posts", "tags");
       </div>
     </div>
   </section>
+
+  <style>
+    @keyframes introTop {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes introBottom {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes growY {
+      from { height: 0; opacity: 0; }
+      to { height: 6rem; opacity: 1; }
+    }
+    
+    .animate-intro-top {
+      animation: introTop 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .animate-intro-bottom {
+      opacity: 0;
+      animation: introBottom 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .animate-grow-y {
+      opacity: 0;
+      animation: growY 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
+    }
+  </style>
 </Base>

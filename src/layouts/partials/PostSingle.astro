@@ -1,5 +1,4 @@
 ---
-import Share from "@/components/Share.astro";
 import SimilarPosts from "@/components/SimilarPosts.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import dateFormat from "@/lib/utils/dateFormat";
@@ -14,7 +13,7 @@ const posts = await getSinglePage("posts");
 const { post } = Astro.props;
 const similarPosts = similerItems(post, posts, post.slug);
 const { Content } = await render(post);
-const { title, description, authors, categories, image, date, tags } =
+const { title, description, authors, categories, date, tags } =
   post.data;
 ---
 
@@ -77,25 +76,11 @@ const { title, description, authors, categories, image, date, tags } =
         </ul>
       </div>
 
-      <div class="col-12 mt-8 mb-2">
-        {
-          image && (
-            <Image
-              src={image}
-              height={500}
-              width={1000}
-              alt={title}
-              class="rounded-lg"
-            />
-          )
-        }
-      </div>
-
-      <div class="md:col-10">
+      <div class="md:col-10 mt-8">
         <div class="content mb-16 text-left">
           <Content />
         </div>
-        <div class="flex flex-wrap items-center justify-between">
+        <div class="flex flex-wrap items-center">
           <ul class="mr-4 mb-4 space-x-3">
             {
               tags.map((tag: string) => (
@@ -110,12 +95,6 @@ const { title, description, authors, categories, image, date, tags } =
               ))
             }
           </ul>
-          <Share
-            className="social-share mb-4"
-            title={title}
-            description={description}
-            slug={post.id}
-          />
         </div>
       </div>
     </article>

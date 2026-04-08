@@ -38,7 +38,7 @@ const fontsConfig = Object.entries(theme.fonts.font_family)
     return {
       name,
       cssVariable: `--font-${key}`,
-      provider: fontProviders.google(),
+      // provider: fontProviders.google(), // Commented out to avoid network errors
       weights,
       display: "swap",
       fallbacks: [fallback],
@@ -52,7 +52,7 @@ export default defineConfig({
   trailingSlash: config.site.trailing_slash ? "always" : "never",
   image: { service: sharpImageService() },
   vite: { plugins: [tailwindcss()] },
-  fonts: fontsConfig,
+  // fonts: fontsConfig, // Disabled to avoid network/provider errors
   integrations: [
     react(),
     sitemap(),

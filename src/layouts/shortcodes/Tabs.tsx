@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { marked } from "marked";
 
+// 配置 marked 为同步模式
+marked.use({ async: false });
+
 interface TabChildrenProps {
   value: string;
 }
@@ -65,7 +68,7 @@ const Tabs = ({ children }: { children: React.ReactElement<TabChildrenProps> }) 
           className={active === i ? "tab-content block px-5" : "hidden"}
           key={i}
           dangerouslySetInnerHTML={{
-            __html: marked.parse(item.children),
+            __html: marked.parse(item.children, { async: false }) as string,
           }}
         />
       ))}

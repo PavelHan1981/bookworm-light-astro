@@ -25,16 +25,16 @@ const Excerpts = () => {
       setTimeout(() => {
         setIndex((prevIndex) => (prevIndex + 1) % excerpts.length);
         setFade(true);
-      }, 500); // Wait for fade out
-    }, 5000); // Change excerpt every 5 seconds
+      }, 2000); // Wait for full fade out
+    }, 7000); // Total cycle: 2s fade out + index change + fade in + display time
 
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="py-20 text-center">
+    <div className="pt-10 pb-4 text-center">
       <div
-        className={`transition-opacity duration-1000 ${fade ? "opacity-100" : "opacity-0"}`}
+        className={`transition-opacity duration-2000 ${fade ? "opacity-100" : "opacity-0"}`}
       >
         <p className="mb-6 text-2xl font-serif italic leading-relaxed text-dark md:text-3xl lg:text-4xl">
           “{excerpts[index].text}”

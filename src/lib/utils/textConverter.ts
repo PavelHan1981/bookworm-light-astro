@@ -1,6 +1,9 @@
 import { slug } from "github-slugger";
 import { marked } from "marked";
 
+// 配置 marked 为同步模式
+marked.use({ async: false });
+
 // slugify
 export const slugify = (content: string) => {
   return slug(content);
@@ -8,7 +11,9 @@ export const slugify = (content: string) => {
 
 // markdownify
 export const markdownify = (content: string, div?: boolean) => {
-  return div ? marked.parse(content) : marked.parseInline(content);
+  return div 
+    ? marked.parse(content, { async: false }) as string
+    : marked.parseInline(content, { async: false }) as string;
 };
 
 // humanize
@@ -33,7 +38,7 @@ export const titleify = (content: string) => {
 
 // plainify
 export const plainify = (content: string) => {
-  const parseMarkdown: any = marked.parse(content);
+  const parseMarkdown = marked.parse(content, { async: false }) as string;
   const filterBrackets = parseMarkdown.replace(/<\/?[^>]+(>|$)/gm, "");
   const filterSpaces = filterBrackets.replace(/[\r\n]\s*[\r\n]/gm, "");
   const stripHTML = htmlEntityDecoder(filterSpaces);

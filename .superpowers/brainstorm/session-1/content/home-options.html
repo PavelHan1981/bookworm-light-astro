@@ -1,0 +1,93 @@
+<h2>首页设计方案对比</h2>
+<p class="subtitle">基于“沉浸式阅读”与“数字索引”两种风格，请点击预览不同布局的视觉感受。</p>
+
+<div class="cards">
+  <!-- Option 1: Immersive Reading -->
+  <div class="card" data-choice="immersive" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #fbfbfb; padding: 3rem 1.5rem; text-align: center; height: 350px; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;">
+        <!-- Background Decor -->
+        <div style="position: absolute; top: -20px; left: -20px; font-size: 8rem; color: #f0f0f0; font-family: serif; opacity: 0.5;">“</div>
+        
+        <div style="max-width: 400px; margin: 0 auto; z-index: 1;">
+            <p style="font-family: serif; font-size: 1.4rem; font-style: italic; line-height: 1.8; color: #333; margin-bottom: 1rem;">
+                当我沉默着的时候，我觉得充实；<br/>我将开口，同时感到空虚。
+            </p>
+            <p style="font-size: 0.9rem; color: #888; letter-spacing: 0.2rem;">—— 鲁迅</p>
+        </div>
+
+        <div style="width: 1px; height: 60px; background: #ddd; margin: 2rem auto 0;"></div>
+        
+        <div style="margin-top: 2rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+            <span style="font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.1rem; border-bottom: 1px solid transparent; transition: border 0.3s; cursor: pointer;">文学</span>
+            <span style="font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.1rem;">架构</span>
+            <span style="font-size: 0.75rem; color: #999; text-transform: uppercase; letter-spacing: 0.1rem;">底层原理</span>
+        </div>
+    </div>
+    <div class="card-body">
+      <h3>方案 A：沉浸式阅读 (Immersive)</h3>
+      <p>侧重意境与品味。通过大留白和垂直装饰线营造宁静的阅读氛围，将标签作为隐喻的“探索”入口。</p>
+    </div>
+  </div>
+
+  <!-- Option 2: Digital Index -->
+  <div class="card" data-choice="archive" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: white; border: 1px solid #eee; height: 350px; display: flex; position: relative; text-align: left; overflow: hidden; background-image: linear-gradient(#f9f9f9 1px, transparent 1px), linear-gradient(90deg, #f9f9f9 1px, transparent 1px); background-size: 20px 20px;">
+        
+        <!-- Left: Content -->
+        <div style="flex: 2; padding: 2rem; border-right: 1px solid #eee; display: flex; flex-direction: column;">
+            <div style="font-family: monospace; font-size: 0.7rem; color: #3b82f6; margin-bottom: 2rem;">[ INDEX-ARCHIVE-0407 ]</div>
+            
+            <div style="padding: 1.5rem; border: 1px solid #e5e7eb; background: white; box-shadow: 4px 4px 0px #f3f4f6;">
+                <p style="font-size: 1.1rem; line-height: 1.6; color: #111; font-weight: 500;">
+                    “从前的日色变得慢，车，马，邮件都慢，一生只够爱一个人。”
+                </p>
+                <p style="margin-top: 1rem; text-align: right; color: #666; font-size: 0.85rem;">—— 木心</p>
+            </div>
+            
+            <div style="margin-top: auto; font-family: monospace; font-size: 0.65rem; color: #999;">SYSTEM_STATUS: STABLE // DECODING_PRINCIPLES...</div>
+        </div>
+
+        <!-- Right: Index -->
+        <div style="flex: 1; padding: 1.5rem; background: rgba(255,255,255,0.8); backdrop-filter: blur(2px);">
+            <p style="font-family: monospace; font-size: 0.7rem; font-weight: bold; color: #333; margin-bottom: 1.5rem; border-bottom: 2px solid #333; padding-bottom: 0.5rem;">TAXONOMY INDEX</p>
+            <ul style="list-style: none; padding: 0; margin: 0; font-family: monospace; font-size: 0.75rem;">
+                <li style="margin-bottom: 0.8rem; display: flex; justify-content: space-between; border-bottom: 1px dashed #ddd; padding-bottom: 0.3rem; cursor: pointer;">
+                    <span style="color: #3b82f6;">> KERNEL</span> <span>(12)</span>
+                </li>
+                <li style="margin-bottom: 0.8rem; display: flex; justify-content: space-between; border-bottom: 1px dashed #ddd; padding-bottom: 0.3rem;">
+                    <span>> ARCHITECTURE</span> <span>(08)</span>
+                </li>
+                <li style="margin-bottom: 0.8rem; display: flex; justify-content: space-between; border-bottom: 1px dashed #ddd; padding-bottom: 0.3rem;">
+                    <span>> PHILOSOPHY</span> <span>(05)</span>
+                </li>
+                <li style="margin-bottom: 0.8rem; display: flex; justify-content: space-between; border-bottom: 1px dashed #ddd; padding-bottom: 0.3rem;">
+                    <span>> DISTRIBUTED</span> <span>(04)</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body">
+      <h3>方案 B：数字索引/档案馆 (Digital Index)</h3>
+      <p>侧重逻辑与严谨。采用网格背景、等宽字体和非对称布局，体现博主“深挖底层、条理清晰”的硬核技术风格。</p>
+    </div>
+  </div>
+</div>
+
+<div class="pros-cons">
+  <div class="pros">
+    <h4>方案 A 优势</h4>
+    <ul>
+      <li>极致的视觉美感与静谧感</li>
+      <li>首屏焦点极度集中，品味十足</li>
+      <li>非常适合展示人文情怀与技术温度</li>
+    </ul>
+  </div>
+  <div class="cons">
+    <h4>方案 B 优势</h4>
+    <ul>
+      <li>极强的专业感与逻辑引导性</li>
+      <li>一眼就能感受到“底层原理”的硬核氛围</li>
+      <li>分类索引一目了然，工具属性更强</li>
+    </ul>
+  </div>
+</div>
