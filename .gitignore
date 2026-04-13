@@ -28,3 +28,7 @@ package-lock.json
 
 # sync script with sensitive data
 sync.mjs
+
+# auto deploy scripts
+auto-deploy.mjs
+auto-deploy.bat
