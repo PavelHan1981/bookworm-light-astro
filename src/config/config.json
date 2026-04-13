@@ -27,8 +27,8 @@
   },
 
   "google_analytics": {
-    "enable": false,
-    "id": "G-XXXXXX"
+    "enable": true,
+    "id": "G-YGXYK8KCZN"
   },
 
   "params": {
