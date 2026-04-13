@@ -31,6 +31,8 @@ export interface Props {
 // distructure frontmatters
 const { title, meta_title, description, image, noindex, canonical } =
   Astro.props;
+
+const gaId = import.meta.env.PUBLIC_GA_ID || config.google_analytics.id;
 ---
 
 <!doctype html>
@@ -40,6 +42,32 @@ const { title, meta_title, description, image, noindex, canonical } =
     {
       config.google_tag_manager.enable && (
         <GoogleTagmanager id={config.google_tag_manager.gtm_id} />
+      )
+    }
+
+    <!-- google analytics -->
+    {
+      config.google_analytics.enable && (
+        <>
+          <script
+            is:inline
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          />
+          <script is:inline define:vars={{ id: gaId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", id);
+
+            document.addEventListener("astro:page-load", () => {
+              gtag("config", id, {
+                page_path: window.location.pathname,
+              });
+            });
+          </script>
+        </>
       )
     }
 

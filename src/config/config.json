@@ -26,6 +26,11 @@
     "gtm_id": "GTM-XXXXXX"
   },
 
+  "google_analytics": {
+    "enable": false,
+    "id": "G-XXXXXX"
+  },
+
   "params": {
     "contact_form_action": "#",
     "copyright": "Copyright © 2026 Powered by Astro & Bookworm"

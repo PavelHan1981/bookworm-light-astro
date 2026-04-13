@@ -1,10 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
 import Excerpts from "@/helpers/Excerpts";
-import { getTaxonomy } from "@/lib/taxonomyParser.astro";
-import { humanize } from "@/lib/utils/textConverter";
-
-const tags = await getTaxonomy("posts", "tags");
 ---
 
 <Base>
@@ -26,31 +22,11 @@ const tags = await getTaxonomy("posts", "tags");
       <div class="w-[1px] h-24 bg-gradient-to-b from-primary/30 to-transparent mx-auto mt-8 mb-12 animate-grow-y"></div>
       
       <!-- 3. Staggered Entrance: Slogan -->
-      <div class="mb-16 animate-intro-bottom inline-block" style="animation-delay: 0.6s;">
+      <div class="animate-intro-bottom inline-block" style="animation-delay: 0.6s;">
         <p class="text-lg md:text-xl font-medium tracking-[0.1em] text-text/70 mb-4">
           尝试从底层原理的角度去理解和解释技术问题
         </p>
         <div class="w-full h-[2px] bg-green-500/40 rounded-full"></div>
-      </div>
-      
-      <!-- 4. Staggered Entrance: Tags -->
-      <div class="mt-8 animate-intro-bottom" style="animation-delay: 1s;">
-        <ul class="flex flex-wrap justify-center gap-x-12 gap-y-8 max-w-4xl mx-auto">
-          {
-            tags.map((tag) => (
-              <li class="inline-block">
-                <a
-                  href={`/tags/${tag}`}
-                  class="relative text-xl font-medium text-text/50 hover:text-primary transition-all duration-500 group"
-                >
-                  <span class="relative z-10">{humanize(tag || "")}</span>
-                  <span class="absolute -bottom-2 left-0 w-0 h-[1px] bg-primary transition-all duration-500 group-hover:w-full"></span>
-                  <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0 h-0 bg-primary/5 rounded-full transition-all duration-500 group-hover:w-16 group-hover:h-16"></span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
       </div>
     </div>
   </section>
