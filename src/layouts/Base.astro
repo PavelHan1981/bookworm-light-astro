@@ -26,17 +26,18 @@ export interface Props {
   image?: string;
   noindex?: boolean;
   canonical?: string;
+  jsonLd?: string;
 }
 
 // distructure frontmatters
-const { title, meta_title, description, image, noindex, canonical } =
+const { title, meta_title, description, image, noindex, canonical, jsonLd } =
   Astro.props;
 
 const gaId = import.meta.env.PUBLIC_GA_ID || config.google_analytics.id;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <!-- google tag manager -->
     {
@@ -182,6 +183,8 @@ const gaId = import.meta.env.PUBLIC_GA_ID || config.google_analytics.id;
       }`}
     />
     <meta name="twitter:card" content="summary_large_image" />
+
+    {jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd} />}
   </head>
   <body>
     {/* google tag manager noscript */}
