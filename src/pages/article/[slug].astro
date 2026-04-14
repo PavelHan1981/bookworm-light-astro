@@ -3,6 +3,7 @@ import Base from "@/layouts/Base.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import PostSingle from "@/partials/PostSingle.astro";
 import config from "@/config/config.json";
+import { slugify } from "@/lib/utils/textConverter";
 
 export async function getStaticPaths() {
   const BLOG_FOLDER = "posts";
@@ -23,14 +24,39 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { title, meta_title, image, description, date } = post.data;
+const { title, meta_title, image, description, date, dateModified, authors } =
+  post.data;
+const slug = post.data.slug || post.id;
+
+// Fetch author data dynamically
+const allAuthors = await getSinglePage("authors");
+const postAuthor =
+  allAuthors.find((a) =>
+    authors
+      ?.map((author: string) => slugify(author))
+      .includes(slugify(a.data.title))
+  ) || allAuthors.find((a) => a.id === "pavel-han");
+
+const authorSocial = postAuthor?.data.social;
+const sameAs = authorSocial
+  ? Object.values(authorSocial).filter(
+      (v) => typeof v === "string" && v.startsWith("http")
+    )
+  : [];
+
+// Ensure WeChat is included if Pavel Han is the author
+if (postAuthor?.data.title === "Pavel Han" || postAuthor?.id === "pavel-han") {
+  if (!sameAs.includes("WeChat Official Account: Pavel Han")) {
+    sameAs.push("WeChat Official Account: Pavel Han");
+  }
+}
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   mainEntityOfPage: {
     "@type": "WebPage",
-    "@id": `${config.site.base_url}/article/${post.id}`,
+    "@id": `${config.site.base_url}/article/${slug}`,
   },
   headline: title,
   description: description || config.metadata.meta_description,
@@ -39,8 +65,8 @@ const jsonLd = {
     : `${config.site.base_url}${config.metadata.meta_image}`,
   author: {
     "@type": "Person",
-    "name": "Pavel Han",
-    "sameAs": ["WeChat Official Account: Pavel Han"],
+    "name": postAuthor?.data.title || "Pavel Han",
+    "sameAs": sameAs,
   },
   publisher: {
     "@type": "Organization",
@@ -51,6 +77,7 @@ const jsonLd = {
     },
   },
   datePublished: date,
+  dateModified: dateModified || date,
 };
 ---
 
