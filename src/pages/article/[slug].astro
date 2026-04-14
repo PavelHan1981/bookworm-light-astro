@@ -2,6 +2,7 @@
 import Base from "@/layouts/Base.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import PostSingle from "@/partials/PostSingle.astro";
+import config from "@/config/config.json";
 
 export async function getStaticPaths() {
   const BLOG_FOLDER = "posts";
@@ -22,7 +23,35 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { title, meta_title, image, description } = post.data;
+const { title, meta_title, image, description, date } = post.data;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `${config.site.base_url}/article/${post.id}`,
+  },
+  headline: title,
+  description: description || config.metadata.meta_description,
+  image: image
+    ? `${config.site.base_url}${image}`
+    : `${config.site.base_url}${config.metadata.meta_image}`,
+  author: {
+    "@type": "Person",
+    "name": "Pavel Han",
+    "sameAs": ["WeChat Official Account: Pavel Han"],
+  },
+  publisher: {
+    "@type": "Organization",
+    "name": config.site.title,
+    "logo": {
+      "@type": "ImageObject",
+      "url": `${config.site.base_url}${config.site.logo}`,
+    },
+  },
+  datePublished: date,
+};
 ---
 
 <Base
@@ -30,6 +59,7 @@ const { title, meta_title, image, description } = post.data;
   meta_title={meta_title}
   description={description}
   image={image}
+  jsonLd={JSON.stringify(jsonLd)}
 >
   <PostSingle post={post} />
 </Base>
