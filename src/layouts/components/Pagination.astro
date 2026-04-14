@@ -6,14 +6,22 @@ const hasPrevPage = currentPage > 1;
 const hasNextPage = totalPages > currentPage;
 
 let pageList = [];
-for (let i = 1; i <= totalPages; i++) {
+let maxVisiblePages = 5;
+let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+if (endPage - startPage + 1 < maxVisiblePages) {
+  startPage = Math.max(1, endPage - maxVisiblePages + 1);
+}
+
+for (let i = startPage; i <= endPage; i++) {
   pageList.push(i);
 }
 ---
 
 {
   totalPages > 1 && (
-    <nav class="mb-4 flex justify-center space-x-2 text-center" aria-label="Pagination">
+    <nav class="mb-4 mt-16 flex justify-center space-x-2 text-center" aria-label="Pagination">
       {/* previous */}
       {hasPrevPage ? (
         <a
@@ -70,7 +78,7 @@ for (let i = 1; i <= totalPages; i++) {
         ) : (
           <a
             href={
-              i === 0
+              pagination === 1
                 ? `${section ? "/" + section : "/"}`
                 : `${section ? "/" + section : ""}/page/${pagination}`
             }

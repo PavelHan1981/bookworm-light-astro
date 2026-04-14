@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 const excerpts = [
   {
-    text: "平生不修善果,只爱杀人放火。忽地顿开金绳,这里扯断玉锁。咦!钱塘江上潮信来,今日方知我是我。",
-    author: "《水浒传》",
+    text: "醉里挑灯看剑，梦回吹角连营。八百里分麾下炙，五十弦翻塞外声，沙场秋点兵。",
+    author: "辛弃疾",
   },
   {
     text: "六盘山上高峰，红旗漫卷西风。今日长缨在手，何时缚住苍龙？",

@@ -1,0 +1,49 @@
+---
+import Pagination from "@/components/Pagination.astro";
+import Timeline from "@/components/Timeline.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+
+import config from "@/config/config.json";
+
+export async function getStaticPaths() {
+  const posts = await getSinglePage("posts");
+  const { pagination } = config.settings;
+  const totalPages = Math.ceil(posts.length / pagination);
+  const paths = [];
+
+  // Generate paths for a safe number of pages to prevent 404s
+  const maxPages = Math.max(totalPages, 100);
+
+  for (let i = 1; i <= maxPages; i++) {
+    paths.push({
+      params: {
+        page: i.toString(),
+      },
+    });
+  }
+
+  return paths;
+}
+
+const { page: currentPageStr } = Astro.params;
+const posts = await getSinglePage("posts");
+const sortedPosts = sortByDate(posts);
+const { pagination } = config.settings;
+const totalPages = Math.ceil(posts.length / pagination);
+const currentPage = currentPageStr && !isNaN(Number(currentPageStr)) ? Number(currentPageStr) : 1;
+const indexOfLastPost = currentPage * pagination;
+const indexOfFirstPost = indexOfLastPost - pagination;
+const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+---
+
+<Base title={`Articles - Page ${currentPage}`}>
+  <section class="section">
+    <div class="container">
+      <h1 class="h2 mb-16 text-center">All Articles</h1>
+      <Timeline posts={currentPosts} />
+      <Pagination section="article" totalPages={totalPages} currentPage={currentPage} />
+    </div>
+  </section>
+</Base>
