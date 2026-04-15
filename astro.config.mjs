@@ -3,15 +3,12 @@ import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 import AutoImport from "astro-auto-import";
-import { defineConfig, sharpImageService, fontProviders } from "astro/config";
+import { defineConfig, sharpImageService } from "astro/config";
 import remarkCollapse from "remark-collapse";
 import remarkToc from "remark-toc";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import config from "./src/config/config.json";
-import theme from "./src/config/theme.json";
-
-// ... (previous helper functions and fontsConfig)
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,7 +17,6 @@ export default defineConfig({
   trailingSlash: config.site.trailing_slash ? "always" : "never",
   image: { service: sharpImageService() },
   vite: { plugins: [tailwindcss()] },
-  // fonts: fontsConfig, // Disabled to avoid network/provider errors
   integrations: [
     react(),
     sitemap(),
@@ -41,9 +37,9 @@ export default defineConfig({
     remarkPlugins: [
       remarkToc,
       [remarkCollapse, { test: "Table of contents" }],
-      remarkMath,
+      // remarkMath,
     ],
-    rehypePlugins: [[rehypeKatex, { strict: false }]],
+    rehypePlugins: [],
     shikiConfig: { theme: "one-dark-pro", wrap: true },
   },
 });

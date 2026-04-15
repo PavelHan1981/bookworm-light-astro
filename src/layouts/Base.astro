@@ -106,13 +106,74 @@ const gaId = import.meta.env.PUBLIC_GA_ID || config.google_analytics.id;
       content="width=device-width, initial-scale=1, maximum-scale=5"
     />
 
-    <!-- KaTeX CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
-      integrity="sha384-n8MVd8MsyK6urLqo6fnLYn6VmH9OdVEXG4369NfylT0CQuaAnp5wLz6LW79KEn9B"
-      crossorigin="anonymous"
-    />
+    <!-- MathJax Configuration -->
+    <script is:inline>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$']],
+          displayMath: [['$$', '$$']],
+          processEscapes: true,
+          processEnvironments: true
+        },
+        options: {
+          // Allow rendering even if wrapped in simple tags, but skip complex pre blocks if desired
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea']
+        },
+        svg: {
+          fontCache: 'global'
+        }
+      };
+
+      // Support Astro Transitions (ClientRouter)
+      document.addEventListener('astro:page-load', () => {
+        if (window.MathJax && window.MathJax.typesetPromise) {
+          window.MathJax.typesetPromise();
+        }
+      });
+    </script>
+    <script is:inline id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    
+    <style is:global>
+      /* Notion-style MathJax adjustments */
+      
+      /* 1. 区块公式样式 (Display Math) */
+      mjx-container[display="true"] {
+        margin: 1.5rem 0 !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        padding: 0.5rem 0 !important;
+        display: block !important;
+        width: 100%;
+        text-align: center;
+      }
+      mjx-container[display="true"] svg {
+        margin: 0 auto !important;
+      }
+
+      /* 2. 内联公式样式 (Inline Math) */
+      mjx-container:not([display="true"]) {
+        display: inline-block !important;
+        vertical-align: middle;
+        margin: 0 0.2em !important;
+        padding: 0 !important;
+      }
+      mjx-container:not([display="true"]) svg {
+        display: inline !important;
+        margin: 0 !important;
+        vertical-align: baseline !important;
+      }
+
+      /* 防止 Shiki 代码块干扰 */
+      pre:has(mjx-container), code:has(mjx-container) {
+        background: transparent !important;
+        padding: 0 !important;
+      }
+    </style>
+
+
+
+
+
 
     <!-- title -->
     <title>
