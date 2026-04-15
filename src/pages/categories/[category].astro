@@ -10,11 +10,13 @@ import { humanize } from "@/lib/utils/textConverter";
 export async function getStaticPaths() {
   const categories = await getTaxonomy("posts", "categories");
 
-  return categories.map((category) => {
-    return {
-      params: { category },
-    };
-  });
+  return categories
+    .filter((category) => category !== undefined && category !== null && category !== "")
+    .map((category) => {
+      return {
+        params: { category },
+      };
+    });
 }
 
 const { category } = Astro.params;
