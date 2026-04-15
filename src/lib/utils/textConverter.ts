@@ -1,9 +1,6 @@
 import { slug } from "github-slugger";
 import { marked } from "marked";
 
-// 配置 marked 为同步模式
-marked.use({ async: false });
-
 // slugify
 export const slugify = (content: string) => {
   return slug(content);
@@ -11,9 +8,14 @@ export const slugify = (content: string) => {
 
 // markdownify
 export const markdownify = (content: string, div?: boolean) => {
-  return div 
-    ? marked.parse(content, { async: false }) as string
-    : marked.parseInline(content, { async: false }) as string;
+  if (!content) return "";
+  try {
+    return div
+      ? (marked.parse(content, { async: false }) as string)
+      : (marked.parseInline(content, { async: false }) as string);
+  } catch (e) {
+    return content;
+  }
 };
 
 // humanize
@@ -38,7 +40,14 @@ export const titleify = (content: string) => {
 
 // plainify
 export const plainify = (content: string) => {
-  const parseMarkdown = marked.parse(content, { async: false }) as string;
+  if (!content) return "";
+  let parseMarkdown = "";
+  try {
+    parseMarkdown = marked.parse(content, { async: false }) as string;
+  } catch (e) {
+    // fallback: just use the raw content if markdown parsing fails
+    parseMarkdown = content;
+  }
   const filterBrackets = parseMarkdown.replace(/<\/?[^>]+(>|$)/gm, "");
   const filterSpaces = filterBrackets.replace(/[\r\n]\s*[\r\n]/gm, "");
   const stripHTML = htmlEntityDecoder(filterSpaces);
@@ -59,7 +68,7 @@ const htmlEntityDecoder = (htmlWithEntities: string) => {
     /(&amp;|&lt;|&gt;|&quot;|&#39;)/g,
     (entity: string): string => {
       return entityList[entity];
-    },
+    }
   );
   return htmlWithoutEntities;
 };

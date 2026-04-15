@@ -43,7 +43,7 @@ export default defineConfig({
       [remarkCollapse, { test: "Table of contents" }],
       remarkMath,
     ],
-    rehypePlugins: [rehypeKatex],
+    rehypePlugins: [[rehypeKatex, { strict: false }]],
     shikiConfig: { theme: "one-dark-pro", wrap: true },
   },
 });
