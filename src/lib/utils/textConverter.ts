@@ -1,9 +1,11 @@
-import { slug } from "github-slugger";
-
-// slugify
+// slugify (Custom implementation to avoid external library conflicts in Vite)
 export const slugify = (content: string) => {
   if (!content) return "";
-  return slug(content);
+  return content
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 };
 
 // markdownify (Simplified version without heavy parser to avoid Vite environment crashes)
