@@ -23,7 +23,7 @@ draft: false
 ## 1.自定义数据集的训练
 
 
-**因为这里使用的是Ultralytics项目下的RT-DETR实现，所以其训练过程、训练所生成的中间文件组织结构以及对训练数据的表格格式、目录结构等都与YOLO模型没有任何区别**，只需要把之前在YOLO模型上训练所使用的数据集目录以及其 `data.yaml` 直接拷贝过来使用即可。所以如果对YOLO模型的训练流程有经验的话，在这个项目中训练RT-DETR就很容易上手了。可参考[一文总结YOLOv5模型的自定义训练、测试与模型导出的全过程](https://www.notion.so/320a5f648c7f802e8eace7d594045f5e) 。
+**因为这里使用的是Ultralytics项目下的RT-DETR实现，所以其训练过程、训练所生成的中间文件组织结构以及对训练数据的表格格式、目录结构等都与YOLO模型没有任何区别**，只需要把之前在YOLO模型上训练所使用的数据集目录以及其 `data.yaml` 直接拷贝过来使用即可。所以如果对YOLO模型的训练流程有经验的话，在这个项目中训练RT-DETR就很容易上手了。可参考[一文总结YOLOv5模型的自定义训练、测试与模型导出的全过程](https://pavelhan.tech/article/2025-08-28-the-training-predict-and-ONNX-export-of-YOLOv5/)。
 
 
 训练流程的代码也与Ultralytics项目下的其他YOLO模型类似，训练过程的代码如下：

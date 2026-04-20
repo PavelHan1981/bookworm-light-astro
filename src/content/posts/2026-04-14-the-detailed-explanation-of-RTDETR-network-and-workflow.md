@@ -16,7 +16,7 @@ draft: false
 ## RT-DETR模型简介
 
 
-之前在[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://www.notion.so/DETR%EF%BC%88DEtection%20TRansformer%EF%BC%89%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E8%AF%A6%E7%BB%86%E6%80%BB%E7%BB%93)整理了基于Transformer的计算机视觉目标检测模型DETR的网络架构。
+之前在[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/article/2026-03-18-the-summary-of-DETR-network-structure-and-workflow/)整理了基于Transformer的计算机视觉目标检测模型DETR的网络架构。
 
 
 RT-DETR（Real-Time DEtection Transformer） 由百度团队开发，旨在解决传统 DETR 模型由于计算量巨大而无法满足实时场景需求的问题，RT-DETR 的出现标志着 Transformer 架构正式进入了工业级实时检测的战场，实际上 RT-DETR 是第一个真正实现实时性能的端到端 Transformer 检测器。
@@ -60,7 +60,7 @@ RT-DETR 官方实现的Backbone支持两种网络结构选项：HGNetv2 和 ResN
 ### 位置编码
 
 
-在特征图的位置编码方面，RT-DETR 与 DETR的计算公式与流程相同，两者默认都使用正余弦位置编码 (Sine-Cosine Positional Encoding)。 对于特征图上的一个点 (x, y)，其编码由不同频率的 sin 和 cos 函数生成，每个x和y各生成128维的向量，最后两个向量合并成一个长度为256的向量。具体的计算公式和流程可以参考[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://www.notion.so/DETR%EF%BC%88DEtection%20TRansformer%EF%BC%89%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E8%AF%A6%E7%BB%86%E6%80%BB%E7%BB%93)的相关部分。
+在特征图的位置编码方面，RT-DETR 与 DETR的计算公式与流程相同，两者默认都使用正余弦位置编码 (Sine-Cosine Positional Encoding)。 对于特征图上的一个点 (x, y)，其编码由不同频率的 sin 和 cos 函数生成，每个x和y各生成128维的向量，最后两个向量合并成一个长度为256的向量。具体的计算公式和流程可以参考[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/article/2026-03-18-the-summary-of-DETR-network-structure-and-workflow/)的相关部分。
 
 
 **但是需要注意的是，对于 RT-DETR Backbone部分输出的特征图而言，只会将 S5 特征图拉平（Flatten）成一个长序列，对这个最小分辨率的特征图上的所有像素点应用位置编码，并送入 Encoder 进行自注意力计算，因为 RT-DETR 认为只在最低分辨率特征图上做全局注意力计算最划算。S3和S4这两个分辨率较大的特征图会直接进入会直接进入混合编码器中的CCFM模块进行融合计算，不会参与全局注意力运算，如下所述。**
@@ -106,7 +106,7 @@ AIFI：基于注意力的内尺度特征交互模块（Attention-based Intra-sca
 **为什么不需要对 S3 和 S4 进行自注意力计算？** 这是因为，高分辨率特征图（S3, S4）包含的是局部细节，只有最低分辨率的特征图（S5）才包含了丰富的语义信息和全局上下文，因此全局相互作用只需要在低分辨率特征图中进行提取。最重要的是，编码器部分往往是计算瓶颈，如果对所有尺度的特征图进行全量的自注意力计算，复杂度随像素数量呈平方级增长，只在最低分辨率的 S5 特征图上进行自注意力计算，极大地降低了计算量（FLOPs），同时确保了模型能提取到图像中目标之间的全局关系。
 
 
-经过以上的维度对齐操作后，输入到AIFI模块的 S5 特征图的维度是(256, 20, 20)。接下来的计算流程与标准的Vision Tranformer Encoder的计算流程相同，首先把这个(256, 20, 20) 特征图展平为长度400，维度为256的向量序列，然后给这个向量序列叠加位置编码信息。在特征图的位置编码方面，RT-DETR 与 DETR的计算公式与流程相同，两者默认都使用正余弦位置编码 (Sine-Cosine Positional Encoding)。具体的计算公式和流程可以参考[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://www.notion.so/DETR%EF%BC%88DEtection%20TRansformer%EF%BC%89%E7%BD%91%E7%BB%9C%E6%9E%B6%E6%9E%84%E4%B8%8E%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B%E8%AF%A6%E7%BB%86%E6%80%BB%E7%BB%93)的相关部分。
+经过以上的维度对齐操作后，输入到AIFI模块的 S5 特征图的维度是(256, 20, 20)。接下来的计算流程与标准的Vision Tranformer Encoder的计算流程相同，首先把这个(256, 20, 20) 特征图展平为长度400，维度为256的向量序列，然后给这个向量序列叠加位置编码信息。在特征图的位置编码方面，RT-DETR 与 DETR的计算公式与流程相同，两者默认都使用正余弦位置编码 (Sine-Cosine Positional Encoding)。具体的计算公式和流程可以参考[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/article/2026-03-18-the-summary-of-DETR-network-structure-and-workflow/)的相关部分。
 
 
 然后就是标准化的多头注意力计算（默认为8个头）和前馈网络（FFN）的处理，最终经过 AIFI 处理后的 S5 特征序列会重新 Reshape 回 (256, 20, 20) 的张量形状，这就是上面架构图中的 F5 。
@@ -207,7 +207,7 @@ Decoder部分的结构仍然是标准的：自注意力模块+交叉注意力模
 这一步的作用是让 300 个 Content Query 之间充分地进行信息交换。
 
 
-这个自注意力模块以 300 x 256 维度的Content Query作为初始输入，以Reference Points作为参考生成对应的位置编码，与Content Query相加后，作为自注意力计算模块的输入，自注意力模块的计算流程可以参考[一文彻底搞懂Transformer模型的Encoder结构与计算流程](https://www.notion.so/30ca5f648c7f80deb2f0d1a878be468e) 。
+这个自注意力模块以 300 x 256 维度的Content Query作为初始输入，以Reference Points作为参考生成对应的位置编码，与Content Query相加后，作为自注意力计算模块的输入，自注意力模块的计算流程可以参考[**一文彻底搞懂Transformer模型的Encoder结构与计算流程**](https://pavelhan.tech/article/2026-02-22-transformer-encoder-structure-and-workflow/)**。**
 
 
 自注意力模块的输出为经过充分信息交换后的Content Query，维度仍然为 300 x 256。
