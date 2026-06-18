@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "PavelHan.tech | 尝试从底层原理的角度去理解和解释技术问题",
-    "base_url": "https://bookworm-light-astro.vercel.app",
+    "base_url": "https://pavelhan.tech",
     "base_path": "/",
     "trailing_slash": false,
     "favicon": "/images/favicon.png",

@@ -2,20 +2,24 @@ import React, { useState, useEffect } from "react";
 
 const excerpts = [
   {
-    text: "醉里挑灯看剑，梦回吹角连营。八百里分麾下炙，五十弦翻塞外声，沙场秋点兵。",
-    author: "辛弃疾",
+    text: "What I cannot create, I do not understand.",
+    author: "Richard Feynman",
   },
   {
-    text: "六盘山上高峰，红旗漫卷西风。今日长缨在手，何时缚住苍龙？",
-    author: "毛泽东",
+    text: "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+    author: "Martin Fowler",
   },
   {
-    text: "白日放歌须纵酒，青春作伴好还乡。即从巴峡穿巫峡，便下襄阳向洛阳。",
-    author: "杜甫",
+    text: "Talk is cheap. Show me the code.",
+    author: "Linus Torvalds",
   },
   {
-    text: "汴水流，泗水流，流到瓜洲古渡头。吴山点点愁。",
-    author: "白居易",
+    text: "The art of debugging is figuring out what you really told your program to do rather than what you thought you told it to do.",
+    author: "Andrew Singer",
+  },
+  {
+    text: "Controlling complexity is the essence of computer programming.",
+    author: "Brian Kernighan",
   },
 ];
 
