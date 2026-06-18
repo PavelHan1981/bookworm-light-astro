@@ -52,6 +52,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID || config.google_analytics.id;
         <>
           <script
             is:inline
+            async
             src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
           />
           <script is:inline define:vars={{ id: gaId }}>

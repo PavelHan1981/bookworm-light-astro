@@ -1,0 +1,5 @@
+# Security contact information for pavelhan.tech
+Contact: mailto:pavelhan@163.com
+Expires: 2027-06-18T00:00:00.000Z
+Preferred-Languages: zh, en
+Canonical: https://pavelhan.tech/.well-known/security.txt
