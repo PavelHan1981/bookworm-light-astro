@@ -1,0 +1,141 @@
+---
+import Base from "@/layouts/Base.astro";
+import { markdownify } from "@/lib/utils/textConverter";
+import { getCollection, render } from "astro:content";
+
+const aboutEntries = await getCollection("about");
+const entry = aboutEntries.find((e) => e.id.startsWith("en/")) || aboutEntries[0];
+const { Content } = await render(entry);
+const { title, meta_title, image, tech_tags, competencies } = entry.data;
+---
+
+<Base title="About Me - Pavel Han" meta_title="About Pavel Han" image={image}>
+  <section class="section py-12 md:py-16">
+    <div class="container max-w-5xl">
+      <!-- Profile Card Header -->
+      <div class="bg-white/80 dark:bg-dark-card border border-neutral-200/80 dark:border-neutral-800 rounded-3xl p-6 md:p-10 shadow-sm transition-all duration-300 hover:shadow-md mb-12">
+        <div class="row md:gx-5 items-center">
+          <div class="sm:col-5 md:col-4 mb-6 md:mb-0">
+            {
+              image && (
+                <div class="relative group">
+                  <div class="absolute -inset-1 bg-gradient-to-r from-primary/20 via-blue-500/20 to-teal-400/20 rounded-2xl blur-md opacity-75 group-hover:opacity-100 transition duration-500"></div>
+                  <div class="relative overflow-hidden rounded-2xl border border-neutral-200/80 dark:border-neutral-700 bg-white dark:bg-dark shadow-sm">
+                    <img
+                      src={image}
+                      width={320}
+                      height={400}
+                      alt="Pavel Han"
+                      class="w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                </div>
+              )
+            }
+          </div>
+          <div class="sm:col-7 md:col-8">
+            <!-- Tech Stack Badges -->
+            {
+              tech_tags && tech_tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mb-4">
+                  {tech_tags.map((tag) => (
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary/10 text-primary border border-primary/20 transition-all duration-200 hover:bg-primary/20">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )
+            }
+
+            <h1 class="text-xl md:text-2xl font-bold leading-snug text-dark dark:text-dark-title mb-6">{title}</h1>
+
+            <div class="content text-neutral-600 dark:text-dark-text text-base leading-relaxed">
+              <Content />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Core Competencies Grid -->
+      {
+        competencies && competencies.length > 0 && (
+          <div class="mb-14">
+            <div class="flex items-center space-x-3 mb-6">
+              <div class="w-1.5 h-6 bg-primary rounded-full"></div>
+              <h2 class="text-xl font-bold text-dark dark:text-dark-title">Core Expertise</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {competencies.map((comp) => (
+                <div class="p-6 rounded-2xl bg-white/70 dark:bg-dark-card border border-neutral-200/70 dark:border-neutral-800 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col justify-between">
+                  <div>
+                    <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4">
+                      {comp.icon === "video" && (
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                      )}
+                      {comp.icon === "cpu" && (
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M3 9h2m-2 6h2m14-6h2m-2 6h2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
+                      )}
+                      {comp.icon === "layers" && (
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                      )}
+                    </div>
+                    <h3 class="text-base font-semibold text-dark dark:text-dark-title mb-2">{comp.title}</h3>
+                    <p class="text-xs md:text-sm text-neutral-500 dark:text-dark-text leading-relaxed">{comp.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      <!-- WeChat Official Account CTA Box -->
+      <div class="relative overflow-hidden rounded-3xl border border-[#07C160]/30 bg-gradient-to-br from-[#07C160]/8 via-emerald-500/5 to-transparent p-6 md:p-8 shadow-sm">
+        <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+          <!-- QR Code Frame -->
+          <div class="shrink-0 group relative">
+            <div class="absolute -inset-1 bg-[#07C160]/30 rounded-2xl blur-md opacity-75 group-hover:opacity-100 transition duration-300"></div>
+            <div class="relative bg-white p-2 rounded-2xl border border-neutral-200/80 shadow-md">
+              <img
+                src="/images/wechat-qrcode.jpg"
+                alt="WeChat Official Account Pavel Han"
+                width={140}
+                height={140}
+                class="w-32 h-32 md:w-36 md:h-36 rounded-xl object-cover"
+              />
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="text-center md:text-left flex-1">
+            <div class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#07C160]/15 text-[#07C160] border border-[#07C160]/30 mb-3">
+              <span class="w-2 h-2 rounded-full bg-[#07C160] animate-pulse"></span>
+              <span>Subscribe · WeChat Official Account</span>
+            </div>
+            <h3 class="text-lg md:text-xl font-bold text-dark dark:text-dark-title mb-2">
+              Join WeChat Community "Pavel Han"
+            </h3>
+            <p class="text-sm text-neutral-600 dark:text-dark-text leading-relaxed mb-4">
+              Regular technical insights on Audio/Video Engineering, Embedded Linux Systems, Edge AI Deployment, and Smart Hardware Architecture. Scan or long-press the QR code to subscribe!
+            </p>
+            <div class="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs font-medium text-neutral-500 dark:text-dark-text">
+              <span class="inline-flex items-center space-x-1">
+                <svg class="w-4 h-4 text-[#07C160]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Deep Technical Insights</span>
+              </span>
+              <span class="inline-flex items-center space-x-1">
+                <svg class="w-4 h-4 text-[#07C160]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>Practical Case Studies</span>
+              </span>
+              <span class="inline-flex items-center space-[#07C160]">
+                <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                <span>Contact: pavelhan#163.com</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</Base>

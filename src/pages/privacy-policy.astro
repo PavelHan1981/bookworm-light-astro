@@ -1,0 +1,14 @@
+---
+import Base from "@/layouts/Base.astro";
+---
+
+<Base title="Redirecting...">
+  <script is:inline>
+    (function () {
+      var savedLang = localStorage.getItem("preferred_lang");
+      var userLang = (navigator.language || navigator.userLanguage || "").toLowerCase();
+      var targetLang = savedLang || (userLang.startsWith("zh") ? "zh" : "en");
+      window.location.replace("/" + targetLang + "/privacy-policy");
+    })();
+  </script>
+</Base>

@@ -1,5 +1,6 @@
 ---
 import Logo from "@/components/Logo.astro";
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
 import menu from "@/config/menu.json";
 import { IoSearch } from "react-icons/io5";
 
@@ -16,11 +17,19 @@ export interface NavigationLink {
 }
 
 const { main }: { main: NavigationLink[] } = menu;
+const pathname = Astro.url.pathname;
+const isEn = pathname.startsWith("/en");
+const langPrefix = isEn ? "/en" : "/zh";
+
+const localizedMain = main.map((item) => ({
+  ...item,
+  url: item.url === "/" ? `${langPrefix}` : `${langPrefix}${item.url}`,
+}));
 ---
 
 <header class="header pt-6">
   <nav class="navbar container flex items-center justify-between">
-    <!-- Empty div to balance the centered menu if needed, or just let menu take center -->
+    <!-- Empty div to balance the centered menu if needed -->
     <div class="hidden md:block w-10"></div>
 
     <!-- navbar toggler -->
@@ -54,7 +63,7 @@ const { main }: { main: NavigationLink[] } = menu;
       class="navbar-nav order-3 hidden w-full md:order-1 md:flex md:w-auto md:space-x-10 items-center justify-center"
     >
       {
-        main.map((menu) => (
+        localizedMain.map((menu) => (
           <li class="nav-item">
             <a href={menu.url} class="nav-link block text-lg font-medium tracking-wide">
               {menu.name}
@@ -64,12 +73,13 @@ const { main }: { main: NavigationLink[] } = menu;
       }
     </ul>
     
-    <div class="order-1 flex md:order-2">
+    <div class="order-1 flex items-center space-x-3 md:order-2">
+      <LanguageSwitcher />
       <a
         class="inline-block cursor-pointer p-2 text-xl text-dark transition hover:text-primary"
         href="/search"
-        title="seach"
-        aria-label="seach"
+        title="search"
+        aria-label="search"
       >
         <IoSearch />
       </a>

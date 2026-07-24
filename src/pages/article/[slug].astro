@@ -1,92 +1,37 @@
 ---
 import Base from "@/layouts/Base.astro";
 import { getSinglePage } from "@/lib/contentParser.astro";
-import PostSingle from "@/partials/PostSingle.astro";
-import config from "@/config/config.json";
-import { slugify } from "@/lib/utils/textConverter";
 
 export async function getStaticPaths() {
-  const BLOG_FOLDER = "posts";
-  const posts = await getSinglePage(BLOG_FOLDER);
+  const zhPosts = await getSinglePage("posts", "zh");
 
-  const paths = posts
+  return zhPosts
     .filter((post) => {
-      const slug = post.data.slug || post.id;
+      const slug = post.data.slug || post.id.replace(/^zh\//, "").replace(/\.md$/, "");
       return !slug.startsWith("page/");
     })
-    .map((post) => ({
-      params: {
-        slug: post.data.slug || post.id,
-      },
-      props: { post },
-    }));
-  return paths;
+    .map((post) => {
+      const slug = post.data.slug || post.id.replace(/^zh\//, "").replace(/\.md$/, "");
+      return {
+        params: { slug },
+        props: { slug },
+      };
+    });
 }
 
-const { post } = Astro.props;
-const { title, meta_title, image, description, date, dateModified, authors } =
-  post.data;
-const slug = post.data.slug || post.id;
-
-// Fetch author data dynamically
-const allAuthors = await getSinglePage("authors");
-const postAuthor =
-  allAuthors.find((a) =>
-    authors
-      ?.map((author: string) => slugify(author))
-      .includes(slugify(a.data.title))
-  ) || allAuthors.find((a) => a.id === "pavel-han");
-
-const authorSocial = postAuthor?.data.social;
-const sameAs = authorSocial
-  ? Object.values(authorSocial).filter(
-      (v) => typeof v === "string" && v.startsWith("http")
-    )
-  : [];
-
-// Ensure WeChat is included if Pavel Han is the author
-if (postAuthor?.data.title === "Pavel Han" || postAuthor?.id === "pavel-han") {
-  if (!sameAs.includes("WeChat Official Account: Pavel Han")) {
-    sameAs.push("WeChat Official Account: Pavel Han");
-  }
-}
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": `${config.site.base_url}/article/${slug}`,
-  },
-  headline: title,
-  description: description || config.metadata.meta_description,
-  image: image
-    ? `${config.site.base_url}${image}`
-    : `${config.site.base_url}${config.metadata.meta_image}`,
-  author: {
-    "@type": "Person",
-    "name": postAuthor?.data.title || "Pavel Han",
-    "sameAs": sameAs,
-  },
-  publisher: {
-    "@type": "Organization",
-    "name": config.site.title,
-    "logo": {
-      "@type": "ImageObject",
-      "url": `${config.site.base_url}${config.site.logo}`,
-    },
-  },
-  datePublished: date,
-  dateModified: dateModified || date,
-};
+const { slug } = Astro.props;
 ---
 
-<Base
-  title={title}
-  meta_title={meta_title}
-  description={description}
-  image={image}
-  jsonLd={JSON.stringify(jsonLd)}
->
-  <PostSingle post={post} />
+<Base title="Redirecting...">
+  <script is:inline define:vars={{ slug }}>
+    (function () {
+      var savedLang = localStorage.getItem("preferred_lang");
+      var userLang = (navigator.language || navigator.userLanguage || "").toLowerCase();
+      var targetLang = savedLang || (userLang.startsWith("zh") ? "zh" : "en");
+      window.location.replace("/" + targetLang + "/article/" + slug);
+    })();
+  </script>
+  <div class="container py-12 text-center">
+    <p>Redirecting to article...</p>
+  </div>
 </Base>

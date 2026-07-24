@@ -1,0 +1,37 @@
+---
+const rawPathname = Astro.url.pathname;
+const pathname = rawPathname.length > 1 && rawPathname.endsWith("/") ? rawPathname.slice(0, -1) : rawPathname;
+const isEn = pathname.startsWith("/en");
+
+let zhPath = "/zh";
+let enPath = "/en";
+
+if (pathname.startsWith("/en")) {
+  zhPath = pathname.replace(/^\/en/, "/zh");
+  enPath = pathname;
+} else if (pathname.startsWith("/zh")) {
+  zhPath = pathname;
+  enPath = pathname.replace(/^\/zh/, "/en");
+} else if (pathname !== "/") {
+  zhPath = "/zh" + pathname;
+  enPath = "/en" + pathname;
+}
+---
+
+<div class="inline-flex items-center space-x-1 text-xs font-medium border border-neutral-200 rounded-full px-2 py-0.5 bg-white/90 shadow-xs hover:border-neutral-300 transition-all duration-200">
+  <a
+    href={zhPath}
+    class={`px-2 py-0.5 rounded-full transition-colors ${!isEn ? 'bg-black text-white font-semibold' : 'text-neutral-600 hover:text-black'}`}
+    onclick="localStorage.setItem('preferred_lang', 'zh')"
+  >
+    中
+  </a>
+  <span class="text-neutral-300">/</span>
+  <a
+    href={enPath}
+    class={`px-2 py-0.5 rounded-full transition-colors ${isEn ? 'bg-black text-white font-semibold' : 'text-neutral-600 hover:text-black'}`}
+    onclick="localStorage.setItem('preferred_lang', 'en')"
+  >
+    EN
+  </a>
+</div>

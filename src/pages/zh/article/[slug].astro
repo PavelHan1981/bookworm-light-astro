@@ -1,0 +1,92 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import PostSingle from "@/partials/PostSingle.astro";
+import config from "@/config/config.json";
+import { slugify } from "@/lib/utils/textConverter";
+
+export async function getStaticPaths() {
+  const posts = await getSinglePage("posts", "zh");
+
+  return posts
+    .filter((post) => {
+      const slug = post.data.slug || post.id.replace(/^zh\//, "").replace(/\.md$/, "");
+      return !slug.startsWith("page/");
+    })
+    .map((post) => {
+      const slug = post.data.slug || post.id.replace(/^zh\//, "").replace(/\.md$/, "");
+      return {
+        params: { slug },
+        props: { post },
+      };
+    });
+}
+
+const { post } = Astro.props;
+const { title, meta_title, image, description, date, dateModified, authors } =
+  post.data;
+const slug = post.data.slug || post.id.replace(/^zh\//, "").replace(/\.md$/, "");
+
+const allAuthors = await getSinglePage("authors");
+const postAuthor =
+  allAuthors.find((a) =>
+    authors
+      ?.map((author: string) => slugify(author))
+      .includes(slugify(a.data.title))
+  ) || allAuthors.find((a) => a.id === "pavel-han");
+
+const authorSocial = postAuthor?.data.social;
+const sameAs = authorSocial
+  ? Object.values(authorSocial).filter(
+      (v) => typeof v === "string" && v.startsWith("http")
+    )
+  : [];
+
+if (postAuthor?.data.title === "Pavel Han" || postAuthor?.id === "pavel-han") {
+  if (!sameAs.includes("WeChat Official Account: Pavel Han")) {
+    sameAs.push("WeChat Official Account: Pavel Han");
+  }
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": `${config.site.base_url}/zh/article/${slug}`,
+  },
+  headline: title,
+  description: description || config.metadata.meta_description,
+  image: image
+    ? `${config.site.base_url}${image}`
+    : `${config.site.base_url}${config.metadata.meta_image}`,
+  author: {
+    "@type": "Person",
+    name: postAuthor?.data.title || "Pavel Han",
+    sameAs: sameAs,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: config.site.title,
+    logo: {
+      "@type": "ImageObject",
+      url: `${config.site.base_url}${config.site.logo}`,
+    },
+  },
+  datePublished: date,
+  dateModified: dateModified || date,
+};
+---
+
+<Base
+  title={title}
+  meta_title={meta_title}
+  description={description}
+  image={image}
+  jsonLd={JSON.stringify(jsonLd)}
+  canonical={`${config.site.base_url}/zh/article/${slug}`}
+>
+  <link rel="alternate" hreflang="en" href={`${config.site.base_url}/en/article/${slug}`} />
+  <link rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/article/${slug}`} />
+  <PostSingle post={post} />
+</Base>

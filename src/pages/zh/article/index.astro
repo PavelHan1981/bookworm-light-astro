@@ -1,0 +1,24 @@
+---
+import Pagination from "@/components/Pagination.astro";
+import Timeline from "@/components/Timeline.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import config from "@/config/config.json";
+
+const posts = await getSinglePage("posts", "zh");
+const sortedPosts = sortByDate(posts);
+const { pagination } = config.settings;
+const totalPages = Math.ceil(posts.length / pagination);
+const currentPosts = sortedPosts.slice(0, pagination);
+---
+
+<Base title="所有文章 - Pavel Han">
+  <section class="section">
+    <div class="container">
+      <h1 class="h2 mb-16 text-center">所有文章</h1>
+      <Timeline posts={currentPosts} />
+      <Pagination section="zh/article" totalPages={totalPages} currentPage={1} />
+    </div>
+  </section>
+</Base>

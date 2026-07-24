@@ -12,19 +12,26 @@ const { posts } = Astro.props;
 
 <div class="border-l-2 border-primary/20 ml-4 pl-8 space-y-12">
   {
-    posts.map((post) => (
-      <div class="relative">
-        <div class="absolute -left-[41px] top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-white shadow" />
-        <time class="text-sm font-medium uppercase tracking-wider text-text">
-          {dateFormat(post.data.date!)}
-        </time>
-        <h3 class="mt-2 text-2xl font-bold transition-colors duration-300 hover:text-primary">
-          <a href={`/article/${post.data.slug || post.id}`}>{post.data.title}</a>
-        </h3>
-        <p class="mt-4 line-clamp-2 text-text">
-          {plainify(post.body ?? "")}
-        </p>
-      </div>
-    ))
+    posts.map((post) => {
+      const isEn = post.id.startsWith("en/");
+      const langPrefix = isEn ? "/en" : "/zh";
+      const rawSlug = post.data.slug || post.id.replace(/^(zh|en)\//, "").replace(/\.md$/, "");
+      const articleUrl = `${langPrefix}/article/${rawSlug}`;
+
+      return (
+        <div class="relative">
+          <div class="absolute -left-[41px] top-1.5 h-4 w-4 rounded-full bg-primary border-4 border-white shadow" />
+          <time class="text-sm font-medium uppercase tracking-wider text-text">
+            {dateFormat(post.data.date!)}
+          </time>
+          <h3 class="mt-2 text-2xl font-bold transition-colors duration-300 hover:text-primary">
+            <a href={articleUrl}>{post.data.title}</a>
+          </h3>
+          <p class="mt-4 line-clamp-2 text-text">
+            {plainify(post.body ?? "")}
+          </p>
+        </div>
+      );
+    })
   }
 </div>

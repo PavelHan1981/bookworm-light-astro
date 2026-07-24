@@ -4,21 +4,37 @@ import { z } from "astro/zod";
 
 // About collection schema
 const aboutCollection = defineCollection({
-  loader: glob({ pattern: "**/-*.{md,mdx}", base: "src/content/about" }),
+  loader: glob({
+    pattern: "**/*.md",
+    base: "src/content/about",
+    generateId: ({ entry }) => entry,
+  }),
   schema: z.object({
     title: z.string(),
     meta_title: z.string().optional(),
     image: z.string().optional(),
     draft: z.boolean().optional(),
-    what_i_do: z.object({
-      title: z.string(),
-      items: z.array(
+    tech_tags: z.array(z.string()).optional(),
+    competencies: z
+      .array(
         z.object({
+          icon: z.string(),
           title: z.string(),
           description: z.string(),
         }),
-      ),
-    }),
+      )
+      .optional(),
+    what_i_do: z
+      .object({
+        title: z.string(),
+        items: z.array(
+          z.object({
+            title: z.string(),
+            description: z.string(),
+          }),
+        ),
+      })
+      .optional(),
   }),
 });
 
@@ -58,7 +74,11 @@ const authorsCollection = defineCollection({
 
 // Posts collection schema
 const postsCollection = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/posts" }),
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "src/content/posts",
+    generateId: ({ entry }) => entry,
+  }),
   schema: z.object({
     title: z.string(),
     slug: z.string().optional(),
@@ -76,7 +96,11 @@ const postsCollection = defineCollection({
 
 // Pages collection schema
 const pagesCollection = defineCollection({
-  loader: glob({ pattern: "**/*.{md,mdx}", base: "src/content/pages" }),
+  loader: glob({
+    pattern: "**/*.{md,mdx}",
+    base: "src/content/pages",
+    generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, "").replace(/^\//, ""),
+  }),
   schema: z.object({
     title: z.string(),
     meta_title: z.string().optional(),

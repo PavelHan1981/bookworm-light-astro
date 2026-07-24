@@ -14,7 +14,8 @@ type PageData = {
 };
 
 export const getSinglePage = async <C extends CollectionKey>(
-  collectionName: C
+  collectionName: C,
+  lang: string = "zh"
 ): Promise<CollectionEntry<C>[]> => {
   const allPages = await getCollection(collectionName);
 
@@ -24,6 +25,10 @@ export const getSinglePage = async <C extends CollectionKey>(
     const pageData = data.data as PageData;
     return pageData.draft !== true;
   });
+
+  if (collectionName === "posts") {
+    return removeDrafts.filter((data) => data.id.startsWith(`${lang}/`));
+  }
 
   return removeDrafts;
 };
