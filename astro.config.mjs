@@ -19,7 +19,23 @@ export default defineConfig({
   vite: { plugins: [tailwindcss()] },
   integrations: [
     react(),
-    sitemap(),
+    sitemap({
+      filter: (page) => {
+        const url = new URL(page);
+        const p = url.pathname.replace(/\/$/, "");
+        if (
+          p === "" ||
+          p === "/about" ||
+          p === "/privacy-policy" ||
+          p === "/elements" ||
+          p === "/article" ||
+          p.startsWith("/article/")
+        ) {
+          return false;
+        }
+        return true;
+      },
+    }),
     AutoImport({
       imports: [
         "@/shortcodes/Button",

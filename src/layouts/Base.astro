@@ -182,7 +182,22 @@ const gaId = import.meta.env.PUBLIC_GA_ID || config.google_analytics.id;
     </title>
 
     <!-- canonical url -->
-    {canonical && <link rel="canonical" href={canonical} item-prop="url" />}
+    <link
+      rel="canonical"
+      href={canonical ? canonical : `${config.site.base_url}${Astro.url.pathname}`}
+      item-prop="url"
+    />
+
+    <!-- rss feed discovery -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${config.site.title} RSS Feed`}
+      href={`${config.site.base_url}/rss.xml`}
+    />
+
+    <!-- head slot for extra link/meta tags like hreflang -->
+    <slot name="head" />
 
     <!-- noindex robots -->
     {noindex && <meta name="robots" content="noindex,nofollow" />}

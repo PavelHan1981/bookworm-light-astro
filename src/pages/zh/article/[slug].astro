@@ -86,7 +86,8 @@ const jsonLd = {
   jsonLd={JSON.stringify(jsonLd)}
   canonical={`${config.site.base_url}/zh/article/${slug}`}
 >
-  <link rel="alternate" hreflang="en" href={`${config.site.base_url}/en/article/${slug}`} />
-  <link rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/article/${slug}`} />
+  <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/article/${slug}`} />
+  <link slot="head" rel="alternate" hreflang="en" href={`${config.site.base_url}/en/article/${slug}`} />
+  <link slot="head" rel="alternate" hreflang="x-default" href={`${config.site.base_url}/zh/article/${slug}`} />
   <PostSingle post={post} />
 </Base>

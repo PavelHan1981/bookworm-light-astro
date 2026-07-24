@@ -3,7 +3,7 @@ import Base from "@/layouts/Base.astro";
 import Excerpts from "@/helpers/Excerpts";
 ---
 
-<Base>
+<Base noindex={true}>
   <script is:inline>
     (function () {
       var savedLang = localStorage.getItem("preferred_lang");

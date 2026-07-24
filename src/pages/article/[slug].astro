@@ -22,7 +22,7 @@ export async function getStaticPaths() {
 const { slug } = Astro.props;
 ---
 
-<Base title="Redirecting...">
+<Base title="Redirecting..." noindex={true}>
   <script is:inline define:vars={{ slug }}>
     (function () {
       var savedLang = localStorage.getItem("preferred_lang");

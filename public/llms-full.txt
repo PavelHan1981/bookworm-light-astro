@@ -1,0 +1,268 @@
+# PavelHan.tech (中文全量技术文章目录)
+
+> 本文件包含 PavelHan.tech 的全量 226 篇中文技术深度解析文章索引，涵盖毫米波雷达感知的物理原理与算法、计算机视觉（YOLO/RT-DETR）、Transformer/LLM 大模型结构、RK3588 边缘 NPU 部署、音频信号处理及物联网底层协议等。
+
+## 全量文章索引 (226 篇)
+
+### 分类：物联网 (7 篇)
+- [安全摄像头的Webhooks和HTTP Push功能](https://pavelhan.tech/zh/article/2026-07-22-the-webhooks-and-http-push-feature-of-security-camera): 本文介绍了部分安全摄像头产品中所支持的WebHooks和HTTP Push的第三方报警平台的功能，以及该功能实现的架构与通信流程最佳实践。
+- [MFI Software Token认证服务器规范解读](https://pavelhan.tech/zh/article/2024-12-05-the-suammray-of-MFI-software-token-authentication-server-specification): 本文重点解读了Apple的《Software Token Authentication Server Specification》规范文档，对Apple MFI认证所需要的配件厂商服务器的部署要求，以及配件厂商服务器与Apple Server之间的交互流程进行了完整的整理。
+- [基于Software Token的Apple MFI认证及其工作流程](https://pavelhan.tech/zh/article/2024-12-05-the-software-token-based-certification-on-apple-MFI-assessory): 本文基于对MFI认证相关文档的学习，整理了MFI认证的两种类型（硬件加密芯片/Software Token），MFI认证的流程，以及Software Token Based MFI外设产品与Token认证和管理相关流程的技术细节。
+- [对微信IoT平台及其音视频能力在物联网产品中接入的调研](https://pavelhan.tech/zh/article/2024-10-10-wechat-AV-streaming-service-in-IoT): 本文基于对腾讯微信IoT及其IoT Video相关宣传资料的学习，整理了在IoT尤其是IPC品类产品中整合IoT Video功能（重点是微信的双向音视频通话）的相关信息，作为后续产品规划的参考。
+- [Matter支持的智能家居设备类型及其现状](https://pavelhan.tech/zh/article/2024-07-29-matter-device-types-list-and-status): 本文基于对最新的1.3版本Matter规范文档的学习，整理了在最新的Matter生态协议中可以支持的设备类型，以及当前这些设备类型在平台和设备开发商中的支持现状。
+- [通用智能家居生态系统Matter入门](https://pavelhan.tech/zh/article/2024-07-23-matter-beginner-guide): 本文对智能家居生态系统的通用标准协议Matter进行了学习和总结，通过本文可以建立对于Matter的初步完整了解。
+- [基于Homekit的Video Camera生态调研总结](https://pavelhan.tech/zh/article/2024-07-15-homekit-secure-camera-study-summary): 本文基于对网络上Apple Homekit智能家居生态公开资料的学习，总结了Homekit生态使用和实现方面的技术背景，重点对其中针对智能家居摄像头所提供的Homekit Secure Video业务及其技术实现原理进行了描述。
+
+### 分类：无线通信 (5 篇)
+- [5G/LTE工作模式总结](https://pavelhan.tech/zh/article/2026-07-15-the-summary-of-5G-LTE-work-mode): 5G和LTE模块的功耗管理是硬件设计和BSP驱动开发中非常核心的一环。为了在随时响应网络和最大限度省电这两个核心因素之间取得平衡，这些模块通常遵循3GPP规范并结合硬件接口，设计了几个梯次的工作模式。本文对这些工作模式进行了总结。
+- [对射频电路元器件的学习总结](https://pavelhan.tech/zh/article/2025-01-20-the-study-of-RF-components): 本篇笔记对无线射频电路中常用的各种元器件电路的基本工作原理和应用进行简单的总结，为后续理解和设计完整的射频电路系统架构打好基础。
+- [对双频WiFi天线复用理解的纠正以及对Duplexer和Diplexer的比较](https://pavelhan.tech/zh/article/2025-01-17-the-comparison-of-duplexer-and-diplexer): 总结起来： - Diplexer主要用于不同频段之间共享同一根天线或者传输链路来进行通信的应用，最典型的就是双频WiFi两个频段，以及LTE多个BAND之间。 - Duplexer则主要在用于同一个频段内，使用FDD模式下的不同上下行信道通信频点上，实现同时收发全双工通信的应用。最典型的应用就是LTE FDD模式的通信。
+- [半波对称振子天线基础及其天线增益](https://pavelhan.tech/zh/article/2025-01-15-the-basics-of-dipolor-antenna): 半波振子天线是天线最基本的结构单位，相当于是化学中的分子
+- [基础相位调制技术之BPSK/QPSK/DQPSK](https://pavelhan.tech/zh/article/2025-01-03-the-wireless-communication-phase-modulation)
+
+### 分类：硬件 (30 篇)
+- [毫米波雷达的点云数据是如何构建出来的？](https://pavelhan.tech/zh/article/2026-07-08-How-the-point-cloud-data-of-mmwave-radar-built): 在
+- [毫米波雷达是如何测量和计算角度信息的？](https://pavelhan.tech/zh/article/2026-07-02-How-to-measure-the-angle-information-mmsense-radar): 在
+- [详细总结毫米波雷达FMCW的工作原理与计算过程](https://pavelhan.tech/zh/article/2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation): 在
+- [一文搞懂mmWave Sensing雷达技术的工作原理](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing): 总的来说，雷达（最初是“无线电探测和测距”的缩写）是一种通过向被测目标发射电磁波（无线电波），然后测量被反射回来的无线电波来探测到目标的距离、速度和方向的设备。
+- [DDR和LPDDR为什么无法相互兼容？](https://pavelhan.tech/zh/article/2026-06-24-the-compatibility-issue-between-DDR-and-LPDDR): DDR和LPDDR在做系统设计的过程中，是否可以相互兼容？对于一个主控SOC而言，如何从DDR和LPDDR中做出正确的选型和设计？本文尝试详细解释和总结以上DDR和LPDDR的兼容性问题。
+- [一文入门NFC技术](https://pavelhan.tech/zh/article/2026-06-22-the-comprehensive-summary-of-NFC): NFC（Near Field Communication，近场通信）是在当今的消费类电子产品中应用非常广泛的高频RFID（射频识别）技术。本文对于该技术相关的基础理论与应用知识进行了较为充分的总结，借此建立对NFC技术的基础性认识。
+- [电子产品的工作温度以及芯片热阻结温等的计算过程总结](https://pavelhan.tech/zh/article/2026-06-15-How-to-calculate-the-internal-junction-temperature-in-chips): 本文针对电子产品中常见的热设计方面的问题，对元器件数据手册中提供的温度、热阻等参数以及利用这些参数进行内部结温的计算流程进行了详细整理，为后续进行电子产品硬件系统设计、芯片选型以及热设计参数的测试和估算提供理论基础。
+- [PSRAM和LPDDR是如何降低功耗的？](https://pavelhan.tech/zh/article/2026-05-29-how-PSRAM-and-LPDDR-reduce-its-power-consumption): 因为DRAM特有的自刷新特性与高频通信信号的处理，DDR始终是电子系统设计中功耗大户，本文重点总结LPDDR以及PSRAM在降低功耗方面所做的针对性设计对策。
+- [PSRAM能成为DDR缺货的解决方案吗？](https://pavelhan.tech/zh/article/2026-05-27-Can-PSRAM-replace-DDR): 在当前DDR内存市场供应紧张，价格波动剧烈的情况下，部分IPC领域的SOC供应商开始推广内置PSRAM的Camera SOC平台，PSRAM相比我们常用的DDR有哪些差异，适用于什么应用，本文尝试解释清楚以上问题。
+- [SD卡插入检测后的完整初始化流程解析](https://pavelhan.tech/zh/article/2025-03-09-the-initialization-flow-of-SD-card): 本文对SD卡插入后，在SD主控和卡之间的完整初始化流程进行完整的分析和解释：对于一个支持SD卡的消费类电子产品而言，当SD卡插入该产品的SD卡插槽以后，SD主控与SD卡之间的完整初始化通信流程，如何通过这个初始化的设置流程做好进一步读写SD卡的准备。 • 
+- [SD通信命令协议解析之CMD6](https://pavelhan.tech/zh/article/2025-03-06-the-CMD6-command-of-SD-card): 在SD协议中，SD主控与SD卡之间交互流程中的CMD6是一个相对比较复杂的命令。其复杂性体现在： - 同一个命令既可以实现对SD卡支持特性的读取，也可以对其进行设置。 - CMD6命令的执行及其从SD卡上读取的响应消息，双方不仅在SD的CMD pin上通信，也涉及到了在DAT引脚上传输部分数据，而其他CMD命令的交互执行基本上都只涉及到CMD pin。 - CMD6命令中所支持的功能比较多，包含多个function group，每个function group又包含多个function mode。 所以，本篇比较在较为深入的学习SD物理层协议规范文件（V6.00版本）的基础上，详细的整理出来CMD6命令交互的流程。 
+- [SD卡与SDIO接口、eMMC之间的联系与区别](https://pavelhan.tech/zh/article/2025-03-04-the-difference-of-SD-SDIO-EMMC): SDIO（Secure Digital Input Output）和SD卡（Secure Digital Memory Card）同属于SD（Secure Digital）的标准体系，但二者的设计目标与功能实现有明显差异：SD卡是存储类的专用设备，而SDIO则为泛用型外设利用相同的SD接口以及类似的SD协议框架提供了高速扩展接口。简单的说，SDIO和SD卡两者在硬件物理层上完全兼容，但是具体的通信协议上各自发展出来自己的体系。
+- [SD卡的CMD命令及其响应消息数据结构](https://pavelhan.tech/zh/article/2025-03-02-the-summary-of-SD-command): 众所周知，在SD卡与其控制器之间的SD接口上，有一个专门的CMD引脚。CMD与CLK引脚配合，在SD卡和其主控之间进行控制和配置命令的传输。每次命令模式的通信，SD主控向卡在CMD引脚上发出一个CMD命令结构，根据CMD命令的不同由SD卡给出该命令的答复消息Rx。
+- [SD卡的分类及其各种规格参数总结](https://pavelhan.tech/zh/article/2025-02-21-the-summary-of-SDcard-catalogue-and-parameters): 尺寸类型 - SD：32×24×2.1mm（全尺寸），基本上以及很少使用了 - 
+- [G-Sensor的工作原理及其应用总结](https://pavelhan.tech/zh/article/2025-01-09-Gsensor-theory-and-application): G-Sensor：Gravity Sensor即重力传感器，或者Accelerometer即加速度传感器，
+- [嵌入式产品硬件加密芯片的工作原理总结](https://pavelhan.tech/zh/article/2024-08-06-Security-Chips-in-Embedded-System): 本文对嵌入式产品中经常使用的防抄板类型的加密芯片和更高级的加密通信和身份验证的加密芯片做了总结。并且以广泛使用的ATECC608加密芯片为例，通过网络资料的学习，整理了该加密芯片方案在嵌入式MCU和Linux系统中的应用逻辑和大体流程。
+- [Nuvoton ISD9160本地语音识别解决方案](https://pavelhan.tech/zh/article/2022-03-30-nuvoton-isd9160-audio-recognition-solution): 本文基于对Nuvoton提供的ISD9160数据手册、Voice Recognition开发的相关资料和视频教学课程的学习，总结了使用ISD9160进行本地语音识别产品开发的大致流程。
+- [USB接口与端点的概念总结](https://pavelhan.tech/zh/article/2022-03-18-usb-interface-endpoint-summary): 本文基于对usb in a nutshell的学习，总结了USB标准协议中接口和端点的相关概念。
+- [OBD-II Experts Software Stack学习总结](https://pavelhan.tech/zh/article/2022-03-11-obdii-experts-stack-summary): 本文是基于对OBD-II Experts Software Stack的官方技术文档进行的学习总结，大致理清楚这个软件栈的使用方式以及OBDII协议能够支持的功能。
+- [UVC的视频格式协商流程-Video Probe&Commit Request](https://pavelhan.tech/zh/article/2022-03-10-USB-UVC-Probe-Commit-Requests): 本文对UVC协议下，Host与Device之间在传输Streaming之前进行媒体流格式、参数协商的Video Streaming Probe&Commit的过程做了一个简单地总结。
+- [USB传输类型之Interrupt/Bulk/Isochronous Transfer](https://pavelhan.tech/zh/article/2022-03-03-usb-transfer-type-interrupt-bulk-isochronous): 本文基于对usb in a nutshell相关章节的学习，整理了三种usb传输类型的完整工作流程。
+- [USB UVC协议SET/GET Request结构解析](https://pavelhan.tech/zh/article/2022-03-02-usb-uvc-get-set-request-data-structure): 本文基于对UVC协议第四部分的学习，整理出来UVC Set/Get请求的数据结构，及其每个Field的解析和说明。
+- [USB标准包类型总结](https://pavelhan.tech/zh/article/2022-03-01-usb-basic-packet): 本文基于对usb in a nutshell的学习，总结了USB通信中的基本数据包类型。
+- [USB传输类型之Control Transfer](https://pavelhan.tech/zh/article/2022-03-01-usb-control-transfer): 本文基于对usb in a nutshell相关章节的学习，总结了控制传输类型的完整工作流程。并以USB设备描述符的读取通信过程加以说明。
+- [USB控制传输中的Setup Packet](https://pavelhan.tech/zh/article/2022-02-25-usb-setup-packet): 本文总结了USB标准定义的通用包中Setup Packet的结构和分类。
+- [GPS基础及其定位的工作原理](https://pavelhan.tech/zh/article/2021-01-11-GPS-basics): 本文总结了GPS相关的一些基础知识及其定位的原理。
+- [USB复合设备及UVC Profile的描述符详解](https://pavelhan.tech/zh/article/2020-07-24-usb-uvc-descriptor): 在本文中简要的总结了USB Composite设备尤其是UVC Camera设备的USB描述符的结构。
+- [TI的电量跟踪技术Impedance Track学习总结](https://pavelhan.tech/zh/article/2020-06-22-TI-guage-impedance-track): 本文基于对TI相关文档的学习，总结的TI电量计所采用的Impedance Track技术的基础知识。
+- [锂电池的基础知识](https://pavelhan.tech/zh/article/2020-06-10-00-li-battery-basics): 针对电池类产品开发过程中对电池充放电特性不是很了解的问题，对锂电池的相关技术进行的学习总结
+- [GPS的NMEA数据格式解析及GPS/北斗双模模块TD3020C介绍](https://pavelhan.tech/zh/article/2020-05-22-GPS-NMEA-td3030c): 本文总结了GPS标准的NMEA数据格式的协议解析，以及一个GPS模块TD3020C的介绍。
+
+### 分类：软件工程 (9 篇)
+- [如何理解和应用AI-DLC的开发理念？](https://pavelhan.tech/zh/article/2026-06-12-How-to-understand-AI-DLC): 很多开发者在使用 Claude Code、Trae 或 Cursor 这类AI开发工具辅助开发时，往往会陷入随性编码（即所谓的Vibe Coding）的陷阱：
+- [开源软件项目学习中源码管理的最佳实践](https://pavelhan.tech/zh/article/2026-03-03-the-best-study-practice-of-open-source-software): 在基于Github上的开源软件（像 Ultralytics 这样活跃且更新频繁的仓库）进行二次开发或预研学习的过程中，最头疼的莫过于：项目源仓库中的上游代码始终处于频繁更新的状态，而我自己在学习和预研的过程中所做的修改到处乱飞，最后连我自己都忘了改过哪里，一单合并代码就出现大量冲突，解决起来非常低效。 本文基于对网络上查询到的资料进行学习，找到了解决以上问题的一个合理的技术路径。而这一套工作流程也是很多团队做开源项目预研过程中的标准做法。简单总结起来就是：
+- [软件物料清单SBOM及其标准格式](https://pavelhan.tech/zh/article/2024-SBOM-and-its-standard-format): 本文对SBOM的概念、由来、主要的作用以及目前主流的SBOM文件格式进行了总结，并提供了一些关于SBOM自动生成的信息。
+- [对嵌入式软件开发中导入敏捷和持续集成CI的思考](https://pavelhan.tech/zh/article/2024-07-27-Embedded-Software-Development-with-Scrum-and-CI): 本文基于自己阅读《持续交付2.0》一书的心得体会，以及与客户交流所学习得到的信息，整理出来一些把敏捷开发和持续集成等软件工程理念应用在嵌入式软件领域中的思路。
+- [团队开发使用SVN的标准流程](https://pavelhan.tech/zh/article/2022-07-12-svn-standard-workflow): 基于对工作中开发团队代码管理流程的思考，以及对网络上相关资料的学习，完整的重新总结在团队中使用SVN来进行代码统一管理的工作流程。
+- [WSDL基础学习笔记](https://pavelhan.tech/zh/article/2022-04-19-WSDL-basics): 基于对网络上相关资料的学习，整理出WSDL的学习笔记，为下一步进行onvif协议的学习以及开发打好基础。
+- [SOAP基础学习笔记](https://pavelhan.tech/zh/article/2022-04-13-SOAP-baics): 本文基于对网络资料的学习，整理了SOAP（Simple Object Access Protocol）的基础学习笔记，为Onvif的开发做好基础。
+- [在Debian/Linux环境下配置C/C++的Jenkins持续集成环境](https://pavelhan.tech/zh/article/2020-06-19-debian-jenkins-c_c++): 本文介绍了在Debian环境下搭建基于Jenkins的C/C++持续集成环境的流程。
+- [在Debian下使用CppCheck对C代码进行静态扫描](https://pavelhan.tech/zh/article/2020-06-01-debian-linux-cppcheck): 本文总结了在Linux中使用cppcheck工具对C代码进行静态扫描的流程。
+
+### 分类：云平台 (5 篇)
+- [Amazon AWS之Cloudfront Service学习总结](https://pavelhan.tech/zh/article/2026-06-10-The-summary-of-AWS-cloudfront-service): Amazon CloudFront Service的定位是 AWS 的全球内容分发网络（CDN）服务（目前已经在所有的AWS Region中处于全面可用/GA状态）。它的核心作用主要是缓存静态资源，通过 AWS 在全球部署的骨干网加速静态以及动态内容的传输与发布。
+- [案例解析Gitops驱动AWS云原生应用的开发与部署流程](https://pavelhan.tech/zh/article/2026-06-01-the-example-of-Gitops-driven-AWS-cloud-application-development-and-deployment): 本文通过一个简单的Python项目演示在AWS中基于Gitops的理念进行代码开发、测试和生产环境的自动化部署的完整流程。 该案例的大致需求是： • 在本地客户端上通过HTTP发出请求（请求消息中包含了一个文件名字符串）给AWS API Gateway； • AWS Gateway收到以后转发给Lambda； • Lambda在S3中根据文件名创建一个文件并给客户端返回消息。
+- [Stripe在线支付功能的工作流程和安全机制解析](https://pavelhan.tech/zh/article/2026-05-23-the-workflow-and-security-solution-of-stripe): 在 Web 世界，在线上支付流程中处理用户的信用卡号就是极高风险的操作。对于要在自己的应用程序中实现海外业务场景的全栈开发者而言，要处理跨国信用卡网络通信、3D Secure 动态认证以及严苛的 PCI-DSS 安全合规审查等。针对这个问题， Stripe 应运而生，其伟大之处在于，它通过极致优雅的 RESTful API 和基于 Webhook 的异步事件驱动模型，将极其混乱的现实资金流转，封装成了高度可预测的、开发者友好的接口。在这种情况下，开发者自己的服务器就可以
+- [Amazon AWS之Lambda Service学习总结](https://pavelhan.tech/zh/article/2026-05-07-the-lambda-service-in-amazon-aws): AWS的 Lambda Service是一种全托管的无服务器（Serverless）计算服务。相比于传统的基于 EC2 和常驻进程的 Java/Python/Node.js 服务，在相同的应用需求下使用 Lambda，开发人员只需要上传 Java、Python 或 Node.js 代码到服务器上，AWS 就会自动准备计算所需要的资源，并在代码执行完毕后立即释放。本文对 AWS 的 Lamda Service 的各种概念进行了总结。
+- [Amazon AWS之Bedrock Service学习笔记](https://pavelhan.tech/zh/article/2026-04-23-the-research-information-of-AWS-Bedrock): Amazon Bedrock
+
+### 分类：AI (83 篇)
+- [模型FP16和INT8量化的计算流程总结](https://pavelhan.tech/zh/article/2026-05-05-the-detailed-explanation-of-FP16-and-INT8-quantization-workflow): 本文对Pytorch等模型训练框架训练出来的模型，进行浮点半精度转换FP16和定点量化INT8的相关概念和计算流程进行完整的总结。
+- [RAG系统工作流程的几个问题澄清](https://pavelhan.tech/zh/article/2026-05-16-the-serveral-issues-in-the-RAG-workflow): 本文简单总结了RAG系统的整体工作流程和模块分解，并在其基础上解释了 RAG工作流程以及向量数据量存储与检索向量相关的几个问题。
+- [YOLOv8-Pose模型的网络结构及其输出数据解读](https://pavelhan.tech/zh/article/2026-05-13-the-summary-of-network-structure-and-output-of-YOLOv8-Pose): 在
+- [大模型交互中KV Cache的工作原理总结](https://pavelhan.tech/zh/article/2026-05-11-the-summary-of-KV-cache-workflow-in-LLM): 本文通过描述Agent与大模型之间的交互流程，详细解释Input Token和Cached Token的区别，理解了这两者的区别，也就能够理解这两种token在算力需求和价格上的差异所在。我们从各个大模型厂商购买Token额度的时候，看到有三种不同的价格：输入价格（缓存命中），输入价格（缓存未命中），输出价格。输入和输出Token的概念很好理解，但是这里的缓存命中和缓存未命中的区别是什么呢？同样的，我们在使用各种Agent，例如Claude Code、Gemini Cli的时候，在结束本轮会话退出时，Agent都会输出本轮会话的输入Token、缓存Token以及输出Token的用量统计数据，那么这里的Input Tokens和Cache Reads之间的区别究竟是什么呢？
+- [详解卷积网络中BN层的概念及其计算流程](https://pavelhan.tech/zh/article/2026-05-02-the-detailed-explanation-of-the-concept-and-workflow-of-BNNorm-in-CNN): 本文详细总结了在各种卷积神经网络结构中普遍存在的批归一化层（BN，Batch Normalization）存在的理论意义以及在各种计算机视觉网络模型中BN层进行计算的流程。
+- [如何把PT格式的模型转换为TFLite/LiteRT模型？](https://pavelhan.tech/zh/article/2026-04-29-how-to-convert-PT-model-to-LiteRT-format): 之前在尝试把Ultralytics的YOLOv8模型运行在Android手机上的过程（参考
+- [TFLite如何处理算子版本和兼容性的问题？](https://pavelhan.tech/zh/article/2026-04-28-how-to-handle-the-opset-version-and-compatility-issue-in-tflite): 在瑞芯微NPU平台上进行模型板端适配的时候，在进行模型板端转换的时候，ONNX 导出时设置的 Opset 版本，与板端模型转换工具（RKNN-Toolkit2）能够支持的 Opset 版本的一致性非常重要，如果板端模型转换工具不支持onnx文件中的某些算子类型的话，这个转换过程就会报错。那么，
+- [总结Android Flutter项目中YOLO模型的执行流程](https://pavelhan.tech/zh/article/2026-04-27-the-summary-of-YOLO-modal-workflow-in-android-flutter-project): 之前基于 Flutter 实现了一个在Android APP中调用YOLO模型来实现图像目标检测功能，本文的 YOLO 模型的 TFLite 导出以及在 Android Flutter 项目中进行调用的完整执行流程进行总结。 在Android上跑AI模型，标准的做法是导出模型文件为 TFLite 格式，然后在 Android 的 TFLite+Interpreter+NCAPI 框架下执行AI模型的推理流程，与该框架相关的知识可参考 
+- [如何理解TFLite/LiteRT的核心概念和框架流程？](https://pavelhan.tech/zh/article/2026-04-26-How-to-understand-the-core-concept-and-workflow-of-TFLite): 本文整理了TFLite的核心概念，与ONNX框架的对比，及其内部各个组件的关键工作流程，尝试建立对这个Android系统下的标准AI推理框架的整体概念和工作流程建立完整的理解。
+- [手部特征点检测模型MediaPipe Hand Landmarker](https://pavelhan.tech/zh/article/2026-04-24-the-introduction-of-hands-landmarks-detection-model-MediaPipe-Hand-Landmarker): Google 的 MediaPipe Hand Landmarker（手部特征点检测模型）是目前计算机视觉领域最流行、最高效的
+- [基于Insightface的人脸识别功能的完整实现流程总结](https://pavelhan.tech/zh/article/2026-04-20-the-description-of-human-face-recognition-workflow-based-on-insightface): 本文详细解释了计算机视觉领域中的人脸识别功能的工作流程，并通过InsightFace这个完整的人脸检测+识别的解决方案对以上流程的具体实现进行代码级别的演示和解释。
+- [百度RT-DETRv2模型的训练以及在RK3588平台上的适配](https://pavelhan.tech/zh/article/2026-04-17-the-training-process-and-the-deployment-on-RK3588-of-Baidu-RTDETRv2): 百度RT-DETRv2模型的官方Github地址为：
+- [RT-DETR模型的自定义数据训练以及在RK3588上的适配](https://pavelhan.tech/zh/article/2026-04-15-the-training-process-and-deployment-on-RK3588-of-RTDETR): 本文完整的记录了基于Ultralytics项目中的 RT-DETR 预训练模型在自定义数据集上进行的训练、ONNX导出，以及在RK3588硬件平台上的适配流程。 对于 RT-DETR 模型的实现而言，目前主要有两套独立的实现，即 Baidu 的 PaddleDetection 和 Ultralytics (YOLOv8/v11 生态)。因为我自己对于 Ultralytics/YOLO 较为熟悉，所以本文以  Ultralytics/YOLO 的实现进行试验和记录。
+- [RT-DETR（RealTime DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/zh/article/2026-04-14-the-detailed-explanation-of-RTDETR-network-and-workflow): 本文详细介绍了Baidu提出的基于Transformer架构的图像目标检测模型RT-DETR的网络结构及其数据在网络中的计算流程。
+- [如何理解ONNX模型导出的Opset版本？](https://pavelhan.tech/zh/article/2026-04-08-how-to-understand-the-opset-version-in-ONNX-export-process): 在把PC或服务器上基于Pytorch训练好的模型导出为ONNX格式的时候，需要在导出的脚本中设置opset的版本，不同的opset版本设置会对后续的NPU适配过程造成很大的影响，那么这个opset的版本就是是个什么概念？不同的opset版本究竟有哪些差异，以及这些差异对后续的NPU适配过程如何造成影响？本文尝试回答以上问题。
+- [PANNs音频分类模型在RK3588平台上的适配全记录](https://pavelhan.tech/zh/article/2026-04-04-the-porting-of-PANNs-audio-tagging-model-on-rk3588): 之前在
+- [基于ECS50数据集对PANNs语音分类模型进行的训练流程](https://pavelhan.tech/zh/article/2026-04-01-the-training-process-of-PANNs-audio-tagging-model-using-ECS50-dataset): 本文使用ECS50数据集对语音检测和分类模型PANNs进行自定义训练的完整流程进行了记录。
+- [PANNs音频分类模型的预研信息汇总](https://pavelhan.tech/zh/article/2026-03-26-the-summary-of-audio-tagging-model-PANNs): 本文整理了经典的音频分类模型PANNs的基本情况，模型架构及其预训练参数文件的分类，开发环境的搭建和基本的推理测试，以及对该模型主推的CNN14模型的网络架构进行了说明。
+- [详细解释空洞卷积和可变形卷积的计算流程](https://pavelhan.tech/zh/article/2026-03-25-the-detailed-summary-of-the-deformable-conv-workflow): 有关卷积神经网络中的标准卷积核的计算流程，在
+- [QWen3-VL-4B多模态大模型在RK3588上的适配流程记录](https://pavelhan.tech/zh/article/2026-03-21-the-deployment-process-of-Qwen3VL-on-RK3588): 本文详细记录了在瑞芯微RK3588上进行Qwen3-VL-4B-Instruct多模态大模型的完整适配记录，以及在适配过程中容易出现问题的重点事项。
+- [DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/zh/article/2026-03-18-the-summary-of-DETR-network-structure-and-workflow): 本文详细介绍了Facebook在2020年提出的基于Transformer架构的图像目标检测模型DETR的网络结构及其数据在网络中的计算流程。
+- [轻量级LLM模型QWen2.5-0.5B在RK3588上的适配流程记录](https://pavelhan.tech/zh/article/2026-03-16-the-Qwen2.5-0.5B-model-deployment-on-RK3588): 本文详细学习和总结基于瑞芯微的RKLLM工具及其官方的相关指导文档，把轻量级大语言模型Qwen2.5-0.5B适配到RK3588上的完整过程及其注意事项记录。 总体而言，在瑞芯微NPU上部署 LLM 和部署 YOLO 的核心逻辑与流程是一致的，都是：
+- [瑞芯微RK3588 NPU开发环境搭建笔记](https://pavelhan.tech/zh/article/2026-03-11-the-development-environment-of-RK3588-NPU): 本文以RK3588+Debian Linux系统为基础，搭建瑞芯微平台的NPU开发环境与板端推理环境，并以Model Zoo中的Yolov5模型为例进行该模式上板运行流程的总结。
+- [一文彻底搞懂Transformer模型的Decoder结构与计算流程](https://pavelhan.tech/zh/article/2026-03-09-the-summary-of-the-structure-and-workflow-of-transformer-decoder): 本文详细总结了Transformer模型架构中Decoder部分的总体网络结构，以及数据在其中的运算和流转流程。
+- [详解QWen3-VL模型的测试以及vLLM生产环境部署流程](https://pavelhan.tech/zh/article/2026-03-04-the-test-and-deployment-workflow-on-Qwen3VL): 本文对阿里于2025年9月份发布的Qwen3-VL视觉语言模型进行了简单介绍，并对其预训练模型进行了本地推理测试以及在生产环境中使用vLLM进行部署的流程进行了总结。
+- [从头实现一个Vision Transformer（ViT）模型](https://pavelhan.tech/zh/article/2026-03-02-the-step-by-step-implementation-of-a-simple-ViT-modal): 本文针对简单的MNIST手写数字数据集识别的需求，完成了一个最简单的Vision Transformer模型的实现、训练和验证测试，建立对Vision Transformer模型实现流程的完整理解。 MNIST手写数字数据集是最简单的机器视觉数据集，基于MNIST实现一个Vision Transformer模型来实现手写数字字符的识别，难度不会太大，对于模型训练所需要的数据以及算力资源要求也不高，因此通过训练一个MNIST数据集的ViT识别模型，是一个绝佳的入门Vision Transformer模型的实验。
+- [一文入门Vision in Transformer（ViT）模型的架构](https://pavelhan.tech/zh/article/2026-02-25-the-strcture-of-ViT-Modal): 本文详细总结了Vision in Transformer模型的设计架构，以及图像其该模型架构中的完整处理流程，帮助建立对ViT模型的基础认识。 Transformer架构在自然语言处理领域（Natural Language Processing）中的各种大语言模型中的到了非常广泛的应用，而2020年Google的一篇论文《An Image is Worth 16×16 Words》，把Transformer架构引入了计算机视觉领域，利用其Patch Embedding和自注意力机制对计算机视觉领域中传统的卷积神经王CNN的统治地位造成了极大的冲击，从而在人工智能的各个领域中已经显示出一统江湖的态势。
+- [如何理解Transformer架构中的多头注意力机制？](https://pavelhan.tech/zh/article/2026-02-23-how-to-understand-multi-head-attention-in-transformer): 本文详细总结了Transformer架构中的自注意力及其多头自注意力机制背后的工作原理和计算流程，以助于更深入的理解完整的Transformer设计架构。
+- [一文彻底搞懂Transformer模型的Encoder结构与计算流程](https://pavelhan.tech/zh/article/2026-02-22-transformer-encoder-structure-and-workflow): 本文通过对一个标准的Encoder-Only类型的Transformer架构，详细的总结了Encoder类型的网络架构以及数据流在其中的计算流程。
+- [YOLOv5模型的损失函数计算总结](https://pavelhan.tech/zh/article/2026-02-11-the-summary-of-YOLOv5-loss-function): 本文以YOLOv5模型的v6.0/v6.1版本为基础，详细总结和解释了损失函数各个部分的计算流程。
+- [YOLOv5模型损失函数的背景知识总结](https://pavelhan.tech/zh/article/2026-02-10-the-background-information-of-YOLOv5-loss-function): 本文以YOLOv5模型的v6.0/v6.1版本为基础，详细总结和解释损失函数的计算流程及代码实现中所设计到的各项背景知识。
+- [SAM3模型环境搭建以及图片+视频分割测试](https://pavelhan.tech/zh/article/2026-02-09-SAM3-model-development-environment-and-video-segmentation-test): 本文详细记录了Meta在2025年11月份开源的图像分割模型SAM3的环境搭建，以及基于其中的Sample进行图片和视频分割的流程。
+- [机器学习领域的Python Web UI框架Gradio](https://pavelhan.tech/zh/article/2026-02-07-the-machine-learning-python-web-UI-framework-gradio): Gradio是目前机器学习和数据科学领域最流行、最易上手的 Python Web UI 框架之一。简单来说，它的核心使命是：让你用极短的 Python 代码（通常只需几行），瞬间为你的机器学习模型构建一个可视化的演示界面。它特别适合用于快速原型设计、向团队/客户展示模型效果，或者在 Hugging Face Spaces 上托管 Demo。
+- [开源数据集管理工具FiftyOne](https://pavelhan.tech/zh/article/2026-02-04-the-opensource-dataset-managememt-tool-fiftyone): 本文对Voxel51所开发的开源数据集可视化和管理引擎Fiftyone的工作特性、环境搭建以及常用的应用场景进行总结。
+- [实例讲解OpenAI的轻量级多模态模型CLIP](https://pavelhan.tech/zh/article/2026-02-03-the-light-weighted-multi-modal-CLIP): CLIP(Contrastive Language-Image Pre-Training) 模型OpenAI在2021年初发布的用于匹配图像和文本的预训练神经网络模型，是近年来多模态研究领域的经典之作。
+- [开源VLM模型MoonDream](https://pavelhan.tech/zh/article/2026-02-01-the-opensource-VLM-modal-Moondream): 本文详细介绍了业界非常流行的开源轻量级视觉语言模型MoonDream，总结了该模型的核心功能列表、基本功能测试流程以及相关的license等情况。
+- [YOLO模型的配置参数文件详细解释](https://pavelhan.tech/zh/article/2025-11-25-the-detailed-explanation-of-YOLO-configuration-file): 本文对ultralytics/YOLO项目中的配置参数文件default.yaml文件中所包含的所有参数（可视化和导出类的参数除外）进行详细总结和解释。
+- [YOLOv8模型网络架构解读](https://pavelhan.tech/zh/article/2025-11-20-the-network-structure-of-YOLOv8-model): 本文从YOLOv8和YOLOv5模型对比的角度，来详细阐述和总结两个模型在网络架构设计上的异同点，从而对YOLOv8模型的结构有比较全面和深入的理解。
+- [PyTorch中的自动微分特性与计算图解释](https://pavelhan.tech/zh/article/2025-11-15-the-explanation-of-pytorch-calculation-graph): 本文基于对Pytorch基础基础数据结构torch的学习，整理出来torch的梯度与自动微分特性背后的理论，并通过示例说明来阐述清楚基于Pytorch框架计算图以及训练流程的运行逻辑。
+- [YOLOv5模型的推理输出结果及其NMS算法解析](https://pavelhan.tech/zh/article/2025-11-11-the-predict-output-of-YOLOv5-and-its-NMS-workflow): 本文总结了YOLOv5模型对输入图片数据执行前向推理流程后，在其检测头部分输出的数据结构，以及在其输出数据上所执行的NMS算法流程。
+- [机器视觉目标检测模型的P、R、PR、F1指标详解](https://pavelhan.tech/zh/article/2025-11-05-the-evaluation-metrics-of-computer-vision-model-P-R-PR-F1): YOLOv5模型训练结果文件中的F1_curve、P_curve、PR_curve、R_curve这四张图片文件，分别对应于模型训练完成后的F1、P、PR以及R指标的曲线图。本文对这四个指标进行了详细的总结和整理。
+- [YOLO模型训练生成文件解读](https://pavelhan.tech/zh/article/2025-11-07-the-explanation-of-YOLO-training-output-file): 本文对YOLO模型基于自定义数据集在训练过程中所生成的文件进行解读，帮助建立对YOLO模型训练流程更加深入的理解。如
+- [YOLOv5源代码解读之Detect.py](https://pavelhan.tech/zh/article/2025-11-05-the-summary-of-YOLOv5-code-detect-py): 本文对YOLOv5源代码中用于执行推理任务的detect.py脚本的源代码进行详细解读，完整理解从参数传递与解析、推理执行与结果输出的全过程。 YOLOv5源代码中的detect.py脚本专门用于在模型训练好之后执行推理（Inference）任务，也就是利用训练好的模型对新的图像、视频、实时流等数据进行预测，找出+标记其中感兴趣的目标并存储。
+- [安装Nvidia CUDA支持的Pytorch开发环境记录](https://pavelhan.tech/zh/article/2025-11-01-the-installation-process-of-CUDA-pytorch-developmemnt-environment): 本文基于Windows 11操作系统和Nvidia RTX5070Ti显卡硬件完成了Cuda+Pytorch开发环境的搭建与测试验证。
+- [YOLOv5模型的配置文件详解](https://pavelhan.tech/zh/article/2025-10-30-the-summary-of-YOLOv5-config-file): 本文配合YOLOv5模型的架构图，对该模型的yaml配置文件各个部分的配置参数细节内容进行了详细的总结和解释，有助于更细致的理解模型不同规模版本之间的差异。
+- [YOLOv5模型网络架构解读](https://pavelhan.tech/zh/article/2025-10-26-the-summary-of-YOLOv5-model): 本文详细以YOLOv5的P3版本为基础，详细总结了该模块的整体网络架构、各个子模块的工作逻辑，可为后续更深入的学习YOLOv5模型打好基础。 
+- [YOLOv5模型的不同版本总结](https://pavelhan.tech/zh/article/2025-10-24-the-different-version-of-YOLOv5): 本文基于模型规模、算法迭代、输出结构等各方面的维度，对YOLOv5模型的不同版本及其相互之间的差异进行了总结。
+- [YOLOv4模型网络架构解读](https://pavelhan.tech/zh/article/2025-10-21-the-model-structure-of-YOLOv4): YOLO模型的前三个版本v1（2015年6月），v2（2016年12月），v3（2018年4月）全都都是由Joseph Redmon提出和开发，但该作者因为YOLO模型不可避免地被用于军事领域，所以决定退出计算机视觉领域（为作者伟大的博爱精神点赞）。新的YOLOv4版本则于2020年4月由俄罗斯的Alexey Bochkovskiy以及中国台湾省的两名研究员廖弘源和王建尧联合推出。
+- [YOLOv3-输出、Anchor与损失函数的进化总结](https://pavelhan.tech/zh/article/2025-10-19-the-output-anchor-and-loss-function-of-YOLOv3): 本文对YOLOv3模型在输出数据的组织格式、Anchor预测框以及损失函数的计算等方面的内容进行了总结。 
+- [YOLOv3模型网络架构解读](https://pavelhan.tech/zh/article/2025-10-17-the-structure-of-YOLOv3-modal): 本文详细总结了YOLOv3模型的整体架构方面的内容，包括其主干网络Darknet-53、特征金字塔的概念以及多级特征图检测头的设计思路和实现理论。
+- [YOLOv2特性总结-从YOLOv1的进化](https://pavelhan.tech/zh/article/2025-10-15-YOLOv2-the-evolution-from-YOLOv1): 本文对YOLOv2在YOLOv1基础上所进化的特性进行了完整的总结，解释模型在进化中各项指标得以提升的特性和工作逻辑。 YOLOv2模型在YOLOv2的设计基础上进行了多项模型设计、训练等方面的调整和优化，在VOC2007数据集上的mAP指标由63.4%大幅度提升到了78.6%，同时保持了YOLOv1 one-stage进行目标检测+类别识别的设计，推理速度依然很快，并且能够识别更多的物体类别。
+- [YOLOv2的Anchor锚框机制详解](https://pavelhan.tech/zh/article/2025-10-12-the-Anchor-concept-in-YOLOv2): 本文总结了YOLOv2模型基于Faster R-CNN的理论，在其模型网格预测框设计上增加的Anchor机制的来源、在YOLOv2模型中的计算和训练流程，尝试更清楚的认识YOLOv2模型的工作原理。
+- [YOLOv1模型的损失函数与训练过程解读](https://pavelhan.tech/zh/article/2025-10-08-the-loss-function-and-training-flow-in-YOLOv1): 本文对YOLOv1模型的训练正样本标记方法、损失函数以及基于训练样本对模型进行训练的完整过程进行了总结，为理解YOLO后续版本的处理流程打好基础。。
+- [YOLOv1输出信息以及NMS过滤算法详细解读](https://pavelhan.tech/zh/article/2025-10-07-YOLOv1-output-and-NMS-workflow): 本文对YOLOv1模型的输出信息，以及对模型推理输出进行的NMS算法过滤等方面的信息进行总结和学习，为后续阶段解读更近的YOLO模型打好基础。
+- [YOLOv2模型网络架构解读](https://pavelhan.tech/zh/article/2025-10-06-YOLOv2-model-structure): 本文对YOLOv2模型的BN层、Darknet-19主干网络，以及模型的总体结构进行了详细的总结和学习。
+- [YOLOv1模型网络架构解读](https://pavelhan.tech/zh/article/2025-10-01-yolov1-model-structure): 虽然YOLOv1早已过时，但是其为one-stage架构奠定了重要的基础，本文对该模型的架构进行了详细的总结，为学习YOLO后续版本的架构打好基础。
+- [CNN经典网络模型架构学习之Resnet](https://pavelhan.tech/zh/article/2025-09-30-the-classical-CNN-network-Resnet): Resnet网络架构是由微软亚洲研究院的何恺明等人在2015年提出，其论文为《Deep Residual Learning for Image Recognition》，在2015年的ImageNet图像识别竞赛中获得了分类、检测、定位等多个任务的冠军。这个模型的核心贡献在于
+- [目标检测模型的评价指标详解：mAP，召回率，准确率](https://pavelhan.tech/zh/article/2025-09-20-the-metrics-of-object-detection-modal-mAP-recall-precision): 对于计算机视觉中的目标检测领域而言，主要的评估指标就是mAP与召回率、准确率。本文对IoU、准确率、召回率、AP以及mAP的概念和计算逻辑进行了详细的整理。
+- [CNN经典网络模型架构学习之GoogleNet](https://pavelhan.tech/zh/article/2025-09-11-the-classical-CNN-network-GoogleNet): 本文对经典卷积神经网络存在的问题，以及计算机视觉图像识别领域经典的GoogLeNet架构设计的相关知识点进行了完整和详细的总结。
+- [CNN经典网络模型架构学习之NiN](https://pavelhan.tech/zh/article/2025-09-10-the-classical-CNN-network-NiN): 本文总结了卷积神经网络经典模型中的NiN（Network in Network）的设计理念、整体网络架构和具体的网络实现细节。
+- [CNN经典网络模型架构学习之VGGNet](https://pavelhan.tech/zh/article/2025-09-09-the-classical-CNN-network-VGGNet): 本文对计算机视觉图像识别领域经典的VGGNet模型的组成架构以及在Pytorch中的实现进行了详细的总结。
+- [Softmax分类器的计算流程详细总结](https://pavelhan.tech/zh/article/2025-09-07-the-calculation-flow-of-softmax-classification): Softmax激活函数一般用于多分类问题的分类器实现，本文详细介绍和总结了基于Softmax激活函数以及交叉熵损失函数来实现神经网络多分类器的完整计算流程。 实际的人工智能项目，经常会遇到多分类问题，最典型的就是基于MNIST手写数字识别数据集，对手写的0-9总共10个手写数字进行识别和分类，以及基于ImageNet的图片数据集，对日常生活中看到的1000个物体进行分类。在人工智能的机器学习领域中，最常用的多分类器的实现就是Softmax分类器。
+- [CNN经典网络模型架构学习之AlexNet](https://pavelhan.tech/zh/article/2025-09-04-the-classical-CNN-network-AlexNet): 本文对计算机视觉图像识别领域经典的AlexNet模型的组成架构以及在Pytorch中的实现进行了详细的总结。 在
+- [CNN经典网络模型架构学习之LeNet](https://pavelhan.tech/zh/article/2025-09-01-the-classical-CNN-network-Lenet): 本文以用于进行手写数字识别功能的LeNet为例，分析该网络的结构以及典型的卷积神经网络的整体架构，对用于进行图像识别和处理的卷积神经网络建立初步认识。
+- [一文总结YOLOv5模型的自定义训练、测试与模型导出的全过程](https://pavelhan.tech/zh/article/2025-08-28-the-training-predict-and-ONNX-export-of-YOLOv5): 本文详细总结了基于用户自己指定的训练数据集，对训练数据集及其标注按照YOLO的格式进行预处理，然后对YOLOv5模型进行训练、测试以及ONNX导出等的完整流程。
+- [计算机视觉类AI应用领域及其主流模型总结](https://pavelhan.tech/zh/article/2025-08-14-the-summary-of-computer-vision-model): 本文总结了目前的人工智能领域中，针对计算机视觉方面的主要应用方向（图像分类，图像定位，目标检测，图像分割，语义分割，实例分割）的差异以及各个应用方向所存在的主流模型。 在当前的计算机视觉领域，图像分类、物体检测以及图像分割是最基础，也是目前发展最为迅速的三大领域。
+- [Pytorch模型的ONNX导出和部署入门](https://pavelhan.tech/zh/article/2025-08-07-the-onnx-export-and-deployment-of-pytorch-model): 本文详细总结了基于Pytorch框架开发和训练好的模型导出为通用的onnx文件，并且通过onnxruntime进行部署和Python/C++访问的流程和步骤。
+- [基于Pytorch实现手写数字识别的卷积神经网络](https://pavelhan.tech/zh/article/2025-08-04-the-CNN-network-for-MNIST-dataset): 本文详细介绍和总结了基于Pytorch框架实现一个卷积神经网络CNN，用于对手写数字数据集MNIST进行识别的代码流程，以此作为对Pytorch框架以及神经网络编程实践的入门基础。
+- [卷积神经网络CNN的架构解析入门](https://pavelhan.tech/zh/article/2025-08-01-the-basic-summary-of-CNN-network-structure): 本文基于对网络资料的学习，对一个简单的卷积神经网络CNN的架构、数据计算和传递流程进行详细的解析和总结，作为理解卷积神经网络架构的基础。
+- [深度学习的数学基础知识总结](https://pavelhan.tech/zh/article/2025-07-22-the-maths-basics-of-deep-learning): 本文对学习和理解深度学习所需要的数学基础知识，尤其是微分、偏微分、复合函数等相关的理论知识进行了总结，并基于python做了简单的代码演示。
+- [盘点深度学习神经网络架构中的常用损失函数](https://pavelhan.tech/zh/article/2025-07-19-the-summary-of-lost-function-in-AI-network): 本文对深度学习神经网络中常用的损失函数进行详细的学习和总结，对各种损失函数的特性及其适用性进行整理，方便以后理解各种深度神经网络的架构设计。
+- [盘点深度学习神经网络架构中的常用激活函数](https://pavelhan.tech/zh/article/2025-07-17-the-summary-of-activation-function-in-AI-network): 本文对深度学习神经网络中常用的激活函数进行详细的学习和总结，对各个激活函数的特性及其适用性进行整理，方便以后理解各种深度神经网络的架构设计。
+- [详细解释卷积神经网络中的卷积与池化计算](https://pavelhan.tech/zh/article/2025-07-15-the-summary-of-calculation-workflow-in-CNN): 本文基于对参考资料的学习，以一个简单的卷积神经网络结构为例，对卷积神经网络中的卷积与池化操作的完整计算过程进行了详细的总结和解释。
+- [非专业人士的AI课6：LLM大模型的典型应用级别](https://pavelhan.tech/zh/article/2025-03-19-the-application-level-of-LLM): 本系列文章的目标是从非AI从业者的角度出发，去尝试理解AI及其大模型在应用中的基本概念，争取通过对这些概念的深入理解和澄清，建立对大模型的工作机制流程以及应用框架方面的知识结构，从而在我们的生活和工作中更好的使用AI。
+- [非专业人士的AI课5：AI Agent的框架与工作流程解析](https://pavelhan.tech/zh/article/2025-03-18-the-AI-agent-framework-and-workflow): 本系列文章的目标是从非AI从业者的角度出发，去尝试理解AI及其大模型在应用中的基本概念，争取通过对这些概念的深入理解和澄清，建立对大模型的工作机制流程以及应用框架方面的知识结构，从而在我们的生活和工作中更好的使用AI。
+- [非专业人士的AI课4：一文说清楚RAG的工作流程以及与微调的区别](https://pavelhan.tech/zh/article/2025-03-15-the-workflow-of-RAG): 本系列文章的目标是从非AI从业者的角度出发，去尝试理解AI及其大模型在应用中的基本概念，争取通过对这些概念的深入理解和澄清，建立对大模型的工作机制流程以及应用框架方面的知识结构，从而在我们的生活和工作中更好的使用AI。
+- [非专业人士的AI课3：LLM大语言模型项目的典型开发流程详解](https://pavelhan.tech/zh/article/2025-03-14-the-basic-development-workflow-of-LLM): 本系列文章的目标是从非AI从业者的角度出发，去尝试理解AI及其大模型在应用中的基本概念，争取通过对这些概念的深入理解和澄清，建立对大模型的工作机制流程以及应用框架方面的知识结构，从而在我们的生活和工作中更好的使用AI。
+- [非专业人士的AI课2：对大模型多模态以及开源闭源概念的总结](https://pavelhan.tech/zh/article/2025-03-13-the-basic-concepts-of-LLM-and-open-close-model): 本系列文章的目标是从非AI从业者的角度出发，去尝试理解AI及其大模型在应用中的基本概念，争取通过对这些概念的深入理解和澄清，建立对大模型的工作机制流程以及应用框架方面的知识结构，从而在我们的生活和工作中更好的使用AI。
+- [非专业人士的AI课1：深度神经网络学习入门](https://pavelhan.tech/zh/article/2025-03-12-the-basics-of-DNN): 本系列文章的目标是从非AI从业者的角度出发，去尝试理解AI及其大模型在应用中的基本概念，争取通过对这些概念的深入理解和澄清，建立对大模型的工作机制流程以及应用框架方面的知识结构，从而能够帮助我们在生活和工作中更好的使用AI。
+- [以代码案例来详细介绍Function Calling](https://pavelhan.tech/zh/article/2025-03-11-the-code-example-of-LLM-function-calling): 众所周知，大语言模型本身只是一个文本生成的工具，虽然有很强的文本生成能力和逻辑推理能力，但是
+- [大模型的MCP到底是什么](https://pavelhan.tech/zh/article/2025-03-10-What’s-MCP-in-LLM-modal): MCP：Model Context Protocol，即模型上下文协议，是由Anthropic公司（也就是Claude大模型的开发商）在2024年11月份所开源的
+- [基于多模态大模型的HTTP API实现图像识别的功能（Python+C）](https://pavelhan.tech/zh/article/2025-03-01-the-LLM-image-recognition-using-HTTP-API): 本篇笔记在以上笔记的基础上，仍然利用OpenAI的API，访问Kimi多模态模型实现图片中对象识别的功能，同时使用Python和C代码实现并提供案例解析。能够利用C语言来访问多模态大模型开放出来的HTTP API接口，也就能够在低成本的MCU处理器上，基于合理的提示词设计，实现需要大模型服务支持才能提供出来的功能，
+- [基于Python快速实现与Kimi的AI对话](https://pavelhan.tech/zh/article/2025-02-27-the-communication-with-Moonshot-LLM-using-python): 对于基于大语言模型的AI应用程序开发而言，用户的应用程序与Kimi或者OpenAI这类大语言模型之间基本上都是使用标准的HTTP接口进行请求，Kimi和OpenAI服务器针对用户应用程序提出的问题进行答复，答复的结果同样封装在HTTP的reponse message中传回给用户应用程序，用户应用程序对结果进行解析后呈现给用户，或者调用其他更加智能化的功能处理（例如AI Agent）。 在此选择国内大语言模型开发商月之暗面Moonshot（也就是Kimi）为例进行与LLM Server之间的AI应用程序交互逻辑的学习和总结。使用Kimi的原因在于： - 在deepseek之前，Kimi一直是我本人稳定使用的AI工具，其稳定性和输出结果的质量，相比于国内的其他大模型而言一直是名列前茅的。 - Moonshot为每个注册用户提供了15元的预充值费用，这个费用对于通过API进行测试开发而言，基本上是够用了。 对于开发基于Moonshot的AI应用程序而言，提前要做的准备工作主要包括两个部分： - 按照Moonshot的要求安装python及其Openai library。 - 申请访问Moonshot服务器的API Key，并且为安全起见以环境变量的方式配置到自己的开发机中。
+
+### 分类：WiFi (13 篇)
+- [双频WiFi+BT的通信复用与并发技术总结](https://pavelhan.tech/zh/article/2026-04-22-the-suammry-of-dual-band-wifi-and-BT-concurrent-communication-technology): 在WiFi产品的演进过程中，2.4GHz和5GHz的双频（Dual Band）是一个非常常见和常用的术语。在通信的过程中，两个频段的通信究竟是通过分时等方式复用/切换还是能够直接实现双频并发通信，就形成了两套完全不同的工作逻辑。本文尝试从RF链路的复用和并发处理的逻辑上来解释这个问题。
+- [WiFi漫游协议详解-IEEE 802.11 kvr](https://pavelhan.tech/zh/article/2025-03-28-the-wifi-protocol-of-ieee-80211kvr): 本文对WiFi通信无线漫游的概念和传统的漫游流程进行了解释，并对支持WiFi无线漫游过程的三大协议IEEE 802.11K/V/R进行了详细总结，阐述各自解决的问题。
+- [WiFi6的Bss Coloring特性详解](https://pavelhan.tech/zh/article/2025-02-11-the-BSS-coloring-feature-of-WiFi6): 在802.11ax也就是WiFi6中引入了一种BSS Coloring特性，这种特性用于优化和解决在高密度环境中多个基本服务集（BSS）之间的无线干扰问题。 在传统的Wi-Fi网络中，如果两个相邻的BSS网络使用相同的信道，它们之间在通信的过程中所发送的信号会相互干扰，导致两个网络的通信性能均明显下降。因为，一旦发生同信道的无限冲突，对于每一个通信节点，都需要增加重传尝试来把数据包放到通信的对端，这样才能避免潜在的数据丢失，无线冲突和重传太多，严重劣化了网络的通信性能。而WiFi6中所推出的BSS Coloring机制可以减少这种不必要的干扰，提高了网络性能和信道利用率。
+- [WiFi6的OFDMA特性详解](https://pavelhan.tech/zh/article/2025-02-05-the-OFDMA-feature-of-WiFi6): OFDMA：全称是Orthogonal Frequency Division Multiple Access，即正交频分多址。 在WiFi6之前的WiFi4/WiFi5，甚至更早的802.11a协议中，已经导入了OFDM机制，即把整个通信信道的频宽划分为多个相互重叠但是正交的子载波，以尽可能提升数据传输速率以及频谱利用率，并且克服无线传输中存在的多径干扰问题。 但是单独OFDM的使用，WiFi AP和STA之间的每次通信都是针对单用户的，也就是说每次发送数据的时候，不管这个用户数据量的大小，与这个用户的通信每次都要占用全部的子载波进行通信。如果把整个信道全部的子载波整体看成一辆送货的小车，当用户要通信的数据量很小的时候，例如即时消息，浏览网页等，这些通信的数据量根本用不了全部的子载波，因此这个小车是装不满的，但根据OFDM的工作机制和流程，这个装不满的小车里面也只能装这个用户的数据，小车里多余的空间（即剩下闲置的子载波）就被白白浪费了。
+- [WiFi6的触发帧（Trigger Frame）帧结构详解](https://pavelhan.tech/zh/article/2025-02-01-the-structure-of-wifi6-trigger-frame): WiFi6（802.11ax）中OFDMA（正交频分多址接入）的实现依赖于触发帧（Trigger Frame, TF） 这一关键机制。本文从技术角度深入剖析其触发帧的详细细节。
+- [WiFi不同制式下最大速率的计算](https://pavelhan.tech/zh/article/2024-12-25-the-computation-of-wifi-datarate): 本文整理出来各种wifi制式下能够支持的速率列表，以及这些理论速率是如何计算出来的。
+- [WiFi6的低功耗特性TWT简介](https://pavelhan.tech/zh/article/2024-10-14-wifi6-low-power-TWT-summary): 本文总结了在WiFi6中引入的新的低功耗工作模式TWT的工作流程及其与传统的Legacy Power Saving Mode的对比，三种TWT模式的交互流程以及对TWT在实际产品应用中的思考。
+- [WiFi WPA/WPA2四步握手认证机制详解](https://pavelhan.tech/zh/article/2024-06-07-wifi-wpa2-4way-handshake-details): 本文对WiFi WPA/WPA2认证模式下的Key结构以及认证和密钥交换相关的4步握手机制做了较为详细的总结。
+- [WiFi低功耗工作模式的完整工作流程总结](https://pavelhan.tech/zh/article/2021-02-01-wifi-lowpower): 在本文中对802.11规范中定义的WiFi低功耗模式、工作流程及其不同模式下的切换进行总结。
+- [Wireshark抓包环境的工作原理与使用技巧总结](https://pavelhan.tech/zh/article/2021-01-21-wireshark-monitor): 本文总结了有线与无线网络抓包背后的工作原理，以及使用Wireshark进行抓包的基本操作流程选型。
+- [基于Wireshark+Acrylic WiFi Sniffer的WiFi空口抓包环境](https://pavelhan.tech/zh/article/2021-01-18-wireshark-acrylic-sniffer): 本文总结了使用Acrylic WiFi Sniffer+Wireshark，以及搭配必要的抓包无线网卡，进行WiFi空口包抓取环境的搭建过程。
+- [WiFi中的Beacon、TIM与DTIM概念总结](https://pavelhan.tech/zh/article/2021-01-12-WiFi-Beacon-tim-dtim): 本文中总结了802.11协议规范中定义的Beacon frame的格式以及TIM与DTIM帧的差异。
+- [WiFi的低功耗策略实现机制总结](https://pavelhan.tech/zh/article/2020-05-10-wifi-lowpower): 本文总结了802.11协议中定义的WiFi低功耗模式的工作流程，以及Beacon TIM/DTIM信息的解析。
+
+### 分类：Bluetooth (9 篇)
+- [详细总结EddyStone BLE广播包协议规范](https://pavelhan.tech/zh/article/2026-04-13-the-detailed-summary-of-Google-EddyStone-BLE-advertising-protocol): Eddystone 是专门针对蓝牙低功耗（BLE）广播包定义的数据格式。 它是由 Google 在 2015 年推出的开源 Beacon 协议，旨在提供比苹果 iBeacon 更开放、功能更丰富的广播标准。
+- [蓝牙BLE通信的安全模式和安全级别总结](https://pavelhan.tech/zh/article/2024-12-21-the-BLE-security-mode-and-security-level): 本文对BLE在实际应用中所具备的三种典型安全模式和各个安全模式下的安全级别进行了完整的整理。重点是其中的安全模式1。
+- [BLE设备配对模式和流程详细解析](https://pavelhan.tech/zh/article/2024-12-16-the-detailed-suammry-of-BLE-paring-process)
+- [BLE设备之间安全密钥总结](https://pavelhan.tech/zh/article/2024-12-16-the-summary-of-Keys-in-BLE-devices)
+- [BLE的跳频机制和流程实现详细总结](https://pavelhan.tech/zh/article/2024-12-10-the-frequency-hopping-suammery-in-BLE): 本文对BLE的跳频工作流程，跳频机制的相关参数，以及跳频信道的计算逻辑进行了详细的整理。
+- [对广芯微车钥匙PKE方案的深入学习总结](https://pavelhan.tech/zh/article/2024-12-07-the-unicmicro-PKE-solution-in-depth): 本文对广芯微电子提供的PKE方案进行了完整的分析，重点整理出来在基站和钥匙端进行的LF以及HF通信的工作流程。
+- [Nordic nRF54L系列信息汇总](https://pavelhan.tech/zh/article/2024-11-27-the-summary-of-nordic-nrf54l-series): 本文汇总了Nordic在2024年11月份最新发布的nRF54L系列蓝牙系列芯片方案的规格参数。
+- [Apple Find My的Unwanted Tracking Alert功能详细解析](https://pavelhan.tech/zh/article/2024-05-25-apple-find-my-unwanted-tracking-alert): 本文总结了Apple Find My Accessory的四种工作状态，以及重点描述了在Separated状态下Apple所设计的Unwanted Tracking Alert机制的实现流程。该机制可以在用户可能被跟踪的情况下发出Alert来提醒用户注意，从而避免用户的位置隐私信息泄露带来的危险。
+- [蓝牙设备的BQB认证](https://pavelhan.tech/zh/article/2021-05-11-bluetooth-bqb): 对蓝牙BQB认证的相关信息做一个简单的总结。
+
+### 分类：全栈开发 (3 篇)
+- [在Android Flutter项目中flutter_litert插件运行TFLite模型](https://pavelhan.tech/zh/article/2026-04-01-how-to-use-flitter_litert-plugin-run-tflite-model-on-android): 要把一个自定义的模型转换为TFLite格式并且能够在Android APP中跑起来，就需要一个更灵活的应对方式。而这个过程分为两个步骤：把自定义模型的pt文件转换为TFLite格式。这部分在
+- [Android Studio+Flutter全栈开发环境的搭建及其注意事项](https://pavelhan.tech/zh/article/2026-03-23-the-full-stack-development-environment-of-android-studio-and-flutter): 本文完整的记录了在Windows环境中基于Android Studio+Flutter的全栈开发环境的搭建过程，整个过程其实并不复杂，但因为概念众多，再加上中国国内网络访问Google服务器不方便等问题，在首次搭建并测试环境中存在不少值得注意和记录的问题，在此做完整的记录，方便后续开发过程中参考。
+- [Android Studio+Flutter全栈开发环境的搭建及其注意事项](https://pavelhan.tech/zh/article/2026-03-23-the-full-stack-development-environment-of-android-studio-and-flutter): 本文完整的记录了在Windows环境中基于Android Studio+Flutter的全栈开发环境的搭建过程，整个过程其实并不复杂，但因为概念众多，再加上中国国内网络访问Google服务器不方便等问题，在首次搭建并测试环境中存在不少值得注意和记录的问题，在此做完整的记录，方便后续开发过程中参考。
+
+### 分类：音视频 (38 篇)
+- [音频FFT计算流程总结与频谱图解读](https://pavelhan.tech/zh/article/2026-03-28-the-summary-of-audio-FFT-calculation-workflow-and-spectrum-diagram): 本文总结了语音信号序列进行FFT计算其对应频谱的概率、参数总结以及计算流程，并提供了一个Python例子代码对一个wav文件进行频谱图的计算并进行解读。
+- [短红外（SWIR）传感器的工作原理与应用总结](https://pavelhan.tech/zh/article/2025-09-15-the-application-note-of-SWIR-sensor): 本文简要总结了基于短波红外光频段成像的SWIR传感器及其成像系统的技术概念以及在工业和生活中的常见应用，为理解和在实际产品中应用该技术做好基础。
+- [详细总结图像ISP处理流程之Gamma校正](https://pavelhan.tech/zh/article/2025-08-15-the-gamma-correction-in-ISP-processing-workflow): 本文详细总结了图像ISP处理流程中的Gamma校正模块，解释了在ISP处理流程中要包含Gamma校正模块的原因，以及主流ISP在进行Gamma校正的处理过程中的主要思路和工作流程。
+- [镜头成像的Lens Shading问题](https://pavelhan.tech/zh/article/2025-05-01-the-summary-of-lens-shading-issue): 本文对镜头成像中普遍存在的Lens Shading问题进行详细的总结，分析该问题出现的原因，以及在相机产品进行图像调试中解决该问题的思路进行整理。
+- [消费类Audio Codec的音频接口总结](https://pavelhan.tech/zh/article/2025-04-06-the-popular-audio-codec-inferface): 本文基于对市场上常用的Audio Codec TLV320AI3101的数据手册进行总结和学习，从中更深入的总结通用audio codec的输入输出接口及其内部的信号处理流程，以此建立对audio codec及其音频处理流程的更为全面的认识。
+- [音频3A处理简介：AEC，ANS，AGC](https://pavelhan.tech/zh/article/2025-03-31-the-summary-of-auido-3A-AEC-ANS-AGC)
+- [图像传感器和镜头的CRA参数解释及其匹配](https://pavelhan.tech/zh/article/2025-03-27-the-CRA-match-between-image-sensor-and-lens): CRA：Chief Ray Angle，也就是主入射光线角度。对于镜头和Image Sensor而言，虽然两者都有CRA参数，但是其实际定义是明显不同的。 Lens的CRA参数则由镜头的设计本身决定，表示从镜心到成像面的光线角度分布模式。也就是就是镜头各个位置的主光线（过入瞳中心的光线）通过光学系统到达像面以后，与像面交点位置处的法线之间的夹角。
+- [对AI NVR的思考以及君正的AI NVR平台A1](https://pavelhan.tech/zh/article/2025-01-25-AI-NVR-and-Ingenic-A1-solution): 君正的A1系列是针对NVR市场所推出的集成式解决方案，相比于传统的NVR方案，君正方案最大的特色是继承了较强的AI算力，所以君正在这个方案的命名上也刻意的以xVR这样的形式进行命名，以强调其AI算力。
+- [G711音频压缩标准的实现详解](https://pavelhan.tech/zh/article/2025-01-04-G711-audio-encode-standard): G.711是ITU-T所定义的一种音频压缩标准，广泛应用于电话通信网络和VoIP领域。在具体的实现上，G711的音频编解码又可以分为u-law（主要应用于北美和日本）和A-law（主要应用于欧洲和世界的其他地方）两种形式，在本文中分别进行说明。
+- [2024 US主流消费类NVR功能与规格参数总结](https://pavelhan.tech/zh/article/2024-12-13-the-suammary-of-the-feature-and-specification-of-consumer-NVR): 通过对Amazon US市场上的主流消费类NVR产品相关宣传资料的学习，整理出来该行业中主流产品所具备的功能列表和规格参数。
+- [基于CV4003IoT Sensor实现Pre Roll电池摄像头方案](https://pavelhan.tech/zh/article/2024-11-26-the-pre-roll-bpi-solution-using-cv4003IoT): 本文总结了基于深圳创视微电子推出的CV4003IoT Image Sensor，实现完整的低成本pre roll电池摄像头的方案，与对比了该pre roll方案与AOV方案之间的优劣势。
+- [Ring Doorbell的Pre Roll功能及其工作原理](https://pavelhan.tech/zh/article/2024-10-31-the-pre-roll-feature-on-ring-doorbell): 本文对Ring Doorbell以及OmniVision所主推的Pre Roll功能的工作原理进行了整理，基于OV的OA7600系统设计框架总结了Pre Roll模式下系统的完整工作流程，以及AOV与Pre Roll模式的优劣势对比。
+- [RGBIR Sensor的工作原理和流程总结](https://pavelhan.tech/zh/article/2024-07-16-RGBIR-sensor-workflow-summary): 本文对比了IPC领域中常用的Bayer RGB图像传感器与RGB-IR类型的图像传感器的差异，基于RGB-IR传感器图像处理系统的组成，以及比较典型几种RGB-IR图像应用，对RGB-IR图像传感器的技术工作原理和应用做了一个初步的总结。
+- [主流无线投屏技术对比](https://pavelhan.tech/zh/article/2022-08-23-most-popular-wireless-cast-techonology): 本文通过对网上相关资料的收集和整理，对比了目前市面上主流的无线投屏技术的主要工作流程和功能。
+- [SigmaStar的Uboot UFU升级模式](https://pavelhan.tech/zh/article/2022-06-21-sigmastar-uboot-ufu-firmware-upgrade-mode): 本文总结了SigmaStar在Uboot中增加的UFU模式，来实现使用该方案的情况下，通过Uboot和USB连接来给终端用户提供安全升级的流程
+- [UCConfig学习笔记之UCConfig Mode 0](https://pavelhan.tech/zh/article/2022-05-31-ucconfig-mode-0-summary): 本文基于对UCConfig规范定义文档和Teams认证对于H.264 Encoder的认证规范文档的学习，总结了UCConfig Mode 0的H.264编码结构和码流结构。
+- [CMOS Sensor的曝光与读出时序](https://pavelhan.tech/zh/article/2022-05-30-cmos-image-sensor-exposure-readout-timing): 通过对网络上收集资料的学习，整理了CMOS Image Sensor的曝光和读出的时序。
+- [UCConfig学习笔记之UCConfig Mode 1](https://pavelhan.tech/zh/article/2022-05-27-ucconfig-mode-1-summary): 本文基于对UCConfig规范定义文档和Teams认证对于H.264 Encoder的认证规范文档的学习，总结了UCConfig Mode 1的H.264编码结构和码流结构。
+- [《Microsoft Skype for Business H.264 Video Encoder Specification》学习笔记](https://pavelhan.tech/zh/article/2022-05-20-MS-skype-for-business-h264-video-encoder-specification): 本文基于对微软Teams认证的官方文档《Microsoft Skype for Business H.264 Video Encoder Specification》的学习，整理出来进行Teams的H.264 Encoder认证的技术需求与流程。
+- [H.264基本概念总结之SVC](https://pavelhan.tech/zh/article/2022-05-13-H264-basics-svc): 本文基于对参考资料的学习，整理了H.264的SVC扩展的一些基础信息。
+- [MIPI CSI接口的长短包结构与虚拟通道的概念](https://pavelhan.tech/zh/article/2022-05-06-mipi-csi-long-short-packet-struct-and-virtual-channel): 本文基于对参考文档的学习，整理了image sensor常用的MIPI CSI接口传输的长包和短包的数据结构，以及虚拟通道的概念。
+- [Image Sensor的MIPI CSI接口学习笔记](https://pavelhan.tech/zh/article/2022-04-29-image-sensor-mipi-csi-interface): 本文总结了Image Sensor常用的MIPI CSI接口在硬件连接和软件层面上进行图像数据传输的基础知识。
+- [CMOS图像传感器的Sensor Flicker问题](https://pavelhan.tech/zh/article/2022-04-26-cmos-image-sensor-flicker): 本文总结了在CMOS Image Sensor中比较常见的Sensor Flicker问题的成因及其解决方案。
+- [Sony的DOL（Digital Overlay） HDR技术总结](https://pavelhan.tech/zh/article/2022-04-26-sony-dol-hdr-basics): 通过对网络上查到的相关资料文档的学习，整理了Sony DOL HDR技术的工作原理与流程。
+- [H.264基本概念总结之Slice与NALU](https://pavelhan.tech/zh/article/2022-03-16-h264-slice-nalu): 本文总结了H.264视频编解码技术中的Slice、NALU等概念。
+- [H.264基本概念总结之SPS，PPS，SEI](https://pavelhan.tech/zh/article/2022-03-16-h264-sps-pps-sei): 本文总结了H.264视频编解码技术中的SPS、PPS、SEI等概念。
+- [AAC Audio Codec的Profile及其在不同平台上的支](https://pavelhan.tech/zh/article/2022-03-03-aac-audio-profile): 本文总结了AAC audio codec的不同profile类型，以及在各种平台上编程设置aac profile的流程。
+- [GB28181基础知识学习总结](https://pavelhan.tech/zh/article/2020-10-13-gb28181-basics): 本文对国内音视频监控系统的GB28181规范及其开发流程和架构做了简单的总结。
+- [最简单的基于QT+ffmpeg的播放器的例子](https://pavelhan.tech/zh/article/2020-09-29-QT-ffmpeg-example): 本文总结了一个使用QT进行ffmpeg进行播放器开发的一个简单例子。
+- [搭建基于QT Creator的ffmpeg开发环境](https://pavelhan.tech/zh/article/2020-09-24-qt-creator-ffmpeg): 总结在Windows环境中基于QT Creator搭建ffmpeg的开发环境及其测试代码。
+- [AHD模拟摄像头的反向控制协议-CoaxialProtocol](https://pavelhan.tech/zh/article/2020-09-22-AHD-coaxial-protocol): 本文总结了在AHD摄像头上通过使用同轴线缆对云台等设备进行反向控制的Coaxial协议。
+- [QT5.9.8版本在海思3521平台上的移植](https://pavelhan.tech/zh/article/2020-09-15-hi3521-QT-porting): 本文总结了在海思3521平台上移植QT5.9.8版本的完整流程，移植完成后可以在3521平台上进行QT的应用开发。
+- [AF自动对焦算法及PDAF工作原理总结](https://pavelhan.tech/zh/article/2020-08-07-AF-PDAF): 本文总结了AF自动对焦算法的分类，以及对基于对比度和PDAF两种被动式对焦技术进行总结。
+- [变焦镜头的分类及变焦原理总结](https://pavelhan.tech/zh/article/2020-07-31-AF-lens-basics): 本文简单总结了数码变焦和光学变焦的区别以及具体的技术实现原理。
+- [海思35XX系列HiMPP框架开发参考之VI模块](https://pavelhan.tech/zh/article/2020-05-26-hisilicon-35xx-himpp-framework-vi): 本文基于对海思35xx处理器相关文档的学习，总结了35xx HiMPP框架下VI模块开发中的一些基础知识。
+- [BT601/BT656/BT1120的基本概念解析](https://pavelhan.tech/zh/article/2020-05-18-bt601-bt656-bt1120-basics): 在本文中总结了模拟和数字领域视频传输方面的BT601、BT656、BT1120等规范的相关基础知识。
+- [模拟高清视频传输技术](https://pavelhan.tech/zh/article/2020-05-14-analog-HD): 本文对近些年出现的模拟高清视频Analog HD传输技术进行了简单的总结。
+- [H.264的两个基本概念：IDR，dts/pts](https://pavelhan.tech/zh/article/2020-05-12-h264-idr-dts-pts): 本文总结了在H.264中IDR Frame以及dts、pts的相关概念。
+
+### 分类：嵌入式 (6 篇)
+- [君正IPC平台的Secure Boot流程实现解析](https://pavelhan.tech/zh/article/2025-04-02-the-Ingenic-IPC-platform-Secure-boot-workflow): 本文对国产的君正Ingenic IPC平台上所使用的Secure Boot功能的运行流程进行完整的总结和说明。
+- [Novatek IPC平台Secure Boot流程详细解析](https://pavelhan.tech/zh/article/2025-03-20-the-secure-boot-workflow-of-novatek-IPC): 本文基于对Novatek NT98567相关资料的学习，整理出来该平台Secure Boot流程中对启动过程中各个阶段进行加解密操作和保护的完整过程，为更清楚的理解嵌入式系统Secure Boot的概念和流程提供了一个很好的实际案例。
+- [对Linux的UBI以及UBIFS文件系统的学习总结](https://pavelhan.tech/zh/article/2024-10-25-the-UBI-and-UBIFS-Filesystem-On-Linux): 通过两篇总结对Linux系统下UBI及其UBIFS文件系统的核心概念、使用流程、文件系统内容的存储结构进行完整的整理，为Linux下高效使用UBIFS文件系统打好理论方面的基础。
+- [exFAT文件系统详细解析](https://pavelhan.tech/zh/article/2024-09-04-exfat-file-system-summary): 通过对网络资料的学习整理了exFAT文件系统的结构，对其内部如何管理数据和文件进行总结。
+- [FAT32文件系统详细解析](https://pavelhan.tech/zh/article/2024-08-30-FAT32-file-system-summary): 本文对FAT32文件系统的结构进行详细解析，整理了与该文件系统相关的一些核心概念，在此基础上理解整个文件系统的存储结构以及增删操作的逻辑，对FAT32文件系统如何保存数据可以建立一个更为宏观的认识，指导后续工作中存在的与FAT32文件系统相关问题的解决。
+- [嵌入式产品SecureBoot的启动流程总结](https://pavelhan.tech/zh/article/2024-08-12-Secure-Boot-in-Embedded-System): 本文档对嵌入式系统中所使用的Secure Boot机制的作用，背后的工作流程和软硬件设计原理，以及完整的嵌入式系统Secure Boot启动流程进行了总结和学习。
+
+### 分类：Tech (3 篇)
+- [无线数字通信之IQ调制工作原理](https://pavelhan.tech/zh/article/2024-12-27-the-principle-of-IQ-modulation-wireless-communication): 本文详细解释了无线通信中非常常用的IQ调整的信号，其调制的工作原理和流程，以及在无线通信中使用所具备的优势。
+- [双频WiFi和蓝牙之间的天线是如何复用的？](https://pavelhan.tech/zh/article/2024-12-26-the-antena-share-issue-on-dualband-wifi-and-BT)
+- [BIOS/UEFI/MBR/GPT/GRUB/EFI等概念的总结](https://pavelhan.tech/zh/article/2024-06-21-BIOS-UEFI-MBR-GPTGRUB-EFI-Basics): 本文总结了与PC操作系统启动流程相关的基本概念，对PC的启动流程、文件系统分区、多系统引导等相关的技术概念建立全面的理解。
+
+### 分类：网络安全 (4 篇)
+- [路由器DMZ配置工作原理及其限制总结](https://pavelhan.tech/zh/article/2024-11-18-the-DMZ-Configuration-on-Router-and-its-limits): 本文对不同类型的NAT工作流程进行了整理，在此基础上总结了DMZ的概念和工作原理，以及DMZ在普通路由器上的配置以及使用中存在的限制因素。
+- [一文入门TEE与ARM TrustZone安全技术](https://pavelhan.tech/zh/article/2024-11-15-ARM-Trustzone-Summary): 本文详细总结了TEE和ARM TrustZone技术的概念及其背后的发展历程，从ARM SOC硬件设计和CPU上代码执行流程的两个角度TrustZone技术的执行流程和系统框架。
+- [802.1x与RADIUS认证的基础知识总结](https://pavelhan.tech/zh/article/2024-06-01-8021x-radius-basics): 本文总结了以WiFi接入方式增加802.1x Radius认证功能的一些基础知识，仅作为对该部分知识领域的扫盲。
+- [AES的加密模式总结](https://pavelhan.tech/zh/article/2020-05-07-AES-encryption-algo): 本文总结了分组密码与流密码的区别，以及AES加密算法执行流程的六种加密模式。
+
+### 分类：其他 (1 篇)
+- [汽车的无钥匙解决方案之RKE/PKE/PEPS](https://pavelhan.tech/zh/article/2024-11-05-car-key-solution-RKE-and-PKE): 本文对目前主流的汽车无钥匙解决方案RKE、PKE以及PEPS三种系统进行了详细的介绍，会尝试回答在理解这些系统中所存在的技术方面的问题。
+
+### 分类：Linux (7 篇)
+- [Linux的OOM错误及其处理思路](https://pavelhan.tech/zh/article/2024-10-16-the-OOM-issue-in-Linux-Programming): 本文总结了Linux系统下应用程序运行经常出现的OOM错误，针对该错误在kernel中所提供的处理方式，以及这些OOM的处理方式在嵌入式系统应用中的思考。
+- [对于Signal 11 SIGSEGV错误的简单总结](https://pavelhan.tech/zh/article/2024-10-12-the-signal-11-sigsegv-issue-summary): 本文对Linux应用编程中经常出现的Signal 11也就是SIGSEGV错误的原因及其在kernel中的处理流程进行了总结，以及整理了在实践中遇到这类错误通用的调试手段。
+- [基于Linux UAC gadget驱动实现Audio Control处理-Kernel层GET](https://pavelhan.tech/zh/article/2022-03-24-linux-uac-gadget-audio-control-kernel-get): 本文总结了SigmaStar提供的在基于Linux kernel的UAC gadget设备中增加audio control控制功能的完整工作流程，内核层GET部分。
+- [基于Linux UAC gadget驱动实现Audio Control处理-Kernel层SET](https://pavelhan.tech/zh/article/2022-03-24-linux-uac-gadget-audio-control-kernel-set): 本文总结了SigmaStar提供的在基于Linux kernel的UAC gadget设备中增加audio control控制功能的完整工作流程，内核层SET部分。
+- [基于Linux UAC gadget驱动实现Audio Control处理-应用层](https://pavelhan.tech/zh/article/2022-03-23-linux-uac-gadget-audio-control-application): 本文总结了SigmaStar提供的在基于Linux kernel的UAC gadget设备中增加audio control控制功能的完整工作流程，应用层部分。
+- [Linux的磁盘加密技术LUKS](https://pavelhan.tech/zh/article/2020-07-07-Linux-LUKS): 本文总结了在Linux上通过LUKS技术来实现磁盘加密功能的完整流程，访问加密后的磁盘需要输入创建时指定的密钥才能成功访问。
+- [Linux IPC机制之消息队列](https://pavelhan.tech/zh/article/2020-06-03-linux-ipc-message-queue): 本文总结了Linux应用层提供的IPC机制之消息队列的概念性知识，以及使用消息队列进行应用层编程的例子。
+
+### 分类：移动通信 (3 篇)
+- [LTE模块注网过程及其APN设置](https://pavelhan.tech/zh/article/2024-09-13-the-APN-setting-in-LTE-register-process): 本文对LTE注网流程相关的APN以及PLMN两个概念做了非常详细的总结，在对这两个概念理解的基础上，整理了LTE模块的典型注网流程及其注意事项。
+- [LTE CAT 1bis、LTE-M、NB-IoT的对比](https://pavelhan.tech/zh/article/2024-09-11-the-comparson-of-LTECAT1-LTEM-NBIOT): 本文重点对LTE-M和NB-IoT两种LPWAN移动通信技术的应用特点做了总结，并对LTE CAT 1bis、LTE-M以及NB-IoT这三者在各个维度上进行了全面的比较。
+- [LTE CAT 1技术的相关信息汇总](https://pavelhan.tech/zh/article/2024-09-10-lte-cat1-module-summary): 本文基于对网络资料的学习，整理了在项目中经常用到的LTE CAT 1模块的一些技术背景信息，对其选型优劣势和工作原理做了一些简单的总结。
+
+## Language Versions & Links
+- Curated Chinese LLM Guide: https://pavelhan.tech/llms.txt
+- Full English Catalog (226 articles): https://pavelhan.tech/llms-full-en.txt
+- Full Sitemap Index: https://pavelhan.tech/sitemap-index.xml
