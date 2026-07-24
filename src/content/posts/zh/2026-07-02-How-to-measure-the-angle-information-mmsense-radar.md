@@ -3,6 +3,7 @@ title: "毫米波雷达是如何测量和计算角度信息的？"
 slug: "2026-07-02-How-to-measure-the-angle-information-mmsense-radar"
 description: "在"
 date: 2026-07-02T00:00:00.000Z
+last_edited_time: "2026-07-24T00:55:00.000Z"
 image: "/images/blog/default.jpg"
 categories: ["硬件"]
 tags: ["硬件","雷达"]
@@ -10,7 +11,7 @@ draft: false
 ---
 
 
-在[详细总结毫米波雷达FMCW的工作原理与计算过程](https://app.notion.com/p/38fa5f648c7f80c3affcf478b742eef5) 一文中详细总结了毫米波雷达检测目标距离和速度的理论推导和计算公式，本文则详细整理了毫米波雷达所输出点云信息中的角度概念以及角度数据的计算流程。
+在[详细总结毫米波雷达FMCW的工作原理与计算过程](https://pavelhan.tech/zh/article/2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation/) 一文中详细总结了毫米波雷达检测目标距离和速度的理论推导和计算公式，本文则详细整理了毫米波雷达所输出点云信息中的角度概念以及角度数据的计算流程。
 
 
 ## 角度的定义

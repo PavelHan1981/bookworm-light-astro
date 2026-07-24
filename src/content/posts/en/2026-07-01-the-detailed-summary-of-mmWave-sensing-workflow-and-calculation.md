@@ -1,8 +1,9 @@
 ---
-title: "A Detailed Summary of the Working Principles and Calculation Processes of mmWave Radar FMCW"
+title: "Detailed Summary of FMCW mmWave Radar Principles and Calculation Process"
 slug: "2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation"
 description: "In"
 date: 2026-07-01T00:00:00.000Z
+last_edited_time: "2026-07-24T00:54:00.000Z"
 image: "/images/blog/default.jpg"
 categories: ["Hardware"]
 tags: ["Radar","Hardware"]
@@ -10,13 +11,13 @@ draft: false
 ---
 
 
-In the article [Understanding the Working Principles of mmWave Sensing Radar Technology in One Go](https://app.notion.com/p/38ea5f648c7f8059bbd6e94deb64e1ba), we briefly summarized the basic working principles of radar and millimeter-wave (mmWave) radar, along with the calculation processes for their two operating modes. This article provides a detailed breakdown of the working principles of the FMCW mode in mmWave sensing, as well as the calculation workflows for range and velocity, aiming to build a deeper understanding of the concepts and operational processes of this radar mode.
+In the article [Understanding the Principles and Applications of mmWave Sensing Radar](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing/), we briefly summarized the fundamental principles of radar and millimeter-wave (mmWave) radar, as well as the calculation processes for its two operating modes. This article provides a detailed summary of the working principles, range, and velocity calculation workflows of the FMCW mode in mmWave sensing. This will help build a deeper understanding of the concepts and operating procedures of this radar mode.
 
 
-## Organization and Structure of Transmitted Signals in FMCW Mode
+## Structure and Organization of FMCW Transmit Signals
 
 
-As summarized in [Understanding the Working Principles of mmWave Sensing Radar Technology in One Go](https://app.notion.com/p/38ea5f648c7f8059bbd6e94deb64e1ba), in the FMCW (Frequency Modulated Continuous Wave) mode of mmWave radar, the radar does not transmit traditional discrete pulses. Instead, it transmits a continuous sinusoidal wave whose frequency increases linearly over time—this is known as a **Chirp signal**.
+As summarized in [Understanding the Principles and Applications of mmWave Sensing Radar](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing/), in the FMCW (Frequency Modulated Continuous Wave) mode of mmWave radar, the radar does not transmit traditional discrete pulses. Instead, it transmits a continuous sine wave whose frequency increases linearly over time, known as a **Chirp signal**.
 
 
 ![image.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-1.png)
@@ -24,59 +25,59 @@ As summarized in [Understanding the Working Principles of mmWave Sensing Radar T
 
 The core physical characteristics of a chirp can be defined by the following parameters:
 
-- Start Frequency ($f_c$): For example, 77 GHz.
-- Bandwidth ($B$): The frequency sweep range, for example, 4 GHz. **The bandwidth determines the range resolution of the radar**. A higher bandwidth yields finer range resolution, making it easier to distinguish between two objects close to each other.
-- Duration ($T_c$): The time taken for the frequency to sweep from $f_c$ to $f_c + B$, for example, 40 µs.
-- Frequency Slope ($S$): The rate of frequency change, given by the formula $S = \frac{B}{T_c}$.
+- Start Frequency ($f_c$): e.g., 77 GHz.
+- Bandwidth ($B$): The frequency sweep range, e.g., 4 GHz. **Bandwidth determines the radar's Range Resolution**. A higher bandwidth yields a finer range resolution, making it easier to distinguish two closely spaced objects.
+- Ramp Time / Duration ($T_c$): The time taken for the frequency to sweep from $f_c$ to $f_c + B$, e.g., 40 µs.
+- Frequency Slope ($S$): The rate of frequency change, calculated as $S = \frac{B}{T_c}$.
 
-If the goal is only to measure the distance of a stationary object, a single chirp is sufficient. However, if the moving velocity of the object also needs to be measured, a sequence of multiple chirps is required. Therefore, radar data is organized into frames. Each frame contains multiple consecutive chirp signals to facilitate periodic data throughput and target detection by subsequent NPUs or DSPs.
+A single chirp is sufficient if you only need to measure the distance to a static object. However, to measure the velocity of a moving object, multiple consecutive chirps are required. Therefore, radar data is organized into frames (Frames). Each Frame contains multiple consecutive chirp signals, facilitating periodic data throughput and object detection for subsequent processing by an NPU or DSP.
 
 
-For a single chirp signal, its complete microscopic timeline mainly consists of the following two phases:
+For a single chirp signal, its microscopic timeline mainly consists of the following two phases:
 
-- Inter-Chirp Idle Time: The transmitter does not emit valid signals; the frequency synthesizer rapidly falls back to the start frequency $f_c$ and locks.
-- Tx Start: The transmitter turns on, and the frequency begins to increase linearly from $f_c$ to $f_c + B$.
+- Inter Chirp Idle Time: The transmitter does not transmit active signals, and the frequency synthesizer quickly ramps back down and locks onto the start frequency $f_c$.
+- Tx Start: The transmitter turns on, and the frequency begins to rise linearly from $f_c$ to $f_c + B$.
 
-A frame contains a group of consecutive identical chirp signals. The key parameters of a frame are as follows:
+A Frame consists of a sequence of identical, consecutive chirp signals. The key parameters of a Frame are as follows:
 
-- Number of Chirps: The number of chirps contained in each frame, for example, 128 chirps per frame. This value determines the velocity resolution of the radar.
-- Frame Periodicity: For example, 33 ms (equivalent to approximately 30 FPS).
-- Active Frame Time: The time occupied by the continuous transmission of 128 chirps.
-- Inter-Frame Time: The time elapsed after a frame finishes transmitting until the next frame begins. During this period, the radar's RF front-end typically enters a low-power state, while backend chips (such as DSPs, ARMs, or NPUs) use this time window to fully process the raw ADC data generated by the current frame.
+- Number of Chirps (per frame): e.g., 128 chirps per frame. This value determines the radar's velocity resolution.
+- Frame Periodicity: e.g., 33 ms (corresponding to approximately 30 FPS).
+- Active Frame Time: The duration occupied by transmitting 128 chirps consecutively.
+- Inter-Frame Time: The gap between the end of one frame and the start of the next. During this time, the radar's RF front-end typically enters a low-power state, while the backend processor (such as a DSP, ARM, or NPU) works at full speed to process the raw ADC data generated during the active frame.
 
-The figure below illustrates the timeline structure of a frame containing consecutive chirp signals:
+The figure below shows the timeline structure of a Frame containing consecutive chirp signals:
 
 
 ![image.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-2.png)
 
 
-Below is an example illustrating the timelines of the chirp and frame signals transmitted by the radar:
+Below is an example illustrating the timeline of chirps and frames transmitted by the radar:
 
 - Chirp Duration ($T_c$): 50 µs
-- Chirp Idle Time: 10 µs _(Therefore, the period to transmit a complete chirp is 60 µs)_
+- Chirp Idle Time: 10 µs _(Thus, the total period to transmit a single complete chirp is 60 µs)_
 - Number of Chirps per Frame: 128
 - Active Transmission Time: $60 \, \mu s \times 128 = 7.68$ ms
 - Frame Periodicity: 33 ms
 
-Thus, according to the parameters above, the transmitter workflow of the entire radar system is as follows: within every 33 ms cycle, only the first 7.68 ms are spent continuously transmitting 128 chirp signals at extremely short intervals (60 µs). During the remaining ~25 ms, the transmitter shuts down and waits for the next frame trigger.
+Based on these parameters, the transmitter operation workflow of the radar system is as follows: within every 33 ms period, the transmitter only operates during the first 7.68 ms, transmitting 128 chirps continuously at rapid intervals (60 µs). During the remaining ~25 ms, the transmitter is turned off, waiting for the next frame trigger.
 
 
-## Radar System Architecture and Intermediate Frequency (IF) Signals
+## Radar System Architecture and Intermediate Frequency (IF) Signal
 
 
-The architecture of an FMCW mmWave radar system is shown in the figure below:
+The architecture of an FMCW mmWave radar system is shown in the diagram below:
 
 
 ![image.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-3.png)
 
 
-The function of the mixer in this block diagram is to mix (multiply) the currently transmitted signal with the echo signal received by the receiver, and apply low-pass filtering to the mixed signal to yield an intermediate frequency (IF) signal for subsequent calculations.
+The Mixer in this block diagram multiplies (mixes) the current transmitted signal with the received echo signal. The mixed signal then passes through a low-pass filter to generate an Intermediate Frequency (IF) signal, which is used for subsequent calculations.
 
 
-Assume the currently transmitted signal is $S_{TX} = \cos(2\pi f_{TX} t+\phi_{TX})$ and the currently received echo signal is $S_{RX} = \cos(2\pi f_{RX} t+\phi_{RX})$.
+Suppose the transmitted signal at the current moment is $S_{TX} = \cos(2\pi f_{TX} t+\phi_{TX})$, and the received echo signal is $S_{RX} = \cos(2\pi f_{RX} t+\phi_{RX})$.
 
 
-Then, the IF signal obtained after processing through the mixer and low-pass filtering is:
+The intermediate frequency (IF) signal obtained after mixing and low-pass filtering is:
 
 
 $$
@@ -90,19 +91,19 @@ Subsequent calculations for range, velocity, and angle are all performed based o
 ## Range Calculation Workflow
 
 
-The key to understanding range calculation lies in the fact that the **RX signal received by the receiver is a time-delayed version of the TX signal**.
+The key to understanding range calculation is that the **received RX signal is a time-delayed version of the transmitted TX signal**.
 
 
 ![0dd49612-962a-4e37-8697-ff2711848792.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-4.png)
 
 
-**Assuming the time of flight for the electromagnetic wave signal from the transmitter to the target and back to the receiver is** $\tau$, the round-trip time delay formula for the signal is $\tau = \frac{2d}{c}$, where $d$ is the distance to the object, and $c$ is the speed of light.
+**Assuming the round-trip time-of-flight of the electromagnetic wave from the transmitter to the target and back to the receiver is** $\tau$**, the time delay formula is** $\tau = \frac{2d}{c}$, where $d$ is the distance to the object and $c$ is the speed of light.
 
 
-Because the frequency of the TX signal increases linearly over time, subtracting the TX signal from the RX signal (which is delayed by $\tau$) at any given moment yields a constant frequency difference. This frequency difference is the frequency of the IF signal.
+Since the frequency of the TX signal increases linearly with time, subtracting the RX signal (which is delayed by $\tau$) from the TX signal at any given instant yields a constant frequency difference. This frequency difference is the frequency of the IF signal.
 
 
-Based on geometric similarity, the IF signal frequency $f_0$ equals the slope $S$ multiplied by the time delay $\tau$. Combining this with the time delay formula above, we arrive at the final calculation formula for distance:
+Based on geometric similarity, the frequency of the IF signal $f_0$ is equal to the slope $S$ multiplied by the time delay $\tau$. Combining this with the time delay formula above yields the final range calculation formula:
 
 
 $$
@@ -110,34 +111,34 @@ f_0 = \frac{S \cdot 2d}{c}
 $$
 
 
-Therefore, once the IF signal frequency $f_0$ is obtained, the system can directly invert it to derive the target's distance $d$.
+Thus, by extracting the frequency $f_0$ of the IF signal, the system can directly compute the range $d$ to the target.
 
 
-### DSP Calculation Workflow
+### DSP Computation Workflow
 
 
-For the DSP in a radar system, the calculation workflow is as follows:
+The DSP computation workflow for range is as follows:
 
-- **ADC Sampling**: The analog mixer of the radar outputs an analog intermediate frequency (IF) sinusoidal wave. The DSP first samples this wave using an ADC (Analog-to-Digital Converter). By setting the ADC sampling rate $F_s$ (e.g., 6.4 Msps) and the number of samples per chirp $N$ (e.g., 256 points), an array of length $N$ is obtained after this sampling step.
-- **Signal Windowing**: Directly performing an FFT on a fixed-length array can lead to spectral leakage issues. To mitigate this, the $N$ sampled points are typically multiplied element-wise with a window function of the same length (such as a Hanning window or Blackman window).
-- **Executing FFT Calculation**: The DSP's Hardware Accelerator (HWA) or DSP core performs a Discrete Fourier Transform on the $N$ windowed time-domain data points. The result is a frequency-domain array containing $N$ complex numbers (real + imaginary parts). According to the Nyquist theorem, typically only the first $N/2$ points are examined. These $N/2$ points are referred to in radar terminology as **Range Bins** or **Index** $k$.
-- **Magnitude Calculation and Peak Search**: The output of the FFT is in the complex domain, representing phase and magnitude. The DSP iterates through these $N/2$ range bins, calculating the magnitude of each point as $A = \sqrt{I^2 + Q^2}$. In the simplified case of a single detected target, the DSP simply needs to find the point with the maximum value (highest energy) among these $N/2$ points and record its index as **Index** $k$.
-    - If there are multiple detected targets, iterating through the output magnitudes of the FFT will yield multiple peaks, and the indices of these peak points are recorded accordingly.
-- **Physical Unit Conversion**: The purpose of this step is to convert the index obtained in the previous step into actual distance units in meters, following the workflow below.
+- **ADC Sampling**: The analog mixer outputs an analog intermediate frequency (IF) sine wave, which the DSP must first digitize using an ADC (Analog-to-Digital Converter). Given an ADC sampling rate $F_s$ (e.g., 6.4 Msps) and the number of sample points per chirp $N$ (e.g., 256 points), this step yields an array of length $N$.
+- **Signal Windowing**: Before performing the FFT, to mitigate spectral leakage caused by computing FFTs on finite-length arrays, the $N$ sample points are typically multiplied by a window function of the same length (such as a Hanning or Blackman window).
+- **FFT Execution**: The DSP's hardware accelerator (HWA) or DSP core performs a Discrete Fourier Transform (DFT/FFT) on the $N$ windowed time-domain data points. This produces a frequency-domain array of $N$ complex numbers (real + imaginary parts). According to the Nyquist theorem, we typically only need to inspect the first $N/2$ points. In radar terminology, these $N/2$ points are referred to as **Range Bins** or **Index** $k$.
+- **Magnitude Calculation & Peak Detection**: The FFT output is in the complex domain, representing both phase and magnitude. The DSP traverses these $N/2$ Range Bins and calculates the magnitude of each point as $A = \sqrt{I^2 + Q^2}$. In the simplified scenario of a single detected target, the DSP only needs to identify the bin with the largest value (highest energy) among the $N/2$ points and record its index, denoted as **Index** $k$.
+    - If multiple targets are present, scanning the FFT magnitudes will reveal multiple peaks. In this case, the DSP records the indices of all these peak points.
+- **Physical Metric Conversion**: This step converts the index obtained in the previous step into a physical distance in meters (m), using the following conversion workflow.
 
 ![cd67c01b-6957-40fe-8ce8-615c3c75addd.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-5.png)
 
 
-The frequency span (frequency resolution $\Delta f$) represented by each bin is determined by the ADC: $\Delta f = \frac{F_s}{N}$, where $F_s$ is the ADC sampling rate.
+The frequency span represented by each bin (frequency resolution $\Delta f$) is determined by the ADC parameters: $\Delta f = \frac{F_s}{N}$, where $F_s$ is the ADC sampling rate.
 
 
-Therefore, the IF frequency corresponding to the peak (whose range bin index is $k$) is: $f_{IF} = k \times \Delta f = k \times \frac{F_s}{N}$.
+Therefore, the IF frequency corresponding to the peak (located at Range Bin index $k$) is: $f_{IF} = k \times \Delta f = k \times \frac{F_s}{N}$.
 
 
-Combining this with the radar range formula derived earlier: $f_{IF} = \frac{S \cdot 2d}{c}$, a slight rearrangement yields the distance $d$: $d = \frac{c \cdot f_{IF}}{2S}$.
+Combining this with the radar range formula ($f_{IF} = \frac{S \cdot 2d}{c}$) and rearranging for distance $d$ yields: $d = \frac{c \cdot f_{IF}}{2S}$.
 
 
-The final distance calculation formula is:
+The final range calculation formula is:
 
 
 $$
@@ -146,22 +147,22 @@ $$
 
 
 
-**The term inside the parentheses in the formula**, $\frac{c \cdot F_s}{2 \cdot S \cdot N}$, **is a constant during radar initialization. This constant is effectively the single-bin range resolution of the radar (**$\Delta d$**).**
+**The term in parentheses** $\frac{c \cdot F_s}{2 \cdot S \cdot N}$** is a constant determined during radar initialization. This constant represents the radar's range resolution per single bin (**$\Delta d$**).**
 
 
 ## Velocity Calculation Workflow
 
 
-Since measurements based on a single chirp can yield an object's distance, one might wonder: can we easily calculate an object's moving velocity by comparing distances across multiple chirps? The answer is no.
+Since the range of an object can be determined from a single chirp measurement, can we easily calculate the velocity of a moving object by comparing the range across multiple chirps? The answer is no.
 
 
-Suppose a target is moving at a velocity $v$, and the radar transmits two identical chirp signals separated by an interval $T_c$ (the chirp period). During the extremely short interval between transmitting the first and second chirps (e.g., 60 µs), the target has only moved an infinitesimal distance: $\Delta d = v \cdot T_c$. For ordinary moving objects, this distance is on the micrometer scale. Such a microscopic distance difference causes no discernible change in position (frequency) on the FFT spectrum; the FFT peaks for both chirps will still appear in the exact same range bin.
+Suppose a target is moving at velocity $v$, and the radar transmits two identical, consecutive chirps separated by an interval of $T_c$ (the chirp period). Within the extremely short interval between the first and second chirp (e.g., 60 µs), the target moves only an infinitesimally small distance: $\Delta d = v \cdot T_c$. For typical moving objects, this distance is on the scale of micrometers. Such a tiny difference in distance is invisible as a frequency shift on the 1D FFT spectrum; hence, the peaks of both chirps will still appear in the exact same Range Bin.
 
 
-**However, because the wavelength** $\lambda$ **of millimeter waves is extremely short (the wavelength at 77 GHz is approximately 3.9 mm), this tiny distance difference causes a noticeable phase difference** $\Delta \phi$ **between the IF signals of the two chirps in the complex domain.**
+**However, because the wavelength of the millimeter wave** $\lambda$ **is extremely short (approximately 3.9 mm at 77 GHz), this minute difference in distance produces a prominent phase shift** $\Delta \phi$ **between the IF signals of the two chirps in the complex domain.**
 
 
-As an electromagnetic wave travels a physical distance $d$ through space, the change in its travel distance phase is:
+As an electromagnetic wave travels a physical distance $d$ in space, its phase changes by:
 
 
 $$
@@ -169,10 +170,10 @@ $$
 $$
 
 
-Assume the distance between the radar and the target is $d$. However, the chirp signal transmitted by the radar must first travel to the target and then reflect back from the target to the receiving antenna. Therefore, the actual total round-trip distance traveled by the electromagnetic wave in the air is $2d$.
+Suppose the physical distance between the radar and the target is $d$. However, the transmitted chirp signal must travel to the target and then reflect back to the receiving antenna. Thus, the actual **total round-trip path** of the electromagnetic wave through the air is $2d$.
 
 
-Substituting this total distance $2d$ into the formula from the first step, along with the target's infinitesimal displacement $\Delta d = v \times T_c$, we derive the physical formula for the phase difference of the radar-received signal:
+Substituting the total path distance $2d$ into the initial equation, and considering the tiny distance moved by the target $\Delta d = v \times T_c$, we derive the physical formula for the phase difference in the received signals:
 
 
 $$
@@ -180,7 +181,7 @@ $$
 $$
 
 
-From this formula, the target's velocity $v$ can be derived:
+From this formula, we can back-calculate the target velocity $v$:
 
 
 $$
@@ -188,27 +189,27 @@ v = \frac{\lambda \Delta\Phi}{4\pi T_c}
 $$
 
 
-Based on the formula above, as long as the phase difference between two chirp signals is obtained, the moving velocity of the target can be calculated.
+Based on the formula above, the velocity of the target can be calculated as long as we extract the phase difference between the two chirp signals.
 
 
 ![ca6da295-8d3b-4131-9c26-244d9ac8c5d0.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-6.png)
 
 
-> 💡 Here we introduce the concept of maximum unambiguous velocity ($v_{max}$). Because phase is calculated via trigonometric functions, trigonometric functions are periodic. To ensure uniqueness in velocity measurement (avoiding ambiguity), the absolute value of the phase difference between two consecutive samples must be less than $\pi$. From this, the maximum relative velocity that the radar can measure is derived as: $v_{max} = \frac{\lambda}{4T_c}$. This demonstrates that: the shorter the chirp period $T_c$ (i.e., denser transmissions), the higher the maximum measurable velocity.
+> 💡 Here, the concept of **Maximum Unambiguous Velocity** ($v_{max}$) comes into play. Since phase is calculated via trigonometric functions, it is periodic. To guarantee uniqueness in velocity measurement (preventing velocity ambiguity), the absolute phase difference between two consecutive samples must be less than $\pi$. From this, we can derive the maximum relative velocity the radar can measure: $v_{max} = \frac{\lambda}{4T_c}$. This implies that a shorter chirp period $T_c$ (more densely spaced transmissions) enables the measurement of higher maximum velocities.
 
 
-### DSP Calculation Workflow
+### DSP Computation Workflow
 
 
-The workflow for the radar system's DSP to calculate velocity is as follows:
+The DSP computation workflow for velocity is as follows:
 
-- Constructing the Radar Data Array: Within a single frame, the ADC acquires $M$ chirps (e.g., 128 chirps), with each chirp sampled at $N$ points (e.g., 256 points). The DSP first performs an FFT calculation (Range FFT) on the 256 time-domain sample points of each chirp. The complex FFT output results (including magnitude and phase) for each sampled chirp signal are written into memory to form a two-dimensional matrix of size $M \times (N/2)$.
-- Range Gate Locking and Data Extraction: Within a brief frame data duration (actually just a few milliseconds), the physical displacement of ordinary moving objects is extremely small and generally does not cross the radar's range resolution bin. Assuming the energy peak of the target is found at the $k$-th range bin in the FFT result sequence of every chirp signal, this step extracts the complex data (containing magnitude and phase information) from all $M$ chirps at the $k$-th bin, thereby forming a brand-new 1D complex array of length $M$.
-- Windowing: Consistent with the range calculation logic, to avoid spectral leakage during the subsequent 2D FFT calculation, the DSP multiplies each element in this 1D complex array of length $M$ by the coefficients of a 1D window function (such as a Hanning window).
-- Executing 2D FFT (Doppler FFT): The DSP's Fourier transform unit performs an $M$-point FFT calculation on this windowed 1D complex array of length $M$ (this FFT calculation is known as the 2D FFT calculation). The result is a complex array of length $M$. Each item in this array represents a specific **Doppler Bin**.
-- Peak Search and Velocity Physical Unit Conversion: The DSP computes the magnitude ($A = \sqrt{I^2 + Q^2}$) of each element in the 2D FFT output array to obtain the velocity energy spectrum. It then finds the index number of the Doppler bin with the maximum energy, denoted as Index $m$.
+- **Constructing the Radar Data Matrix**: Within a single frame, the ADC collects $M$ chirps (e.g., 128), with each chirp containing $N$ sample points (e.g., 256). The DSP first performs a 1D FFT (Range FFT) on the 256 time-domain sample points of each chirp. The complex FFT outputs (containing magnitude and phase) for each chirp are written to memory and assembled into a 2D matrix of size $M \times (N/2)$.
+- **Range Bin Locking & Data Extraction**: Within the brief duration of a single frame (which is typically only a few milliseconds), the physical displacement of a normally moving target is extremely small, meaning it generally will not cross the radar's range resolution cells. Assuming that the target's energy peak is found at the $k$-th Range Bin across the FFT output sequences of all chirps, this step extracts the complex data (containing both magnitude and phase) at this $k$-th bin across all $M$ chirps, forming a new 1D complex array of length $M$.
+- **Windowing**: Similar to the range calculation logic, to prevent spectral leakage during the subsequent 2D FFT calculation, the DSP multiplies each element of this 1D complex array of length $M$ by the coefficients of a 1-dimensional window function (e.g., a Hanning window).
+- **2D FFT (Doppler FFT) Execution**: The DSP's Fourier transform unit performs an $M$-point FFT (commonly referred to as a 2D FFT) on this windowed complex array of length $M$. The result is a complex array of length $M$, where each element represents a specific **Doppler Bin**.
+- **Peak Detection & Velocity Metric Conversion**: The DSP calculates the magnitude of each element in the 2D FFT output array ($A = \sqrt{I^2 + Q^2}$) to construct a velocity power spectrum. It then identifies the index of the Doppler Bin with the highest energy, denoted as Index $m$.
 
-There are a total of $M$ velocity energy spectra calculated via the 2D FFT above. This essentially means dividing the $2\pi$ span corresponding to a full circular period into $M$ parts. The phase difference equation used above calculates each fraction of the phase difference as:
+The velocity power spectrum calculated through the 2D FFT contains $M$ bins, which physically corresponds to dividing the full $2\pi$ phase cycle into $M$ discrete parts. Based on the phase difference formula above, the equation for each phase step is:
 
 
 $$
@@ -216,7 +217,7 @@ $$
 $$
 
 
-Therefore, the final velocity resolution (which is effectively the velocity unit value corresponding to each bin in the velocity energy spectrum) is:
+Thus, the resulting velocity resolution (which represents the physical velocity step per bin in the velocity power spectrum) is:
 
 
 $$
@@ -224,7 +225,7 @@ $$
 $$
 
 
-Since the peak in the velocity energy spectrum calculated above is located at the $m$-th bin, its corresponding velocity is:
+Given that the peak in the velocity power spectrum lies at the $m$-th bin, the corresponding target velocity is calculated as:
 
 
 $$
@@ -232,44 +233,44 @@ Velocity = m \times \Delta v = m \times \left( \frac{\lambda}{2 \cdot M \cdot T_
 $$
 
 
-## What to Do If There Are Multiple Targets?
+## What If There Are Multiple Targets?
 
 
-The summary of the range and velocity calculation workflow for detected targets above primarily considers the simplified scenario where there is only a single target in the detection scene. So, what should be done if multiple targets exist simultaneously in the detection scene?
+The summary of range and velocity calculations above assumed a simplified scenario containing only a single target. What happens if there are multiple targets in the scene simultaneously?
 
 
-In such scenarios, measuring the distance of the targets to be tested is relatively straightforward.
+In this scenario, measuring the distances to the targets is relatively straightforward.
 
 
-If there are multiple targets in the detection scene, after signal echo reflection, ADC sampling, and FFT calculation in the DSP, multiple peaks with different indices will appear on the FFT range spectrum (Range Bins), with each peak corresponding to the distance of a detected target.
+If multiple targets are present, after receiving the reflected echoes, sampling via the ADC, and performing the 1D FFT on the DSP, multiple distinct peaks at different indices will emerge on the range spectrum (Range Bins). Each peak corresponds to the distance of a specific detected target.
 
 
-Of course, in this scenario, if the distance between two objects is too close—less than the radar's range resolution—they will appear at the same bin index on the range spectrum, making the radar unable to resolve them separately, and they will only show up as a single target.
+However, if two objects are located too close together—closer than the radar's range resolution limit—they will merge into the same Range Bin index. In this case, the radar cannot resolve them separately, and they will be represented as a single target.
 
 
 ![7a57f0d5-8c03-444f-b34d-b653813d82aa.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-7.png)
 
 
-Then, what happens if two targets at the same distance have different velocities? In this case, because this single range bin mixes the phases of two targets, the extracted phase sequence will be a chaotic superposition state, preventing the radar from correctly identifying and resolving the velocities of the two targets.
+But what if two targets are at the exact same distance but moving at different velocities? Since their signals share a single Range Bin, the extracted phase sequence will be a convoluted overlay of both target phases, preventing the radar from correctly resolving and identifying their individual velocities.
 
 
-Therefore, to measure velocity in this scenario, one cannot simply find the target in the range spectrum first and then compute the 2D FFT using data from all chirps exclusively for that target. Instead, the approach should be:
+To measure velocity under these conditions, instead of first finding peak bins in the range spectrum and only calculating the 2D FFT for those specific bins across all chirps, the system must perform the following:
 
-- First, perform a 1D FFT on all $M$ chirps in the entire frame, and concatenate the calculation results to obtain a 2D Radar Data Matrix (rows represent range bins, columns represent chirps).
-    - Each column in this 2D matrix corresponds to the variation of the magnitude and phase of the detected target in a specific range bin across $N$ consecutive chirps within a frame. Since the duration of a frame is very short, the magnitude variation in this sequence will be extremely small, but the phase will vary significantly depending on the target's velocity.
-    - If there are multiple targets in a single range bin, the magnitude and phase reflected in this sequence will be the result of the superimposed effects of both targets.
-- Directly perform a 2D FFT (Doppler FFT) on every row (every range bin) of the data matrix.
-    - If there is a single target in a range bin, the result of this 2D FFT enables finding the corresponding distance based on the phase variations of the data in the sequence.
-    - If there are multiple targets in a range bin, this 2D FFT can not only find the distance but also isolate the phase differences caused by different velocities.
-- Through the full-matrix 2D FFT, the DSP generates a 2D heatmap in memory. The horizontal axis represents range, the vertical axis represents velocity, and the color intensity represents energy (magnitude).
-- Next, 2D peaks are searched directly on this 2D heatmap, with each peak corresponding to the velocity data of a detected target.
+- **Perform a 1D FFT (Range FFT) on all $M$ chirps** within the entire frame and stack the results to construct a 2D Radar Data Matrix (where rows represent Range Bins and columns represent Chirps).
+    - Each column of this 2D matrix corresponds to a single chirp. Looking across columns for a specific Range Bin reveals how the magnitude and phase of the detected target evolve over $M$ consecutive chirps within a frame. Because the frame duration is very short, the magnitude changes in this sequence are negligible, but the phase exhibits significant variation depending on the target's velocity.
+    - If a single Range Bin contains multiple targets, the phase and amplitude in this sequence represent the superimposed vector sum of those targets.
+- **Execute a 2D FFT (Doppler FFT) across every row (each Range Bin) of the Data Matrix.**
+    - If a Range Bin contains only one target, the 2D FFT maps its phase variation to its corresponding velocity.
+    - If a Range Bin contains multiple targets, the 2D FFT can successfully decompose and separate the phase shifts caused by their distinct velocities.
+- **After performing the 2D FFT on the entire matrix**, the DSP generates a 2D Range-Doppler heat map in memory, where the horizontal axis represents range, the vertical axis represents velocity, and the color intensity denotes energy (amplitude).
+- **Finally, the system performs peak detection directly on this 2D heat map**. Each 2D peak corresponds to the range and velocity data of an individual detected target.
 
-As can be seen, on this heatmap, two objects located at the same range bin but with different velocities can be clearly distinguished.
+As shown, on this heat map, two objects situated at the exact same Range Bin but moving at different velocities can be clearly resolved and identified.
 
 
 ![6334ac9c-e43c-4b20-83d8-a8aaef4c58bb.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-8.png)
 
 
-## Reference Materials
+## References
 
 - The fundamentals of millimeter wave radar sensors, Texas Instruments.

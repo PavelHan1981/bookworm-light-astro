@@ -1,8 +1,9 @@
 ---
-title: "AWS Bedrock服务的调研信息总结"
+title: "Amazon AWS之Bedrock Service学习笔记"
 slug: "2026-04-23-the-research-information-of-AWS-Bedrock"
 description: "Amazon Bedrock"
 date: 2026-04-23T00:00:00.000Z
+last_edited_time: "2026-05-06T01:38:00.000Z"
 image: "/images/blog/default.jpg"
 categories: ["云平台"]
 tags: ["AWS"]
@@ -16,7 +17,7 @@ draft: false
 **Amazon Bedrock** 是 AWS 提供的一项**全托管的 Serverless 服务**，能够支持通过统一的 API 访问来自各个领先 AI 公司（如 Anthropic, Meta, Mistral, Amazon 等）的高性能基座模型 (FMs，Foundation Models)，方便提供构建生成式 AI 应用的一系列周边功能。
 
 
-![image.png](/images/blog/AWS-Bedrock服务的调研信息总结-1.png)
+![image.png](/images/blog/Amazon-AWS之Bedrock-Service学习笔记-1.png)
 
 
 以下是 Amazon Bedrock 提供的核心功能模块列表：
@@ -49,7 +50,7 @@ draft: false
 下图总结了三者在定位上的差异：
 
 
-![AWS_AI_Architecture_%281%29.png](/images/blog/AWS-Bedrock服务的调研信息总结-2.png)
+![AWS_AI_Architecture_%281%29.png](/images/blog/Amazon-AWS之Bedrock-Service学习笔记-2.png)
 
 
 ## Bedrock模型的基本使用测试

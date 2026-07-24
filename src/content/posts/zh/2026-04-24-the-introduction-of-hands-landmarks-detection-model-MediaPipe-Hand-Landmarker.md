@@ -1,8 +1,9 @@
 ---
-title: "手部特征点检测模型MediaPipe Hand Landmarker介绍"
+title: "手部特征点检测模型MediaPipe Hand Landmarker"
 slug: "2026-04-24-the-introduction-of-hands-landmarks-detection-model-MediaPipe-Hand-Landmarker"
 description: "Google 的 MediaPipe Hand Landmarker（手部特征点检测模型）是目前计算机视觉领域最流行、最高效的"
 date: 2026-04-24T00:00:00.000Z
+last_edited_time: "2026-04-29T01:31:00.000Z"
 image: "/images/blog/default.jpg"
 categories: ["AI"]
 tags: ["TFLite","CNN"]
@@ -19,7 +20,7 @@ Google 的 MediaPipe Hand Landmarker（基于Mediapipe推理框架的手部特�
 下图是该手部特征点模型软件包可以检测检测到的手部区域内 21 个手指关节坐标的关键点定位索引。该模型是基于约 3 万张真实图片以及叠加在各种背景上的多个渲染合成手部模型进行训练的。
 
 
-![image.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker介绍-1.png)
+![image.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker-1.png)
 
 
 Google 针对Hand Landmarker模型提供了iOS/Android/Web/Python这四种平台的官方实现，所以如果是在这四种平台中使用这个模型的话，可以直接参考官方的示例代码方便的调用模型来实现应用需求。
@@ -49,7 +50,7 @@ MediaPipe Hands Landmarker模型在运行中之所以能做到极高的性能和
     - 一旦第一阶段的 Hand Detector 模型找到了手掌的区域，整个系统会将该区域（第一阶段模型返回的矩形框）裁剪并旋转对齐，然后送入第二阶段的 Landmarker 模型，这个模型专门在裁剪后的小图上精确检测出来 21 个 3D 坐标。
     - 因为第二阶段模型只需要在裁剪后的局部区域进行推理检测，这样就极大地减少了计算量，过滤了无关的背景干扰，这是该模型能够跑得又快又准的根本原因。
 
-![mediapipe_architecture.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker介绍-2.png)
+![mediapipe_architecture.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker-2.png)
 
 
 在模型的接口设计和执行流程中，MediaPipe Tasks API 包含有中三大运行模式（`IMAGE`、`VIDEO`、`LIVE_STREAM`），分别对应于单图、视频文件中的图像帧、带回调的实时流这三种应用场景。相应的也就对应于以下三个 API 调用接口：
@@ -61,7 +62,7 @@ MediaPipe Hands Landmarker模型在运行中之所以能做到极高的性能和
 下图为通过以上接口对图像中手部及其关键点检测后的返回结果的数据结构：
 
 
-![MediaPipe_Result_Structure.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker介绍-3.png)
+![MediaPipe_Result_Structure.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker-3.png)
 
 
 以下是对接口返回结果进行解析和调用的代码示例：
@@ -105,7 +106,7 @@ hand_landmarker.task模型包的下载地址为：[https://storage.googleapis.co
 这个hand_landmarker.task模型包文件以task为后缀名，但是**本质上是一个压缩包**，其中包含有两个模型文件：hand_detector.tflite（手掌检测模型）和hand_landmarks_detector.tflite（手部特征点检测模型）。只需要把这个模型加一个zip后缀名然后打开即可看到：
 
 
-![f15c88bc-9cbc-4f6a-937d-bb545d301cb6.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker介绍-4.png)
+![f15c88bc-9cbc-4f6a-937d-bb545d301cb6.png](/images/blog/手部特征点检测模型MediaPipe-Hand-Landmarker-4.png)
 
 
 以下提供的代码实现了使用opencv对本地PC摄像头的图像进行手部及其特征点检测并标记的应用案例：

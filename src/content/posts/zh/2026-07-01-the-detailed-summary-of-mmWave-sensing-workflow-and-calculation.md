@@ -3,6 +3,7 @@ title: "详细总结毫米波雷达FMCW的工作原理与计算过程"
 slug: "2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation"
 description: "在"
 date: 2026-07-01T00:00:00.000Z
+last_edited_time: "2026-07-24T00:54:00.000Z"
 image: "/images/blog/default.jpg"
 categories: ["硬件"]
 tags: ["雷达","硬件"]
@@ -10,13 +11,13 @@ draft: false
 ---
 
 
-在[一文搞懂mmWave Sensing雷达技术的工作原理](https://app.notion.com/p/38ea5f648c7f8059bbd6e94deb64e1ba) 一文中，对雷达以及毫米波雷达mmWave的基本工作原理和两种工作模式的计算过程进行了简要的总结。本文主要针对mmWave Sensing的FMCW模式的工作原理以及距离和速度的计算流程进行详细的整理，从而对该工作模式雷达的概念和工作过程建立更深刻的理解。
+在 [一文搞懂mmWave Sensing雷达技术的工作原理](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing/)一文中，对雷达以及毫米波雷达mmWave的基本工作原理和两种工作模式的计算过程进行了简要的总结。本文主要针对mmWave Sensing的FMCW模式的工作原理以及距离和速度的计算流程进行详细的整理，从而对该工作模式雷达的概念和工作过程建立更深刻的理解。
 
 
 ## FMCW模式发射信号的组织与结构
 
 
-如[一文搞懂mmWave Sensing雷达技术的工作原理](https://app.notion.com/p/38ea5f648c7f8059bbd6e94deb64e1ba) 一文所总结，在毫米波雷达的FMCW（Frequency Modulated Continuous Wave）模式下，雷达不发射传统的离散脉冲，而是发射一种频率随时间线性增加的连续正弦波，这就是 **Chirp 信号**。
+如[一文搞懂mmWave Sensing雷达技术的工作原理](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing/)一文所总结，在毫米波雷达的FMCW（Frequency Modulated Continuous Wave）模式下，雷达不发射传统的离散脉冲，而是发射一种频率随时间线性增加的连续正弦波，这就是 **Chirp 信号**。
 
 
 ![image.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-1.png)

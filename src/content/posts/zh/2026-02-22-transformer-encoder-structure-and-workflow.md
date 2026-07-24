@@ -3,6 +3,7 @@ title: "一文彻底搞懂Transformer模型的Encoder结构与计算流程"
 slug: "2026-02-22-transformer-encoder-structure-and-workflow"
 description: "本文通过对一个标准的Encoder-Only类型的Transformer架构，详细的总结了Encoder类型的网络架构以及数据流在其中的计算流程。"
 date: 2026-02-22T00:00:00.000Z
+last_edited_time: "2026-04-20T09:39:00.000Z"
 image: "/images/blog/default.jpg"
 categories: ["AI"]
 tags: ["Transformer"]
