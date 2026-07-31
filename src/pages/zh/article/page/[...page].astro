@@ -38,7 +38,7 @@ const canonicalUrl = currentPage === 1
   : `${config.site.base_url}/zh/article/page/${currentPage}`;
 ---
 
-<Base title={`文章列表 - 第 ${currentPage} 页`} canonical={canonicalUrl}>
+<Base title={`文章列表 - 第 ${currentPage} 页`} canonical={canonicalUrl} noindex={true}>
   <section class="section">
     <div class="container">
       <h1 class="h2 mb-16 text-center">所有文章</h1>
