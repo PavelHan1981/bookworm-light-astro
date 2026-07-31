@@ -9,12 +9,10 @@ import config from "@/config/config.json";
 export async function getStaticPaths() {
   const posts = await getSinglePage("posts", "en");
   const { pagination } = config.settings;
-  const totalPages = Math.ceil(posts.length / pagination);
+  const totalPages = Math.max(Math.ceil(posts.length / pagination), 1);
   const paths = [];
 
-  const maxPages = Math.max(totalPages, 100);
-
-  for (let i = 1; i <= maxPages; i++) {
+  for (let i = 1; i <= totalPages; i++) {
     paths.push({
       params: {
         page: i.toString(),
@@ -29,14 +27,18 @@ const { page: currentPageStr } = Astro.params;
 const posts = await getSinglePage("posts", "en");
 const sortedPosts = sortByDate(posts);
 const { pagination } = config.settings;
-const totalPages = Math.ceil(posts.length / pagination);
+const totalPages = Math.max(Math.ceil(posts.length / pagination), 1);
 const currentPage = currentPageStr && !isNaN(Number(currentPageStr)) ? Number(currentPageStr) : 1;
 const indexOfLastPost = currentPage * pagination;
 const indexOfFirstPost = indexOfLastPost - pagination;
 const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
+
+const canonicalUrl = currentPage === 1
+  ? `${config.site.base_url}/en/article`
+  : `${config.site.base_url}/en/article/page/${currentPage}`;
 ---
 
-<Base title={`Articles - Page ${currentPage}`}>
+<Base title={`Articles - Page ${currentPage}`} canonical={canonicalUrl}>
   <section class="section">
     <div class="container">
       <h1 class="h2 mb-16 text-center">All Articles</h1>

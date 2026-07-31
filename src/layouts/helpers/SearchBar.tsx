@@ -90,7 +90,22 @@ export default function SearchBar({ searchList }: Props) {
       <div className="row">
         {searchResults?.map(({ item }) => (
           <div key={item.slug} className={"col-12 mb-8 sm:col-6"}>
-            <ul className="mb-4 flex flex-wrap items-center text-text">
+            {item.data.image && (
+              <a
+                href={`/article/${item.slug}`}
+                className="rounded-lg block hover:text-primary overflow-hidden group"
+              >
+                <img
+                  className="group-hover:scale-[1.03] transition duration-300 w-full"
+                  src={item.data.image}
+                  alt={item.data.title}
+                  width={445}
+                  height={230}
+                />
+              </a>
+            )}
+
+            <ul className="mt-6 mb-4 flex flex-wrap items-center text-text">
               <li className="mr-5 flex items-center flex-wrap font-medium">
                 <BiCalendarEdit className="mr-1 h-5 w-5 text-gray-600" />
                 <>{dateFormat(item.data.date)}</>

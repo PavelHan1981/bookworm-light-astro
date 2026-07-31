@@ -233,7 +233,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID || config.google_analytics.id;
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content={`${config.site.base_url}/${Astro.url.pathname.replace("/", "")}`}
+      content={canonical ? canonical : `${config.site.base_url}${Astro.url.pathname}`}
     />
 
     <!-- twitter-title -->

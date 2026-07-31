@@ -29,7 +29,9 @@ export default defineConfig({
           p === "/privacy-policy" ||
           p === "/elements" ||
           p === "/article" ||
-          p.startsWith("/article/")
+          p === "/search" ||
+          p.startsWith("/article/") ||
+          p.startsWith("/page/")
         ) {
           return false;
         }
