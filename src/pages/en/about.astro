@@ -3,13 +3,23 @@ import Base from "@/layouts/Base.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import { getCollection, render } from "astro:content";
 
+import config from "@/config/config.json";
+
 const aboutEntries = await getCollection("about");
 const entry = aboutEntries.find((e) => e.id.startsWith("en/")) || aboutEntries[0];
 const { Content } = await render(entry);
 const { title, meta_title, image, tech_tags, competencies } = entry.data;
 ---
 
-<Base title="About Me - Pavel Han" meta_title="About Pavel Han" image={image}>
+<Base
+  title="About Me - Pavel Han"
+  meta_title="About Pavel Han"
+  image={image}
+  canonical={`${config.site.base_url}/en/about`}
+>
+  <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/about`} />
+  <link slot="head" rel="alternate" hreflang="en" href={`${config.site.base_url}/en/about`} />
+  <link slot="head" rel="alternate" hreflang="x-default" href={`${config.site.base_url}/zh/about`} />
   <section class="section py-12 md:py-16">
     <div class="container max-w-5xl">
       <!-- Profile Card Header -->

@@ -3,13 +3,24 @@ import Base from "@/layouts/Base.astro";
 import { markdownify } from "@/lib/utils/textConverter";
 import { getCollection, render } from "astro:content";
 
+import config from "@/config/config.json";
+
 const pages = await getCollection("pages");
 const page = pages.find((p) => p.id.includes("privacy")) || pages[0];
 const { title, meta_title, description, image } = page.data;
 const { Content } = await render(page);
 ---
 
-<Base title={title} meta_title={meta_title} description={description} image={image}>
+<Base
+  title={title}
+  meta_title={meta_title}
+  description={description}
+  image={image}
+  canonical={`${config.site.base_url}/zh/privacy-policy`}
+>
+  <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/privacy-policy`} />
+  <link slot="head" rel="alternate" hreflang="en" href={`${config.site.base_url}/en/privacy-policy`} />
+  <link slot="head" rel="alternate" hreflang="x-default" href={`${config.site.base_url}/zh/privacy-policy`} />
   <section class="section">
     <div class="container">
       <h1 set:html={markdownify(title)} class="h2 page-heading" />
