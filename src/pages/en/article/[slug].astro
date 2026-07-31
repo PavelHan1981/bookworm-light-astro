@@ -23,7 +23,7 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { title, meta_title, image, description, date, dateModified, authors } =
+const { title, meta_title, image, description, date, dateModified, authors, tags, faq } =
   post.data;
 const slug = post.data.slug || post.id.replace(/^en\//, "").replace(/\.md$/, "");
 
@@ -48,34 +48,88 @@ if (postAuthor?.data.title === "Pavel Han" || postAuthor?.id === "pavel-han") {
   }
 }
 
+const pubDateStr = date ? new Date(date).toISOString() : undefined;
+const modDateStr = (dateModified || date) ? new Date(dateModified || date).toISOString() : undefined;
+
+const graphElements: any[] = [
+  {
+    "@type": "BlogPosting",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${config.site.base_url}/en/article/${slug}`,
+    },
+    headline: title,
+    description: description || config.metadata.meta_description,
+    image: image
+      ? `${config.site.base_url}${image}`
+      : `${config.site.base_url}${config.metadata.meta_image}`,
+    author: {
+      "@type": "Person",
+      name: postAuthor?.data.title || "Pavel Han",
+      sameAs: sameAs,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: config.site.title,
+      logo: {
+        "@type": "ImageObject",
+        url: `${config.site.base_url}${config.site.logo}`,
+      },
+    },
+    datePublished: pubDateStr,
+    dateModified: modDateStr,
+  },
+  {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: `${config.site.base_url}/en`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Articles",
+        item: `${config.site.base_url}/en/article`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: title,
+        item: `${config.site.base_url}/en/article/${slug}`,
+      },
+    ],
+  },
+];
+
+if (faq && Array.isArray(faq) && faq.length > 0) {
+  const faqListElement = faq
+    .filter((item) => (item.q || item.question) && (item.a || item.answer))
+    .map((item) => ({
+      "@type": "Question",
+      name: item.q || item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.a || item.answer,
+      },
+    }));
+
+  if (faqListElement.length > 0) {
+    graphElements.push({
+      "@type": "FAQPage",
+      mainEntity: faqListElement,
+    });
+  }
+}
+
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": `${config.site.base_url}/en/article/${slug}`,
-  },
-  headline: title,
-  description: description || config.metadata.meta_description,
-  image: image
-    ? `${config.site.base_url}${image}`
-    : `${config.site.base_url}${config.metadata.meta_image}`,
-  author: {
-    "@type": "Person",
-    name: postAuthor?.data.title || "Pavel Han",
-    sameAs: sameAs,
-  },
-  publisher: {
-    "@type": "Organization",
-    name: config.site.title,
-    logo: {
-      "@type": "ImageObject",
-      url: `${config.site.base_url}${config.site.logo}`,
-    },
-  },
-  datePublished: date,
-  dateModified: dateModified || date,
+  "@graph": graphElements,
 };
+const hasMath = Boolean(post.body && (/\$|\\\(|\\\[|\\begin/.test(post.body)));
+
 ---
 
 <Base
@@ -83,6 +137,13 @@ const jsonLd = {
   meta_title={meta_title}
   description={description}
   image={image}
+  lang="en"
+  ogType="article"
+  publishedTime={pubDateStr}
+  modifiedTime={modDateStr}
+  author={postAuthor?.data.title || "Pavel Han"}
+  tags={tags}
+  hasMath={hasMath}
   jsonLd={JSON.stringify(jsonLd)}
   canonical={`${config.site.base_url}/en/article/${slug}`}
 >

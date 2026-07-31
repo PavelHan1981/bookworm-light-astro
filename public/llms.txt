@@ -48,3 +48,4 @@
 
 - Full Chinese Catalog (226 articles): https://pavelhan.tech/llms-full.txt
 - Full English Catalog (226 articles): https://pavelhan.tech/llms-full-en.txt
+- Core Technical Pillars Full-Text (6 articles): https://pavelhan.tech/llms-pillars.txt

@@ -1,0 +1,1340 @@
+# PavelHan.tech Core Technical Pillars (支柱内容全文库)
+
+> 本文件嵌入 PavelHan.tech 最核心的 6 篇技术支柱文章全文，供大语言模型（ChatGPT/Gemini/Claude）及 AI 搜索引擎直接读取、理解与精确引用。
+
+---
+
+# 详细总结毫米波雷达FMCW的工作原理与计算过程
+
+> URL: https://pavelhan.tech/zh/article/2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation
+> 摘要: 在
+
+在 [一文搞懂mmWave Sensing雷达技术的工作原理](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing/)一文中，对雷达以及毫米波雷达mmWave的基本工作原理和两种工作模式的计算过程进行了简要的总结。本文主要针对mmWave Sensing的FMCW模式的工作原理以及距离和速度的计算流程进行详细的整理，从而对该工作模式雷达的概念和工作过程建立更深刻的理解。
+
+
+## FMCW模式发射信号的组织与结构
+
+
+如[一文搞懂mmWave Sensing雷达技术的工作原理](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing/)一文所总结，在毫米波雷达的FMCW（Frequency Modulated Continuous Wave）模式下，雷达不发射传统的离散脉冲，而是发射一种频率随时间线性增加的连续正弦波，这就是 **Chirp 信号**。
+
+
+![image.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-1.png)
+
+
+一个 Chirp 的核心物理特征可以通过以下几个参数来定义：
+
+- 起始频率 ($f_c$)：例如 77 GHz。
+- 带宽 ($B$)：频率扫过范围，例如 4 GHz。**带宽决定了雷达的距离分辨率（Range Resolution）**，带宽越高，距离分辨率越精细，更容易分辨距离靠近的两个物体。
+- 持续时间 ($T_c$)：频率从 $f_c$ 扫描到 $f_c + B$ 所花费的时间，例如 40 µs。
+- 频率斜率 ($S$)：频率变化的速率，公式为$S = \frac{B}{T_c}$。
+
+如果只是要测量静态物体的距离的话，用一个Chirp就足够了，但是如果还要测试物体的运动速度，就需要连续的多个Chirp。因此，雷达的数据是按帧（Frame）进行组织的，每个Frame包含有连续的多个Chirp信号，以便于后续的 NPU 或 DSP 进行周期性的数据吞吐和目标检测。
+
+
+对于一个 Chirp 信号而言，其完整的微观时间轴主要包含以下两个阶段：
+
+- Inter Chirp Idle Time：发射机不发射有效信号，频率合成器迅速回落到起始频率 $f_c$ 并锁定。
+- Tx Start：发射机开启，频率开始线性上升，频率从 $f_c$ 上升到 $f_c + B$ 。
+
+一个Frame则包含有一组连续的相同Chirp信号，Frame 的关键参数如下：
+
+- Number of Chirps（每帧所包含的 Chirp 数量）：例如一帧包含 128 个 Chirp。这个数值决定了雷达的速度分辨率。
+- Frame Periodicity（帧周期）：例如 33 ms（相当于约 30 FPS）。
+- Active Frame Time（有效帧时间）：128 个 Chirp 连续发射所占用的时间。
+- Inter-Frame Time（帧间间隙）：一帧发射完毕后到下一帧开始前的时间。雷达的射频前端在这段时间通常进入低功耗状态，后端芯片（如 DSP、ARM 或 NPU）利用这个时间段全速处理当前帧所生成的 ADC 原始数据。
+
+下图是一个包含有连续Chirp信号的Frame的时间轴结构：
+
+
+![image.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-2.png)
+
+
+下面使用一个例子，来对雷达发射的Chirp和Frame信号的时间轴进行说明：
+
+- Chirp 持续时间 ($T_c$)：50 µs
+- Chirp 空闲时间 (Idle Time)：10 µs _(因此，发射一个完整 Chirp 的周期是 60 µs)_
+- 每帧 Chirp 数量：128
+- 有效发射时间：$60 \, \mu s \times 128 = 7.68$ ms
+- 帧周期：33 ms
+
+因此，按照以上的参数，整个雷达系统的发射机运行流程为：发射机在每 33 ms 的周期内，只有前 7.68 ms 是在以极快的时间间隔（60 µs）连续不断地发射 128 个 Chirp 信号。剩下的约 25 ms 时间内，发射机关断，等待下一帧触发。
+
+
+## 雷达的系统结构与中频信号
+
+
+FMCW毫米波雷达系统的结构如下图所示：
+
+
+![image.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-3.png)
+
+
+该框图中混频器Mixer的作用，是对当前时刻的发射信号与接收机接收到的回波信号混频相乘，对混频后的信号做低通处理，得到一个用于进行后续计算的中频信号。
+
+
+假设当前时刻的发射信号为$S_{TX} = \cos(2\pi f_{TX} t+\phi_{TX})$，当前时刻的接收回波信号为$S_{RX} = \cos(2\pi f_{RX} t+\phi_{RX})$。
+
+
+那么通过混频器处理并经过低通滤波后得到的中频信号是：
+
+
+$$
+S_{out} =  \cos(2\pi (f_{TX} - f_{RX}) t+(\phi_{TX}-\phi_{RX}))
+$$
+
+
+后续对于距离、速度和角度的计算，都是在这个中频信号的基础上进行计算。
+
+
+## 距离的计算流程
+
+
+理解距离计算的关键在于：接收器受到的**RX 信号在时间上是 TX 信号的延迟版本** 。
+
+
+![0dd49612-962a-4e37-8697-ff2711848792.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-4.png)
+
+
+**假设雷达信号从发射机发出到接收到收到回波的电磁波信号飞行时间为** $\tau$**，那么**信号往返目标的时间延迟公式就是 $\tau = \frac{2d}{c}$ ，其中 $d$ 是物体距离，$c$ 是光速。
+
+
+因为 TX 信号的频率是随时间线性增加的，所以延迟了 $\tau$ 时间的 RX 信号在任意时刻与 TX 信号相减，都会得到一个恒定的频率差，这个频率差就是中频信号的频率。
+
+
+根据几何相似性，中频信号的频率 $f_0$ 等于斜率 $S$ 乘以时间延迟 $\tau$ ，再结合上面的时间延迟公式，就可以得到距离的最终计算公式：
+
+
+$$
+f_0 = \frac{S \cdot 2d}{c}
+$$
+
+
+因此只要得到中频信号的频率 $f_0$，系统就能直接反推出目标的距离 $d$。
+
+
+### DSP的计算流程
+
+
+对于雷达系统的DSP而言，计算流程如下：
+
+- **ADC 采样**：雷达的模拟混频器输出的是一个模拟中频（IF）正弦波，DSP 首先要通过 ADC（模数转换器）对其进行采样。设定 ADC 的采样率 $F_s$（例如 6.4 Msps）和每个 Chirp 采样的点数 $N$（例如 256 点），经过这个采样步骤后得到一个长度为 $N$ 的数组。
+- **信号加窗**：在直接做 FFT 之前，为了应对 FFT 对固定长度数组计算中存在的频谱泄露问题，通常会把 $N$ 个采样点与一个相同长度的窗函数（如 Hanning 窗或 Blackman 窗）相乘。
+- 执行FFT计算： DSP 的硬件加速器（HWA）或 DSP 核对 $N$ 个加窗后的时域数据点执行离散傅里叶变换，计算结果是一个包含 $N$ 个复数（实部+虚部）的频域数组。根据奈奎斯特定理，通常只需要看前 $N/2$ 个点。这 $N/2$ 个点在雷达术语中被称为 **Range Bins（距离单元）** 或 **Index** $k$。
+- 幅度计算与寻峰：FFT 的输出是复数域的，代表相位和幅度。 DSP 遍历这 $N/2$ 个 Range Bin，计算每个点的幅度 $A = \sqrt{I^2 + Q^2}$。在只有一个检测目标的简化情况下，DSP 只需要简单地找出这 $N/2$ 个点中数值最大（能量最高）的那个点，并记录下它的索引号，记为 **Index** $k$。
+    - 如果是有多个检测目标，那么在遍历 FFT 的输出幅度时就会找到多个峰值，记录下这些峰值点的index即可。
+- 物理量换算：这一步的作用就是要把上一步得到的 index 转换成实际的距离单位 m，按照以下流程进行转换即可。
+
+![cd67c01b-6957-40fe-8ce8-615c3c75addd.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-5.png)
+
+
+每一个 Bin 代表的频率跨度（频率分辨率 $\Delta f$）由 ADC 决定：$\Delta f = \frac{F_s}{N}$，这里的 $F_s$ 为 ADC 的采样率。
+
+
+因此，峰值（所在Range Bins的index为 $k$ ）所在的中频频率就是：$f_{IF} = k \times \Delta f = k \times \frac{F_s}{N}$。
+
+
+再结合上面的雷达距离计算公式： $f_{IF} = \frac{S \cdot 2d}{c}$，稍作变换得出距离 $d$：$d = \frac{c \cdot f_{IF}}{2S}$。
+
+
+最终得到的距离计算公式为：
+
+
+$$
+Distance = k \times \left( \frac{c \cdot F_s}{2 \cdot S \cdot N} \right)
+$$
+
+
+
+**公式括号里的部分** $\frac{c \cdot F_s}{2 \cdot S \cdot N}$**，在雷达初始化时就是一个常数，这个常数实际上就是雷达的单 Bin 距离分辨率（**$\Delta d$**）。**
+
+
+## 速度的计算流程
+
+
+既然基于单个 Chirp 的测量，就可以得到物体的距离，那么如果对多个 Chirp 的距离进行对比，是不是就可以很容易的计算出来物体的运动速度？答案是否定的。
+
+
+假设目标在以速度 $v$ 移动，雷达连续发射了两个间隔为 $T_c$（Chirp 周期）的相同 Chirp 信号。在发射第一个 Chirp 和第二个 Chirp 的极短间隔内（例如 60 µs），目标只移动了极其微小的距离：$\Delta d = v \cdot T_c$，这个距离对于普通运动物体而言只是微米级别，这么微小的距离差在 FFT 的频谱图上根本看不出位置（频率）的变化，两个 Chirp 在 FFT 后的峰值依然出现在同一个距离 Bin 里。
+
+
+**但是，由于毫米波的波长** $\lambda$ **极短（77GHz 的波长大约只有 3.9 mm），这个微小的距离差会导致两个 Chirp 的中频信号在复数域产生明显的相位差** $\Delta \phi$**。**
+
+
+电磁波在空间中每往前走一段物理距离 $d$，它所走过的距离相位的变化为：
+
+
+$$
+2\pi \times \frac{d}{\lambda}
+$$
+
+
+假设雷达与目标之间的距离是 $d$。但是，雷达发射的 Chirp 信号需要先飞到目标，再从目标反射飞回接收天线。因此，电磁波在空气中实际飞行的**总路程是** $2d$。
+
+
+我们将总路程 $2d$ 代入第一步的公式中，而目标移动的微小距离 $\Delta d = v \times T_c$ ，就得到了雷达接收信号相位差的物理公式推导为：
+
+
+$$
+\Delta \phi = \frac{4\pi \Delta d}{\lambda} = \frac{4\pi v T_c}{\lambda}
+$$
+
+
+通过以上这个公式，可以反推出目标的速度 $v$：
+
+
+$$
+v = \frac{\lambda \Delta\Phi}{4\pi T_c}
+$$
+
+
+基于以上公式，只要得到了两个Chirp信号的相位差，就可以计算出目标的运动速度。
+
+
+![ca6da295-8d3b-4131-9c26-244d9ac8c5d0.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-6.png)
+
+
+> 💡 这里有个最大不模糊速度 ($v_{max}$)的概念。由于相位是通过三角函数计算的，三角函数具有周期性。为了保证速度测量的唯一性（不产生模糊），两次采样间的相位差绝对值必须小于 $\pi$ 。由此可以推导出雷达能测量的最大相对速度：$v_{max} = \frac{\lambda}{4T_c}$。这说明：Chirp 周期 $T_c$ 越短（发射越密集），能测量的最大速度就越高 。
+
+
+### DSP的计算流程
+
+
+雷达系统的DSP计算速度的流程如下：
+
+- 构建雷达数据阵列：在一帧内，ADC 采集了 $M$ 个 Chirp（例如 128 个），每个 Chirp 采样 $N$ 个点（例如 256 点）。DSP 首先对每一个 Chirp 的 256 个时域采样点进行 FFT 计算（距离 FFT）。 每个 Chirp 采样信号的 FFT 复数输出结果（包含幅度和相位）会被写入内存，拼成一个 $M \times (N/2)$ 的二维矩阵阵列。
+- 距离门锁定与数据抽取：在短短一帧数据时间（实际上只有几毫秒）内，普通运动目标的物理位移非常小，一般不会跨越雷达的距离分辨率单元。假设在每个 Chirp 信号的FFT结果序列中，都是在第 $k$ 个距离 Bin 找到了目标的能量峰值。这一步，就是要将所有 $M$ 个 Chirp 在第 $k$ 个 Bin 上的复数数据（包含有幅度和相位信息）抽取出来，从而组成一个全新的、长度为 $M$ 的一维复数数组。
+- 加窗：与距离计算的逻辑相同，为避免后续进行2D FFT计算时频谱泄露，DSP 将这个长度为 $M$ 的一维复数数组中的每一个元素，与一个一维窗函数（如 Hanning 窗）的系数相乘。
+- 执行 2D FFT（Doppler FFT）：DSP 的傅里叶变换单元对这个加窗后的长度为 $M$ 的复数数组执行一次 $M$ 点的 FFT 计算（这个FFT计算也就是所谓的2D FFT计算），其计算结果是一个长度同样为 $M$ 的复数数组。这个数组的每一项代表一个特定的**多普勒频率单元（Doppler Bin）**。
+- 寻峰与速度物理量换算：DSP 计算 2D FFT 输出数组中每个元素的模值（幅度 $A = \sqrt{I^2 + Q^2}$），得到速度能量谱，从中找出能量最大的那个多普勒 Bin 的索引号，记为 Index $m$。
+
+以上通过2D FFT计算出来的这个速度能量谱，总共有$M$ 个 ，实际上也就意味着把整个圆周期对应的 $2\pi$ 分为  $M$ 份，以上的相位差公式计算每一份相位差的等式为：
+
+
+$$
+\Delta \phi =  \frac{4\pi v T_c}{\lambda} = \frac{2\pi}{M}
+$$
+
+
+因此最后得到的速度分辨率（实际上也就是速度能量谱中每个bin对应的速度单位值）就是：
+
+
+$$
+\Delta v = \frac{\lambda}{2 \cdot M \cdot T_c}
+$$
+
+
+既然上面计算得到的速度能量谱中峰值位于第 $m $个bin，那么其对应的速度就是：
+
+
+$$
+Velocity = m \times \Delta v = m \times \left( \frac{\lambda}{2 \cdot M \cdot T_c} \right)
+$$
+
+
+## 如果有多个目标怎么办？
+
+
+以上对于检测目标的距离和速度计算流程的总结，主要考虑的是针对检测场景中只有一个目标的简化情况。那么如果检测场景中同时存在多个目标怎么办呢？
+
+
+在这种情况，测试待检目标的距离相对比较容易。
+
+
+如果检测场景中有多个目标的话，经过信号反射回波、ADC采样以及在DSP中进行 FFT 计算后，最终会在 FFT 的距离谱（Range Bins）上会出现多个不同 index 的尖峰，每个尖峰对应于一个检测目标的距离。
+
+
+当然在这种情况下，如果两个物体之间的距离过近，小于这个雷达的距离分辨率的话，在距离谱上就出现在相同的Bin Index，雷达就没办法识别开了，只能显示为一个目标。
+
+
+![7a57f0d5-8c03-444f-b34d-b653813d82aa.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-7.png)
+
+
+那么两个相同距离的目标速度不同的话，会发生什么情况呢？此时，由于这一个距离 Bin 里面混合了两个目标的相位，提取出来的相位序列将是一个混乱的叠加态，这会导致雷达无法正确识别和分辨两个目标的速度。
+
+
+所以在这种情况要测量速度的话，就不能先在距离谱中找到目标，然后只针对这个目标在所有Chirp上的数据去计算2D FFT。而应该是：
+
+- 先对整个 Frame 中所有 $M$ 个 Chirp 执行一次 1D FFT，把计算结果拼接在一起，得到二维的 Radar Data Matrix（行是距离 Bin，列是 Chirp）。
+    - 这个二维矩阵中的每一列，对应的都是一个距离 Bin 中检测目标的幅度和相位在一个 Frame 中连续 N 个Chirp的变化情况。其中，因为一个Frame的时间很短，所以这个序列中的幅度变化会非常小，但是相位则会根据检测目标的速度情况有显著的变化。
+    - 如果一个距离bin中有多个目标的话，这个序列中反映的幅度和相位就是两个目标的叠加影响结果。
+- 直接对 Data Matrix 的每一行（每一个距离 Bin）都执行一次 2D FFT（Doppler FFT）。
+    - 如果一个距离bin中有一个目标的话，这个2D FFT的结果就是能够根据序列中数据相位变化的情况找到与之对应的距离。
+    - 而如果一个距离bin中有多个目标的话，这个2D FFT不仅能够找到距离，还能够区分把不同速度所引起的相位差异找出来。
+- 经过全矩阵的 2D FFT，DSP 会在内存中生成一张二维的热力图。横轴是距离，纵轴是速度，颜色深浅代表能量（幅值）。
+- 接下来就是直接在这张二维热力图上寻找二维尖峰的，每个尖峰对应于一个检测目标的速度数据。
+
+可以看到，在这个热力图上，两个处于相同距离Bin、不同速度的物体可以清楚的识别出来。
+
+
+![6334ac9c-e43c-4b20-83d8-a8aaef4c58bb.png](/images/blog/详细总结毫米波雷达FMCW的工作原理与计算过程-8.png)
+
+
+## 参考资料
+
+- The fundamentals of millimeter wave radar sensors, Texas Instruments.
+
+---
+
+# 一文彻底搞懂Transformer模型的Encoder结构与计算流程
+
+> URL: https://pavelhan.tech/zh/article/2026-02-22-transformer-encoder-structure-and-workflow
+> 摘要: 本文通过对一个标准的Encoder-Only类型的Transformer架构，详细的总结了Encoder类型的网络架构以及数据流在其中的计算流程。
+
+下图是一个标准的Encoder Only类型的Transformer架构的示意图：
+
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-1.png)
+
+
+总的来说，Encoder Only类型的Transformer架构的执行流程依次为：
+
+- 数据预处理环节，包括输入数据的向量化（Embedding），增加位置编码等。
+- 连续N个Encoder Block。
+- 数据的输出环节。
+
+对于Encoder Only Transformer架构而言，数据的输出环节很简单，例如上图所示的Linear+Softmax输出，所以本文的重点是前两个部分的计算流程。
+
+
+## 1. 数据预处理
+
+
+对于自然语言处理类型的Transformer架构来说，数据在进入Transformer架构的Encoder和Decoder中处理前，至少要完成以下工作：
+
+- **分词（Tokenization）**，把一个完整的句子或者完整的语句段落，分为一个个有独立语义的字或单词（也就是所谓的token），这一步可以使用目前已经非常输出的分词工具来完成。
+- 基于以上分词的结果，把一个个独立的字或者单词转换为相同长度（如512，768等）的向量，这一步操作就是所谓的**嵌入（Embedding）**。经过这一步向量化后，每个token都对应于一组相同长度的向量。
+    - 以向量长度768为例，如果要进行处理的文本包含有100个token，经过这一步的向量化后，这段文本就会被转换为（100，768）的向量。
+- 在之前的句子中给向量化后的token增加**位置编码（Positional Encoding）**，位置编码的长度与Token的向量长度相同，所以每个token的向量直接与其位置编码的向量直接相加即可，相加以后的数据维度不变。
+    - 仍然以前面的（100，768）维度的向量为例，增加了位置编码后，其维度仍然是（100，768）。
+
+下图是一个对于文本"How are You"进行数据预处理的完整流程：
+
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-2.png)
+
+
+经过以上的数据预处理环节以后，一段文本（分割为N个token，每个token的向量长度为dimension）就会把转换为（N，dimension）维度的向量，做好了进行Encoder处理环节的准备了。
+
+
+## 2.1 Multi-Head Attention中的Q、K、V矩阵
+
+
+众所周知，Transformer 的核心是自注意力机制（Self-Attention），它的工作逻辑是计算输入序列中每一个元素与其他所有元素之间的相关性。这个自注意力机制的关键组件是：Q、K、V，可以把自注意力想象成一个“信息检索”过程：
+
+- **Query (Q)**：我想找什么？（当前像素/块的特征）
+- **Key (K)**：我有什么？（其他所有像素/块的特征标签）
+- **Value (V)**：我能提供什么？（实际的内容信息）
+
+只是看以上的定义的话，感觉还不是很直观，究竟这个所谓的Q、K、V在数据处理的流程中是如何发挥作用呢？直接说结论：**如果每个token对应的向量的长度是dimension的话，Q、K、V就是三组独立的维度为（dimension，dimension）的权重参数矩阵，这三组权重矩阵就是要在训练过程中要训练的参数。**
+
+
+也就是假设一个 Token 的向量 $x$ 的维度是  $1 \times d$，那么 $W_Q, W_K, W_V$就是三组维度为 $(d, d)$ 的矩阵，那么针对这个 Token 向量 x 进行Q、K、V的的计算过程就是直接把Token向量与三个参数矩阵各自相乘，这样就可以将输入的 Token 向量映射到新的空间：
+
+
+$$
+\begin{aligned}
+q = x \cdot W_Q \\
+k = x \cdot W_K \\
+v = x \cdot W_V \
+\end{aligned}
+$$
+
+
+如下图所示：“Data visualization empowers users to”这个文本被分为6个词（Token），每个词对应的向量长度是768。在这种情况下，每个token的维度就是（1，768），而 $W_Q, W_K, W_V$这三个权重矩阵的维度分别是（768，768），三组矩阵合在一起的维度就是（768，2304）。
+
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-3.png)
+
+
+总结起来，在这一步，每个token对应的（1，dimension）维度的向量，经过以上计算以后，就会变成三组独立的（1，dimension），分别对应于这个Token的Q、K、V向量，这三组向量合并起来的维度就是（1，3 x dimension）。
+
+
+## 2.2 Multi-Head Attention中的Attention计算流程
+
+
+经过上一步的处理以后，就有了一段文本中所有单词的Q，K，V向量。下一步要进行的计算就是：基于Q向量和K向量，提取出来对应的V向量。
+
+
+首先对一段文本中所有Token之间的Q向量和K向量进行点积计算，通过这种方式计算出来第 $i$ 个 Token 对第 j 个 Token 的关注程度：
+
+
+$$
+Score_{i,j} = Q_i \cdot K_j^T
+$$
+
+
+如果 $Q_i$和 $K_j$的向量方向越接近，其计算得到的分值就越高。**经过以上计算以后（假设这段文本的token数量为N），得到的分数矩阵的维度是（N，N）。**
+
+
+而为了防止以上的计算结果梯度爆炸，并且需要把以上的计算结果转化成概率，还需要对以上计算结构额外执行两步计算：
+
+- 缩放：对以上每个除以 $\sqrt{d_k}$。其中的 $d_k$ 是一个缩放因子，它的存在是为了让模型在深层堆叠时依然能够稳定训练。对于一个设计好的Transformer模型而言， $d_k$ 是一个常数，一般是数据维度处于多头数量。
+- Softmax：将以上的分数矩阵变成 $0 \sim 1$ 之间的权重矩阵 $\alpha_{i,j}$。
+
+$$
+\alpha_{i,j} = \text{softmax}\left(\frac{Q_i K_j^T}{\sqrt{d_k}}\right)
+$$
+
+
+以上两步的计算流程如下图中的红框所示：以下经过softmax处理后的矩阵  $\alpha_{i,j}$的维度仍然是（N，N），对于下图而言，这段文本只有6个token，所以这个矩阵的维度是（6，6）。
+
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-4.png)
+
+
+有了以上的权重矩阵  $\alpha_{i,j}$ ，就可以用这个权重矩阵去融合所有的 Value (即V矩阵)：
+
+
+$$
+\text{Output}_i = \sum_{j} \alpha_{i,j} V_j
+$$
+
+
+
+如下图的红框所示：假设这段文本中的token数量为N，每个token的向量长度为dimension，这部分计算就是一个（N x N）维度的矩阵（以上通过Q和K计算出来的权重矩阵）与一个（N x dimesion）维度的矩阵的乘积，最终的结构仍然是（N x Dimension）维度。
+
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-5.png)
+
+
+至此，Encoder模块中的自注意力Q、K、V矩阵的计算流程就算是结束了，整个Encoder的计算以（N，dimension）维度的数据作为输入，计算完成以后仍然是一个（N，dimension）维度的输出数据，可见数据维度并没有发生变化。
+
+
+**等等！还有个问题，前面对单个Token进行的Embedding嵌入转换的计算过程中，明明提到每个token的向量长度是768，但是上面在进行最后一步V矩阵运算的时候明显可以看到V矩阵的维度是（6，64）而不是（6，768），最终的输出也是（6，64），而不是（6，768）？这就是牵出多头（Multi Head）的概念了。**
+
+
+## 2.3 Multi-Head Attention中的Multi-Head
+
+
+下面看这个完整的Multi-Head Self Attention Block的框图：左侧是所有输入token的Q、K、V矩阵，数据维度为（N，3 x dimension）；右侧为这个多头注意力模块的处理结果，维度为（N，dimension）。
+
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-6.png)
+
+
+**下方用红框的标记，是指整个注意力模块的运算被分为12个独立、并行的计算模块，同时进行计算，最后再把计算结果合并在一起，这就是所谓的多头。**
+
+
+举例而言，上图中包含有6个token，每个token的数据维度为768，那么对于整个自注意力模块而言，其输入为三个独立的（6，768）维度矩阵，即6个token各自的Q、K、V向量。那么在以上的多头处理上，计算流程会分为12个头，把输入数据也同样分为独立的12组，对于每个Token的Q、K、V向量而言，每个长度768的向量都被分为12段，每段的长度就是768/12=64（这就是上面V向量计算中所出现的64）。这样的话，**对于每个head的计算而言，其输入数据的维度就变成了三个（Q，K、V向量）独立的（6，64）维度矩阵，单个head的计算输出数据也是（6，64）维度，所有head计算完成后再合并在一起成为（6，768）维度。**
+
+> 这就是所谓的多头：就是把输入的每个token的Q、K、V向量平均分成N份，这N份数据同时进行计算，计算完成后再合并在一起。最终输入数据和输出数据的维度保持一致。
+
+可结合下面的这段代码更深入的理解整个多头自注意力机制的工作流程：
+
+
+```python
+class MultiHeadAttention(nn.Module):
+    def __init__(self, embed_dim, num_heads):
+        super().__init__()
+        self.num_heads = num_heads
+        self.head_dim = embed_dim // num_heads
+        assert embed_dim % num_heads == 0, "embed_dim must be divisible by num_heads"
+        # Q、K、V向量的权重计算及其参数矩阵
+        self.q_linear = nn.Linear(embed_dim, embed_dim)
+        self.k_linear = nn.Linear(embed_dim, embed_dim)
+        self.v_linear = nn.Linear(embed_dim, embed_dim)
+        self.out_linear = nn.Linear(embed_dim, embed_dim)
+
+    def forward(self, query, key, value, mask=None):
+        batch_size = query.size(0)
+        # Q、K、V向量的计算
+        Q = self.q_linear(query).view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
+        K = self.k_linear(key).view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
+        V = self.v_linear(value).view(batch_size, -1, self.num_heads, self.head_dim).transpose(1, 2)
+        # 基于Q和K向量计算分数矩阵
+        scores = torch.matmul(Q, K.transpose(-2, -1)) / math.sqrt(self.head_dim)
+        if mask is not None:
+            scores = scores.masked_fill(mask == 0, float('-inf'))
+        # 分数矩阵的softmax处理
+        attention_weights = torch.softmax(scores, dim=-1)
+        # 分数矩阵与V向量之间的融合计算
+        attended_output = torch.matmul(attention_weights, V)
+        # 多头输出数据合并
+        attended_output = attended_output.transpose(1, 2).contiguous().view(batch_size, -1, self.num_heads * self.head_dim)
+        output = self.out_linear(attended_output)
+        return output
+```
+
+
+## 3.0 Feed Forward
+
+
+Encoder模块中的前馈网络相对就比较简单了，实际上就是**两个线性层中间加一个非线性激活函数**来实现输出数据的非线性变换而已，其输入输出数据的维度仍然保持为（N，dimension）：
+
+
+```python
+class PositionwiseFeedForward(nn.Module):
+    def __init__(self, embed_dim, ff_dim):
+        super().__init__()
+        self.linear1 = nn.Linear(embed_dim, ff_dim)
+        self.relu = nn.ReLU()
+        self.linear2 = nn.Linear(ff_dim, embed_dim)
+
+    def forward(self, x):
+        return self.linear2(self.relu(self.linear1(x)))
+```
+
+
+## 4.0 完整的Encoder Block
+
+
+一个完整的Encoder Block的框图如下图所示：
+
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-7.png)
+
+
+可以看到，一个独立的encoder block，实际上就是一个多头注意力模块及其残差块，加上一个前馈网络模块及其残差块。基于以上对多头注意力模块和前馈网络的模块，理解下面的encoder block的执行流程也就比较容易了：
+
+
+```python
+class EncoderLayer(nn.Module):
+    def __init__(self, embed_dim, num_heads, ff_dim, dropout_rate):
+        super().__init__()
+        self.self_attn = MultiHeadAttention(embed_dim, num_heads) # 多头注意力模块
+        self.feed_forward = PositionwiseFeedForward(embed_dim, ff_dim) # 前馈网络模块
+        self.norm1 = nn.LayerNorm(embed_dim)
+        self.norm2 = nn.LayerNorm(embed_dim)
+        self.dropout = nn.Dropout(dropout_rate)
+
+    def forward(self, x, mask=None):
+	    # 多头注意力模块的计算
+        attn_output = self.self_attn(x, x, x, mask)
+        # 多头注意力模块的残差计算以及归一化处理
+        x = self.norm1(x + self.dropout(attn_output))
+        # 前馈网络模块的前向计算
+        ff_output = self.feed_forward(x)
+        # 前馈网络模块的残差计算以及归一化处理
+        x = self.norm2(x + self.dropout(ff_output))
+        return x
+```
+
+
+至此，单个Encoder Block的完整计算流程就算是比较完整了。**注意，对于单个encoder block而言，其输入数据和输出数据的维度都是相同的，即都是（N，dimension），这样也就很容易实现把多个encoder block按顺序叠加在一起形成完整的transformer架构。**
+
+
+## 5.0 完整的Transformer Encoder架构
+
+
+再回过头来看完整的transform encoder的架构，理解起来就比较简单了：
+
+- 首先是数据预处理部分。输入的文本等其他序列数据，经过分词和向量化的处理后，把每个token转换为固定长度的向量，然后再叠加位置编码信息得到相同维度的带位置编码的向量，送给Encoder进行处理。数据维度为（N，dimension）。
+- 接下来中Transformer Encoder架构的核心所在，即连续多个Encoder Block的叠加，每个encoder block的输入输出数据维度均为（N,dimension）。
+- 最后是输出层，这部分就是根据应用需求来进行针对性的设计了。
+
+![image.png](/images/blog/一文彻底搞懂Transformer模型的Encoder结构与计算流程-8.png)
+
+
+## 参考资料
+
+- [Transformer Explainer: LLM Transformer Model Visually Explained](https://poloclub.github.io/transformer-explainer/)
+- [How Transformers Work: A Detailed Exploration of Transformer Architecture | DataCamp](https://www.datacamp.com/tutorial/how-transformers-work)
+- [Transformer Architecture : Part 1- Encoder | by Abhishek Jain | Medium](https://medium.com/@abhishekjainindore24/transformer-architecture-part-1-encoder-d90835db56b5)
+- [Working of Encoders in Transformers - GeeksforGeeks](https://www.geeksforgeeks.org/deep-learning/working-of-encoders-in-transformers/)
+
+---
+
+# 瑞芯微RK3588 NPU开发环境搭建笔记
+
+> URL: https://pavelhan.tech/zh/article/2026-03-11-the-development-environment-of-RK3588-NPU
+> 摘要: 本文以RK3588+Debian Linux系统为基础，搭建瑞芯微平台的NPU开发环境与板端推理环境，并以Model Zoo中的Yolov5模型为例进行该模式上板运行流程的总结。
+
+本文以RK3588+Debian Linux系统为基础，搭建瑞芯微平台的NPU开发环境与板端推理环境，并以Model Zoo中的Yolov5模型为例进行该模式上板运行流程的总结。
+
+
+## 瑞芯微NPU应用开发框架
+
+
+瑞芯微的NPU应用开发的整体开发流程上，基本上与君正AI应用开发的后处理流程（Post Processing）大致一致，首先是在PC上基于Pytorch或者tensorflow等进行模型的开发和训练，完成后把这个模型（如onnx格式或者pt格式）使用一个 RKNN-Toolkit2 的工具转换为RKNN格式，这个RKNN格式才是能够在瑞芯微芯片上跑起来的端侧模型格式，后续在生产环境中使用C/C++语言调用这个模型进行前向推理。
+
+
+RKNN的软件框架如下图所示：
+
+
+![image.png](/images/blog/瑞芯微RK3588-NPU开发环境搭建笔记-1.png)
+
+
+RKNN-Toolkit2、RKNN-Toolkit-Lite2、RKNPU2 C++ API之间的关系：
+
+- RKNN-Toolkit2用于把PC或者服务器上训练好的模型转换为可以在瑞芯微NPU上运行的RKNN格式，运行在PC端。
+- RKNN-Toolkit-Lite2是一个可以在瑞芯微NPU上基于RKNN格式的模型进行前向推理的工具，运行在瑞芯微处理器上。
+- RKNN-Toolkit-Lite2本质上是一个在瑞芯微处理器上运行的Python包，所以其执行的前向推理是在瑞芯微硬件上跑的python环境中运行。如果对性能有更高要求，应该使用RKNPU2的C++ API来运行AI而不是RKNN-Toolkit-Lite2。
+- 所以：**RKNN-Toolkit2用于进行模型转换；RKNN-Toolkit-Lite2用于对转换后的模型在板端进行快速验证和测试；RKNPU2 C++ API才用于最终的项目实际落地。**
+> 我自己的看法，在板端的推理上，C/C++代码的效率要远远高于Python。所以其实没有太大必要在板端用RKNN-Toolkit-Lite2的python脚本去做推理验证，直接用RKNN-Toolkit2进行模型转换，然后在板端用C/C++进行推理才是一步到位的最成熟的做法。当然，使用RKNN-Toolkit-Lite2的python脚本在板端去做推理验证，优势则在于有大量Python包的支持，而且与PC端环境一致，写推理代码更容易。
+
+### RKNN-Toolkit2 能够支持的芯片平台列表：
+
+- RK3588 Series
+- RK3576 Series
+- RK3566/RK3568 Series
+- RK3562 Series
+- RV1103/RV1106
+- RV1103B/RV1106B
+- RV1126B
+- RK2118
+
+如上所述，瑞芯微NPU应用开发主要依赖于RKNN生态。在瑞芯微芯片的NPU上进行应用开发主要依赖于以下两个在Github上维护的代码仓库：
+
+- RKNN-Toolkit2： [airockchip/rknn-toolkit2](https://github.com/airockchip/rknn-toolkit2) ，模型转换工具。
+- RK Model Zoo： [airockchip/rknn_model_zoo](https://github.com/airockchip/rknn_model_zoo) ，模型上板运行的支持示例。
+
+## RKNN-Toolkit2开发环境的搭建
+
+
+截至2026年初，最新的RKNN-Toolkit2的版本是2.3.2。
+
+
+进行瑞芯微RKNN NPU生态的应用开发与测试，首先要进行RKNN-Toolkit2开发环境的搭建。从Github上下载RKNN-Toolkit2和RKNN Model Zoo仓库：
+
+
+```bash
+git clone https://github.com/airockchip/rknn-toolkit2.git --depth 1
+git clone https://github.com/airockchip/rknn_model_zoo.git --depth 1
+```
+
+
+### 模型转换的Python环境
+
+
+新建一个专门的rknn环境(Python版本指定为3.12)并安装RKNN-Toolkit2及其所有的依赖包（`rknn-toolkit2-master/rknn-toolkit2/packages/x86_64`）：
+
+
+```bash
+conda create -n rknn python=3.12
+conda activate rknn
+pip install -r requirements_cp312-2.3.2.txt
+pip install rknn_toolkit2-2.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+```
+
+> 注意，按照以上流程安装的Python3.12环境，在后续在Model Zoo中把Yolov5的onnx文件转换为rkkn时会报错：AttributeError: module 'onnx' has no attribute 'mapping'，这是因为Python 环境中安装的 onnx 库版本过高，与当前的 `rknn-toolkit2 (v2.3.2)` 产生了不兼容。应该在requirements_cp312-2.3.2.txt修改onnx依赖版本为：`onnx==1.16.1`, 而不是安装onnx的最新版本。
+
+### 交叉编译环境
+
+
+板端C/C++代码的交叉编译工具（rk3588为aarch64架构，所以安装64位系统的编译工具）：[https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz](https://releases.linaro.org/components/toolchain/binaries/6.3-2017.05/aarch64-linux-gnu/gcc-linaro-6.3.1-2017.05-x86_64_aarch64-linux-gnu.tar.xz) ，后续在编译模型上板推理的C/C++ demo时要用。
+
+
+### 板端NPU驱动环境
+
+
+此外，如以上RKNN的软件框架图所示，在RK3588板端上所执行的AI推理，同时还需要依赖于板端NPU的相关支持环境，包括板端kernel的NPU驱动、瑞芯微RKNN网络的运行时库以及其他的支持库。
+
+
+首先一点，需要在板端的Kernel中启动NPU驱动支持，并且确保kernel的NPU驱动版本与RKNN-Toolkit2及其运行时库的版本相匹配。可以在Kernel的启动信息或者通过dmesg得到NPU驱动的版本信息：
+
+
+![image.png](/images/blog/瑞芯微RK3588-NPU开发环境搭建笔记-2.png)
+
+
+除了以上NPU驱动支持以外，板端应用程序在NPU上执行推理还需要运行时库`librknnrt.so`的支持。`librknnrt.so`在`rknn-toolkit2-master/rknpu2/runtime/Linux/librknn_api/aarch64`位置，在进行板端推理的C/C++ demo编译时应该链接到这个动态链接库，并且把这个库提前放到板端系统的LD_LIBRARTY_PATH路径中。
+
+
+此外，对于模型上板推理的C/C++ demo运行，除了以上的NPU驱动以及NPU运行时支持动态链接库`librknnrt.ko`，可能还需要其他的多媒体与硬件加速库：
+
+- RGA (Rockchip Graphics Architecture)：用于硬件加速的图像缩放、裁剪、格式转换（如从摄像头拿到的 YUV 转为 NPU 需要的 RGB）。需要 `librga.so` 库文件及其头文件。
+- MPP (Media Process Platform)：用于进行硬件编解码（H.264/H.265），需要 `librockchip_mpp.so`。
+
+至此，在瑞芯微平台上进行NPU开发的Python、C/C++交叉编译环境以及板端运行环境就已经准备好了。接下来通过Model Zoo中的Yolov5 demo对环境和NPU开发的流程进行总结。
+
+
+## 基于Model Zoo中的YOLOv5进行上板测试
+
+
+在前面已经下载的model zoo的仓库`rknn_model_zoo-main`的examples中，包含有多个已经在瑞芯微平台上适配好的模型案例，经过简单修改编译后即可上板运行测试。**整个流程可以分为两个步骤：模型转换和板端C/C++ demo编译。**
+
+
+### 模型转换
+
+
+在examples/yolov5/model目录下，执行download_model.sh，这个脚本的功能就是从指定的网络地址上下载一个onnx的yolov5s模型，所以这一步如果自己有已经训练好的yolov5s模型，完全可以使用自己训练的模型来替代。
+
+
+接下来在examples/yolov5/python目录下，执行convert.sh脚本来进行模型转换（onnx->rknn）的动作。convert.sh脚本中指定了数据集描述文件路径DATASET_PATH和模型转换输出文件路径DEFAULT_RKNN_PATH，有必要的话可以对这两个值进行修改。然后执行`python convert.py ../model/yolov5s_relu.onnx rk3588`进行模型转换，转换后的模型会放到DEFAULT_RKNN_PATH所指定的路径中（以rknn为后缀）。
+
+
+至此上板运行的模型文件就转换好了。
+
+
+### C/C++推理demo
+
+
+在`rknn_model_zoo-main`目录下有两个build脚本文件：build-linux.sh和build-android.sh，分别用于针对板端的Linux和Android环境编译C/C++推理demo。此处以RK3588的Debian Linux环境为例，所以首先修改build-linux.sh，在最前面增加交叉编译工具链的路径：
+
+
+![image.png](/images/blog/瑞芯微RK3588-NPU开发环境搭建笔记-3.png)
+
+
+然后调用build-linux.sh脚本进行yolov5板端推理demo程序的编译：`./build-linux.sh -t rk3588 -a aarch64 -d yolov5 -b Release`。build-linux.sh实际上会跳转到`examples/yolov5/cpp/`目录下，找到其中的CMakeLists.txt，调用cmake来执行完整的编译动作。
+
+
+build-linux.sh的参数说明如下：
+
+
+```plain text
+./build-linux.sh -t <target> -a <arch> -d <build_demo_name> [-b <build_type>] [-m] [-r] [-j]
+
+    -t : target (rk356x/rk3588/rk3576/rv1126b/rv1106/rk1808/rv1126)
+    -a : arch (aarch64/armhf)
+    -d : demo name
+    -b : build_type(Debug/Release)
+    -m : enable address sanitizer, build_type need set to Debug
+    -r : disable rga, use cpu resize image
+    -j : disable libjpeg to avoid conflicts between libjpeg and opencv
+such as: ./build-linux.sh -t rk3588 -a aarch64 -d mobilenet
+```
+
+
+build-linux.sh执行完成后会在`rknn_model_zoo-main`目录下生成一个install目录，其中包含了demo在板端运行所需要的所有文件：demo可执行程序，运行时依赖库librknnrt.so，板端rknn模型文件，测试图片文件。所以只需要把这个install目录打包后上传到板端执行其中的demo程序即可：
+
+
+```bash
+cat@lubancat:~/install/rk3588_linux_aarch64/rknn_yolov5_demo$ ./rknn_yolov5_demo model/yolov5.rknn model/bus.jpg
+load lable ./model/coco_80_labels_list.txt
+model input num: 1, output num: 3
+input tensors:
+  index=0, name=images, n_dims=4, dims=[1, 640, 640, 3], n_elems=1228800, size=1228800, fmt=NHWC, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003922
+output tensors:
+  index=0, name=output0, n_dims=4, dims=[1, 255, 80, 80], n_elems=1632000, size=1632000, fmt=NCHW, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003922
+  index=1, name=286, n_dims=4, dims=[1, 255, 40, 40], n_elems=408000, size=408000, fmt=NCHW, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003922
+  index=2, name=288, n_dims=4, dims=[1, 255, 20, 20], n_elems=102000, size=102000, fmt=NCHW, type=INT8, qnt_type=AFFINE, zp=-128, scale=0.003922
+model is NHWC input fmt
+model input height=640, width=640, channel=3
+origin size=640x640 crop size=640x640
+input image: 640 x 640, subsampling: 4:2:0, colorspace: YCbCr, orientation: 1
+scale=1.000000 dst_box=(0 0 639 639) allow_slight_change=1 _left_offset=0 _top_offset=0 padding_w=0 padding_h=0
+rga_api version 1.10.1_[0]
+rknn_run
+person @ (209 243 286 510) 0.880
+person @ (479 238 560 526) 0.871
+person @ (109 238 231 534) 0.840
+bus @ (91 129 555 464) 0.692
+person @ (79 353 121 517) 0.301
+write_image path: out.png width=640 height=640 channel=3 data=0x34f9c120
+```
+
+---
+
+# RT-DETR（RealTime DEtection TRansformer）网络架构与计算流程详细总结
+
+> URL: https://pavelhan.tech/zh/article/2026-04-14-the-detailed-explanation-of-RTDETR-network-and-workflow
+> 摘要: 本文详细介绍了Baidu提出的基于Transformer架构的图像目标检测模型RT-DETR的网络结构及其数据在网络中的计算流程。
+
+本文详细介绍了Baidu提出的基于Transformer架构的图像目标检测模型RT-DETR的网络结构及其数据在网络中的计算流程。
+
+
+## RT-DETR模型简介
+
+
+之前在[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/article/2026-03-18-the-summary-of-DETR-network-structure-and-workflow/)整理了基于Transformer的计算机视觉目标检测模型DETR的网络架构。
+
+
+RT-DETR（Real-Time DEtection Transformer） 由百度团队开发，旨在解决传统 DETR 模型由于计算量巨大而无法满足实时场景需求的问题，RT-DETR 的出现标志着 Transformer 架构正式进入了工业级实时检测的战场，实际上 RT-DETR 是第一个真正实现实时性能的端到端 Transformer 检测器。
+
+
+![image.png](/images/blog/RT-DETR（RealTime-DEtection-TRansformer）网络架构与计算流程详细-1.png)
+
+
+与 YOLO 系列通过缩放逻辑提供不同规模的模型版本相同，RT-DETR模型也包含有两个版本：RT-DETR Large（32M参数）和RT-DETR Extra-Large（67M参数），前者性能稍差，但对于算力资源的需求也相对较低，适合在嵌入式边缘端部署。
+
+
+与Facebook的DETR模型相同，RT-DETR模型的整体架构也由三个部分组成：
+
+- 由卷积网络组成的主干网络Backbone。
+- 混合编码器。
+- 解码器与检测头。
+
+下文对上面三个部分的结构以及数据在其中的计算流程进行详细总结和解释。
+
+
+## Backbone
+
+
+与DETR架构相同，在RT-DETR模型中的Backbone 是整个模型的特征提取引擎，负责从输入的原始图像中提取**多尺度**（标准的DETR模型只会提取最小分辨率的尺度特征）的特征图。
+
+
+RT-DETR 官方实现的Backbone支持两种网络结构选项：HGNetv2 和 ResNet 系列。
+
+- DETR的Backbone网络使用的也是相同的ResNet50和ResNet101。与DETR在主干网络只输出一个 1/32 尺度的特征图不同的是，RT-DETR 的主干网络会输出三个不同比例的特征图（如上图标记的 S3, S4, S5），分别对应原图尺寸的 1/8, 1/16, 1/32，这些特征图包含了从局部纹理到全局语义的不同层级信息。
+- HGNetv2 (Higher-order Geometric Network)是百度自研的基于卷积神经网络的Backbone网络结构。它的核心思想是利用深度可分离卷积和特定的结构重参数化来提升精度，同时保持低延迟。
+
+无论主干网络是使用 ResNet 还是 HGNetv2 ，输入的图像数据进入主干网络后，都会经历 5 个阶段（Stage 1-5），而每经过一个 Stage，特征图的长宽减半，通道数增加（这一点跟YOLO模型的主干网络也是相同的）。在输入图像分辨率为640x640的情况下，主干网络的输出为：
+
+- Stage 3 (S3): 输出特征图尺寸为 (C_3, 80, 80) —— 尺度为 1/8。
+- Stage 4 (S4): 输出特征图尺寸为 (C_4, 40, 40) —— 尺度为 1/16。
+- Stage 5 (S5): 输出特征图尺寸为 (C_5, 20, 20) —— 尺度为 1/32.
+
+以上的C_3，C_4，C_5分别为三个阶段的通道数。
+
+
+### 位置编码
+
+
+在特征图的位置编码方面，RT-DETR 与 DETR的计算公式与流程相同，两者默认都使用正余弦位置编码 (Sine-Cosine Positional Encoding)。 对于特征图上的一个点 (x, y)，其编码由不同频率的 sin 和 cos 函数生成，每个x和y各生成128维的向量，最后两个向量合并成一个长度为256的向量。具体的计算公式和流程可以参考[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/article/2026-03-18-the-summary-of-DETR-network-structure-and-workflow/)的相关部分。
+
+
+**但是需要注意的是，对于 RT-DETR Backbone部分输出的特征图而言，只会将 S5 特征图拉平（Flatten）成一个长序列，对这个最小分辨率的特征图上的所有像素点应用位置编码，并送入 Encoder 进行自注意力计算，因为 RT-DETR 认为只在最低分辨率特征图上做全局注意力计算最划算。S3和S4这两个分辨率较大的特征图会直接进入会直接进入混合编码器中的CCFM模块进行融合计算，不会参与全局注意力运算，如下所述。**
+
+
+## 混合编码器：AIFI_+CCFM
+
+
+接下来就是 RT-DETR 的混合编码器部分，这是 RT-DETR 模型最核心的部分，这是这部分的设计能够使得模型兼顾 Transformer 的全局建模能力与实时性。
+
+
+![image.png](/images/blog/RT-DETR（RealTime-DEtection-TRansformer）网络架构与计算流程详细-2.png)
+
+
+如上图所示，混合编码器主要由两个核心模块组成：AIFI 和 CCFM。其中主干网络输出的 S5 特征图会送入AIFI模块进行处理，输出相同维度的 F5 特征图；而 F5 特征图与主干网络输出的S4，S5 这两个特征图一起送入CCFM模块进行更充分的特征融合。
+
+
+但无论是在AIFI还是CCFM中进行处理之前，首先要对主干网络输出的 S3, S4, S5 特征图进行**维度对齐**。
+
+
+### 维度对齐
+
+
+为什么要进行维度对齐？这是因为，主干网络（如前述的 ResNet 或 HGNetv2）的不同阶段输出的通道数（ C_3,C_4,C_5 ）是不一致的:
+
+- S3 层输出 512 通道
+- S4 层输出 1024 通道
+- S5 层输出 2048 通道
+
+在 RT-DETR 的架构中，为了让不同尺度的特征能够进行在后续的处理过程中相加融合以及送入统一维度的解码器，所有尺度的特征图最终都必须统一到相同的通道数（在 RT-DETR 中默认为 256）。
+
+
+因此，这一步就是要把不同阶段输出的通道数都统一对齐到256。具体的对齐方式很简单，就是对 S3, S4, S5 的每一层分别应用一个 1 x 1 的卷积层，将其通道数从 512/1024/2048 统一压缩到 256 通道即可。经过这个1 x 1卷积后，就得到了三组通道数完全相同（即数据维度）、但空间分辨率不同的特征图。
+
+
+### AIFI
+
+
+AIFI：基于注意力的内尺度特征交互模块（Attention-based Intra-scale Feature Interaction）。该模块专门负责处理来自主干网络最深层、分辨率最低的特征图（也就是主干网络输出的最小分辨率特征图S5）。
+
+> AIFI的核心本质上就是一个单层的 Transformer 编码器结构，这个编码器的输入只有Backbone的 S5 特征图。
+
+**为什么不需要对 S3 和 S4 进行自注意力计算？** 这是因为，高分辨率特征图（S3, S4）包含的是局部细节，只有最低分辨率的特征图（S5）才包含了丰富的语义信息和全局上下文，因此全局相互作用只需要在低分辨率特征图中进行提取。最重要的是，编码器部分往往是计算瓶颈，如果对所有尺度的特征图进行全量的自注意力计算，复杂度随像素数量呈平方级增长，只在最低分辨率的 S5 特征图上进行自注意力计算，极大地降低了计算量（FLOPs），同时确保了模型能提取到图像中目标之间的全局关系。
+
+
+经过以上的维度对齐操作后，输入到AIFI模块的 S5 特征图的维度是(256, 20, 20)。接下来的计算流程与标准的Vision Tranformer Encoder的计算流程相同，首先把这个(256, 20, 20) 特征图展平为长度400，维度为256的向量序列，然后给这个向量序列叠加位置编码信息。在特征图的位置编码方面，RT-DETR 与 DETR的计算公式与流程相同，两者默认都使用正余弦位置编码 (Sine-Cosine Positional Encoding)。具体的计算公式和流程可以参考[DETR（DEtection TRansformer）网络架构与计算流程详细总结](https://pavelhan.tech/article/2026-03-18-the-summary-of-DETR-network-structure-and-workflow/)的相关部分。
+
+
+然后就是标准化的多头注意力计算（默认为8个头）和前馈网络（FFN）的处理，最终经过 AIFI 处理后的 S5 特征序列会重新 Reshape 回 (256, 20, 20) 的张量形状，这就是上面架构图中的 F5 。
+
+
+### CCFM
+
+
+在 RT-DETR 中，CCFM 舍弃了传统 DETR 计算复杂的自注意力计算，转而使用基于卷积神经网络的结构来处理不同分辨率特征图之间的融合，这一点与YOLO中使用的PANet的概念非常类似。既然是融合不同尺度的特征，自然也就包含两个融合路径：
+
+- Top-down (自上而下)：将高层语义特征向下传递。
+- Bottom-up (自下而上)：将底层定位特征向上传递。
+
+CCFM进行两个方向的特征融合操作的核心，在于其 Fusion 模块，如下图所示。
+
+
+![image.png](/images/blog/RT-DETR（RealTime-DEtection-TRansformer）网络架构与计算流程详细-3.png)
+
+
+假设输入Fusion模块的两个特征图分别为 `F_high`（来自高层的特征）和 `F_low`（低层的原始特征），且它们的通道数都已经对齐为 c，并且高层和低层特征图的分辨率已经通过之前的 Upsample或者Downsample 环节变换成了相同的分辨率。那么Fusion模块的工作流程如下：
+
+- 特征拼接 (Concatenate)：将两个输入通道数为 c 的特征图在通道维度合并，输出一个通道数为 **2c** 的特征张量。
+- 支路分流(Feature Splitting）：拼接后的通道数为 2c 的特征图进入两个并行的支路，这两个支路都分别使用了一个 1 x 1 卷积处理，把通道数由 2c 压回到 c。
+    - 对于下支路而言，还要额外进行连续N个RepBlock的处理。这个RepBlock本质上就是一个3 x 3的卷积，通过连续的卷积层提取局部空间特征。
+- 特征融合 (Element-wise Add)：将上支路的基础特征图与下支路经过 RepBlock 处理后的增强特征图逐元素进行相加，通道数和分辨率均保持不变。
+
+因此，**对于每个Fusion模块而言，其输入的两个特征图的分辨率与通道数，与其输出的特征图的分辨率和通道数相同。**
+
+
+而对于整个CCFM模块而言，其输入可以分为三个部分：AIFI 模块对S5特征图处理后的输出F5，主干网络 S4 和 S3 特征图降维后的特征图。那么CCFM要实现的功能就是充分融合三个不同尺度的特征图中的信息，融合方式与YOLO的PANet大同小异，都是通过UpSample（下图中的黄色方块）和DownSample（下图中的蓝色方块）把不同尺度的特征图分辨率变换到相同的分辨率，然后再Fusion Block中进行融合操作。
+
+
+![image.png](/images/blog/RT-DETR（RealTime-DEtection-TRansformer）网络架构与计算流程详细-4.png)
+
+
+经过 CCFM 模块的双向充分融合，混合编码器部分最终从三个Fusion Block上输出了三个融合增强后的特征图：
+
+- **P3** (80 x 80 x 256)：包含丰富的细节，利于检测小目标。
+- **P4** (40 x 40 x 256)：中等尺度。
+- **P5** (20 x 20 x 256)：包含深层语义，利于检测大目标。
+
+最后，再将这三个特征图进行展平操作，得到三个维度为256的序列化向量（6400 x 256，1600 x 256，400 x 256），然后把三个序列拼接（这就是CCFM模块的输出C的作用）起来，最终输出一个 **8400 x 256** 的长序列。
+
+
+## 解码器与检测头
+
+
+RT-DETR 最后部分负责基于前一阶段（即混合编码器部分的输出）输出的 8400 x 256 长序列（针对640x640分辨率的图像输入）进行目标检测的端到端检测，这部分主要由 IoU 感知查询选择模块 (IoU-aware Query Selection) 和 Transformer Decoder 组成。即**混合编码器输出的数据并不会直接送入解码器，而是要先使用一个IoU 感知查询选择的模块对其进行筛选，从Encoder的输出里挑选最有希望的query作为Decoder的输入，以此来降低Decoder的运算量。**
+
+
+![image.png](/images/blog/RT-DETR（RealTime-DEtection-TRansformer）网络架构与计算流程详细-5.png)
+
+
+### IoU 感知查询选择
+
+
+IOU-aware Query Selection这个部分的整体工作逻辑就是：**利用混合编码器的输出结果（8400 x 256），按预测 IoU 质量筛选出 Top-K 个（默认为前300个）最可能是真实目标的候选，作为 Decoder 的 queries。**
+
+
+首先，为了实现 IoU 的感知，RT-DETR 在 混合编码器的输出端设计了一个轻量级的检测头。这个检测头并不是一个深层次的网络，而是一个极其精简的线性预测层集合**，**以混合编码器输出的 8400x256（可以认为是三张特征图包含有8400个patch） 的长序列做为输入，通过3个独立的分支，分别使用**各自的线性预测层**，得到8400个Patch对应的分类预测、边界框预测以及IOU预测结果。
+
+
+三个分支都把输入的256维特征映射为其输出的目标维度：
+
+- 分类分支：输出维度 8400 x num_classes，预测每个点属于各个类别的置信度。
+- 回归分支：输出维度 8400 x 4，预测每个点相对于其坐标原点的偏移量 (x, y, w, h)。
+- IoU 分支： 输出维度 8400 x 1，预测该点对应的预测边界框与潜在检测目标真值框之间的IoU 质量分。
+
+有了以上三个分支的输出数据后，就可以按照以下公式构建出来8400个质量分数：
+
+
+$$
+Score = \text{Class\_Score} \times \text{Predicted\_IoU}
+$$
+
+
+前者为当前Patch在分类分支上置信度数值最大的那个类别对应的置信度数值，后者则是这个Patch的IoU质量分。通过这个质量分数来进行评估，只有当模型既确定它是这个类别，又确信自己能框准它时，这个点才会被选入后续的 Decoder。
+
+
+然后对以上的8400个质量分数进行 Top-K 降序排序，然后选出质量分数最高的300个做为该阶段的输出。**因此，通过以上流程，就相当于从8400个候选框中，以质量分数作为标准，选出来其中的300个作为后续进一步筛选的基础，而不是把所有的8400个候选框全部作为备选框，这样就大幅度的降低了Deocder阶段的计算量。**
+
+
+最终 IoU-aware Query Selection 模块的输出不是一个张量，而是一组结构化信息。对于以上的 Tok-k 计算流程中选择出来的每个 query，在这一环节都输出两部分信息：
+
+- Content Query：每个特征点对应的 256 维特征，这些向量被用作下一阶段Decoder中自注意力模块的输入，维度为 300 x 256。
+- Reference Points：由前述回归分支所输出的坐标位置 (x, y, w, h)，维度为 300 x 4。
+
+### Decoder
+
+
+Decoder部分的结构仍然是标准的：自注意力模块+交叉注意力模块+前馈模块。只不过为了兼顾计算速度，这里的交叉注意力模块并没有采用标准 Transformer 那种全量的 Cross-Attention（即每个 Query 都要和 8400 个点算一遍），而是采用了**Deformable Attention（可变形注意力）**。
+
+
+与标准的Transformer Decoder的架构类似，RT-DETR模型的Decoder部分的网络结构包含有6层相同网络模块的堆叠结构，**每一层的包含有独立的自注意力计算模块+跨尺度采样交叉注意力模块+前馈网络FFN模块+由线性层构成的分类头和回归头。**
+
+1. 自注意力模块
+
+这一步的作用是让 300 个 Content Query 之间充分地进行信息交换。
+
+
+这个自注意力模块以 300 x 256 维度的Content Query作为初始输入，以Reference Points作为参考生成对应的位置编码，与Content Query相加后，作为自注意力计算模块的输入，自注意力模块的计算流程可以参考[**一文彻底搞懂Transformer模型的Encoder结构与计算流程**](https://pavelhan.tech/article/2026-02-22-transformer-encoder-structure-and-workflow/)**。**
+
+
+自注意力模块的输出为经过充分信息交换后的Content Query，维度仍然为 300 x 256。
+
+1. 跨尺度采样交叉注意力模块
+
+交叉注意力模块的输入数据包含三个部分：
+
+- 前面的自注意力模块输出的更新后的Content Query，维度为 300 x 256。
+- 300个预测框的位置坐标Reference Points，来自于IOU-aware Query Selection模块的输出（第一个decoder层）或者来自于前一个decoder模块回归头的更新坐标（后面的五个decoder层）。
+- Encoder Features，混合编码器部分输出的全局特征序列（包含 S3, S4, S5 三个尺度），其维度为 8400 x 256。
+
+需要注意的是，RT-DETR模型Decoder部分中的交叉注意力模块，不同于标准的Decoder中的交叉注意力运算，它所进行的交叉注意力运算不会对Encoder Features所包含的所有的 8400 x 256 维度的数据做矩阵乘法，而是以 300 个预测框的中心作为参考点，在这个参考点的附近有选择地进行采样，在每个参考点附近的采样点对其进行交叉注意力运算（也就是所谓的Deformable Attention，可变形注意力运算），这样就大大减少了交叉注意力的运算复杂度，从而实现了计算效率与精度之间的平衡。
+
+
+这个可变形交叉注意力模块的设计，是RT-DETR模型能够实现实时性能的关键之一。
+
+
+无论如何，经过了以上这个可变形交叉注意力模块的计算之后，其输出数据为融合了多尺度局部图像特征后的新的 Content Query 向量，维度仍然是 300 x 256。
+
+1. 前馈网络FFN模块
+
+该模块的目的是增强特征的非线性表达能力，类似于 CNN 中的全连接层。
+
+
+与标准的Encoder以及Decoder模块相同，FFN 模块的输入数据为上一步交叉注意力计算输出的 Content Queries （维度为[300, 256]）。
+
+
+FFN模块的计算流程是标准的 `Linear -> ReLU -> Linear` 结构，通常中间维度会扩大（如 1024 或 2048）。而输出数据则是深度映射后的 Content Queries，维度仍然保持为 [300, 256]。
+
+1. 分类头/回归头
+
+输入数据均为前一层前馈网络模块输出的Content Query，维度为 300 x 256。分布通过独立的线性层映射分类预测值和坐标偏移量。
+
+- 分类头：经过线性层映射到目标类别数量 num_classes。输出数据为分类概率 Pred Logits，维度为 [300, num_classes]。
+- 回归头：同样通过线性层预测一个预测框坐标的偏移量  $\Delta(x, y, w, h)$，然后将这个坐标偏移量更新于本层的输入 Reference Points上，下一个模块使用的 Reference Points就是经过偏移量更新后的值。
+
+### 模型输出
+
+
+RT-DETR模型最终的输出，就是Decoder部分最后一个Decoder block的分类头和回归头，这两个独立的检测头分布输出300个检测框的分类判断值和检测框的坐标值。
+
+- 分类头输出分类预测分数 (Pred Logits): 维度为 [300, num_classes]。每一个 Query 都会对所有类别给出一个得分。
+- 回归头输出预测坐标 (Pred Boxes): 维度为 [300, 4]。这是经过Decoder部分 6 层Decoder Block的不断修正后的最终坐标 (x, y, w, h)。
+
+接下来如何从这300个检测框得到最终呈现给检测结果呢？
+
+
+首先，对以上分类头输出的 Pred Logits 进行 Sigmoid 处理，将其转化为 0 到 1 之间的概率值。然后以每个 Query 在所有类别中的最大得分作为该框的置信度。此时，就拥有了 300 个带类标和置信度的预测框。
+
+
+然后进行阈值过滤 。通常会设置一个置信度阈值 （例如 0.5）。系统会直接丢弃所有得分低于该阈值的框，并输出置信度大于该阈值的检测框。
+
+- 这一部分的关键点在于，由于 Transformer 的自注意力机制已经在内部完成了去重（抑制了指向同一目标的重复 Query），所以理论上剩下的检测框通常就是互不重叠的高质量检测结果。
+
+## 参考资料
+
+- [RT-DETR: Paper Explanation and Inference](https://debuggercafe.com/rt-detr/)
+- [lyuwenyu/RT-DETR: [CVPR 2024] Official RT-DETR (RTDETR paddle pytorch), Real-Time DEtection TRansformer, DETRs Beat YOLOs on Real-time Object Detection. 🔥 🔥 🔥](https://github.com/lyuwenyu/RT-DETR)
+
+---
+
+# 音频FFT计算流程总结与频谱图解读
+
+> URL: https://pavelhan.tech/zh/article/2026-03-28-the-summary-of-audio-FFT-calculation-workflow-and-spectrum-diagram
+> 摘要: 本文总结了语音信号序列进行FFT计算其对应频谱的概率、参数总结以及计算流程，并提供了一个Python例子代码对一个wav文件进行频谱图的计算并进行解读。
+
+本文总结了语音信号序列进行FFT计算其对应频谱的概率、参数总结以及计算流程，并提供了一个Python例子代码对一个wav文件进行频谱图的计算并进行解读。
+
+
+## 语音信号FFT计算简介及其参数总结
+
+
+众所周知，在时域中，音频信号是随着时间波动的压力值（即声压，表现为振幅的大小）。傅里叶变换原理证明了：**任何周期性信号都可以分解为一系列不同振幅、频率和相位的正弦波/余弦波之和**。因此，音频信号在时域中所表现出来的波动，也可以看做是由无数个不同频率、振幅和相位的正弦波叠加而成的。而对数字音频信号序列所进行的 FFT（快速傅里叶变换）计算，本质上就是从这个数字音频信号序列中提取出来与之对应的各种正弦波的组合，也就是所谓的**频谱**。
+
+
+![image.png](/images/blog/音频FFT计算流程总结与频谱图解读-1.png)
+
+
+对数字域中音频信号的离散时间序列所进行的FFT计算，包含的特性如下：
+
+- 对音频信号序列进行 FFT 计算的结果并不是连续的频率分析，而是将总频率范围（从 $0\text{Hz}$ 到音频采样率 $f_s$）均匀地切割成 $N$ 个小格子，每个格子被称为一个 Bin， 每个 Bin 的宽度为 $\Delta f = \frac{f_s}{N}$。
+- FFT 计算输出的结果是 复数$（a + bi）$。为了得到最终的频谱图，还需要对复数求取其幅度值（Magnitude）：$\sqrt{a^2 + b^2}$，这个幅度值代表了该频率分量在信号中的能量大小。
+- 对于实数的音频信号序列，其 FFT 计算结果是对称的。也就是说，如果输入 1024 个音频采样点进行FFT计算，其输出的 1024 个复数中，前 512 个涵盖了 0 到 $f_s/2$（奈奎斯特频率）的信息，后 512 个点只是前半部分的镜像。因此，在绘制频谱图时，通常只取前 $N/2 $个数据。
+
+### FFT计算结果与频域频点之间的对应关系
+
+
+如上所述，对一个长度为 $N$ 的音频序列所进行的FFT计算，其计算结果长度为 $N$ 的复数序列，这个复数序列前半部分与后半部分呈现出镜像对称。FFT计算结果对应的整个频段为$ [0, f_s/2]$ ，因为整个计算结果序列前后镜像对称，因此这个频率范围均匀地切成了 $N/2$ 份。
+
+
+对于FFT计算的每个输出点（称为一个Bin）而言，其对应的频点计算公式为：
+
+
+$$
+f(k) = \frac{k \cdot f_s}{N}
+$$
+
+
+其中 $ k $ 是该复数在数组中的索引（从 0 开始）。如果采样率 $f_s = 44100\text{Hz}$，FFT 长度 N = 1024：
+
+- Index 0: $0\text{Hz}$（直流分量 DC）
+- Index 1: $1 \cdot 44100 / 1024 \approx 43.07\text{Hz}$
+- Index 2: $ 2 \cdot 44100 / 1024 \approx 86.13\text{Hz}$
+- ...
+- Index 512: $512 \cdot 44100 / 1024 = 22050\text{Hz}$（奈奎斯特频率，即最高分析频率）
+
+每个频点的幅度，对这个频点对应的复数求其幅度值：$\sqrt{a^2 + b^2}$，这个幅度值代表了该频率分量在信号中的能量大小。
+
+
+### FFT运算的重点参数
+
+
+音频序列进行FFT运算的重点参数如下：（可结合下面使用FFT进行频谱计算的流程来理解相关的参数）
+
+- **FFT Size / Window Length / (**$N$**)**：每一个音频采样帧参与计算的采样点数，通常取 2 的指数（如 512, 1024, 2048, 4096）。
+- **采样率 (**$f_s$**)**: 每秒钟对模拟信号采集的样本数，这个采集频率直接决定了频谱的带宽。根据奈奎斯特采样定律，采样样本序列能够分析的最高频率与采样频率之间的关系为 $f_{max} = f_s / 2$，因此如果想要分析 $20\text{kHz}$ 的高频，采样率就必须大于 $40\text{kHz}$。
+- **Window**：为了减少频谱泄露，必须在进行 FFT 计算之前给信号加窗。加窗的类型主要有：Hann，Hamming，Blackman。
+- **Hop Size**：相邻两个 FFT 窗口之间滑动的距离。连续的两个音频帧重叠越多（Hop size越小），生成的频谱图在时间轴上越平滑，丢失的信息越少（因为窗函数会压低边缘能量，通过重叠可以补偿这一点）。但Hop 越小，同一个音频序列需要计算的帧数越多，计算成本线性增加。
+
+音频采样帧Window Size、滑动窗口HopSize与连续两帧之间的Overlap Size的示意图如下所示：
+
+
+![image.png](/images/blog/音频FFT计算流程总结与频谱图解读-2.png)
+
+
+## 语音信号频谱计算流程
+
+
+对于一个语音文件，要生成与其对应的频谱图，通常需要包含以下步骤和流程。
+
+
+### 语音信号的采集与分帧
+
+
+音频采样设备（MIC）以固定的采样率 $f_s$（如16K，32K，44.1K）进行模拟语音信号的采集，根据奈奎斯特采样定理，后续通过FFT能够计算和分析的最大频率对应于 $f_s / 2$。
+
+
+此外，一段语音信号可能有几分钟长，直接对整个文件做 FFT 是没有意义的，因为语音信号的频率始终在随时间变化。因此，在进行FFT计算之前，要先将完整的语音信号序列切成许多小段，每一段称为一个**音频帧 (Frame)**。通常一个音频帧的长度为 N（实际上也就是进行一次FFT计算的点数，即FFT Size），取 2 的幂次方，如512，1024 或 2048。
+
+
+当然，在分帧方面，连续两个音频帧会有一部分的重叠的，例如，第一个音频帧对应于0-1023区间的音频采样，第二个音频帧则对应于320-1352区间的音频采样，以此类推，直到整个音频文件的末尾。
+
+
+### 加窗
+
+
+经过分帧后的每一个音频帧，在进行FFT计算之前，还需要加窗。在对音频序列进行FFT计算时，如果不加窗，默认就是矩形窗，会导致频谱泄漏和混叠。加窗的目的是让一帧信号的幅度在两端渐变到 0，这样可以让频谱上的各个峰更细，不容易糊在一起，从而减轻频谱泄漏和混叠的影响。当然这样的话，一帧信号两端的部分会被削弱，没有像中央的部分那样得到重视。而弥补的办法就是两个连续的音频帧相互重叠。相邻两帧的起始位置的时间差叫做帧移（也就是Hop Size）。
+
+
+下图为在语音信号处理过程中常用的窗函数：
+
+
+![image.png](/images/blog/音频FFT计算流程总结与频谱图解读-3.png)
+
+
+所谓的加窗，就是把音频帧 $x[n]$ 与相同长度的窗函数帧 $w[n]$ 逐点相乘：
+
+
+$$
+x_{windowed}[n] = x[n] \cdot w[n]
+$$
+
+
+其结果就是，这一帧信号的首尾被平滑地压低到了 0，这样就强制实现了首尾衔接，消除了断层，避免信号序列起始点和结束点的幅值不一致导致的跳变。
+
+
+### FFT计算与频谱图
+
+
+接下来就是对加窗后的数字信号序列进行FFT计算，在计算的过程中通过高效的蝶形运算（Butterfly Computation）方式，利用奇偶分解将原本 $O(N^2)$ 的计算量降低到 $O(N \log N)$。
+
+
+对于一个长度为 N 的音频数字序列，FFT 计算结果是相同长度 N 的复数序列。如前所述，因为音频数字序列中全部都是实数，这个长度为 N 的复数序列呈现出镜像对称。
+
+
+$$
+X[k] = \text{Real} + j \cdot \text{Imag}
+$$
+
+
+然后计算每个频点的幅度值： $|X[k]| = \sqrt{\text{Real}^2 + \text{Imag}^2}$，这代表了该频率分量的强度。因为音频在各个频段上分布的能量跨度极大，必须通过对数映射（dB）的方式转换成分贝值来进行表示：$20 \cdot \log_{10}(\text{Magnitude})$。
+
+
+最后，将每一帧计算出的频率分贝能量分布（纵轴，使用颜色表示能量大小）按时间顺序（横轴）排列起来，就得到了线性频谱图。
+
+
+### 梅尔刻度频谱图
+
+
+在数字音频领域中，如果是为了进行语音识别或音乐分析，通常会将普通的线性频率转换为**梅尔刻度 (Mel Scale)**。这是因为人类耳朵对低频的变化比高频更敏感，梅尔刻度能更好地模拟人类的听觉感知。
+
+
+线性频谱图频率轴上的频率分布是均匀的，而梅尔刻度频谱图的频率轴是前疏后密的，其低频部分非常敏感，而在高频部分则非常压缩。人类的听觉是非线性的，对低频信号更为敏感，我们能轻易分辨出 $100\text{Hz}$ 和 $200\text{Hz}$ 的音高区别，但如果两个频率分别是 $10000\text{Hz}$ 和 $10100\text{Hz}$，尽管它们同样相差 $100\text{Hz}$，人耳几乎听不出任何区别。
+
+> 梅尔刻度的定义就是为了让等距的梅尔频率变化在人类听觉上感受也是等距的。
+
+从线性频谱图到梅尔频谱图的转换，并不是简单的坐标轴拉伸，而是通过一组梅尔滤波器组（Mel Filter Banks）对线性频率能量进行重新加权聚合。其大致工作流程是：
+
+1. 首先在频谱上放置一系列三角形滤波器：在低频区，这些三角形很窄，排列很密；在高频区，这些三角形变得很宽，排列很稀疏。
+2. 将一个音频帧整个频段的幅度数据与每一个三角形滤波器相乘并求和：第一个滤波器会收集低频区的能量，输出一个数值；最后一个很宽的滤波器会收集高频区一大片范围的能量，求和后输出一个数值。就得到了这个音频帧的梅尔刻度的能量分布。
+3. 对所有的音频帧均作第二步处理，得到所有音频帧的在不同频段上的梅尔刻度能量分布。
+
+最终，梅尔频谱图上的频点数量取决于梅尔滤波器组的个数，如果之前的线性频谱图中有 1024 个线性频点，通过 40 个梅尔滤波器后，只剩下 40 个梅尔频点。这样的话，梅尔频谱图的横坐标与线性频谱图相同，都等同于音频帧的个数；其纵坐标就变成了由低频到高频的梅尔滤波器组的数量40个。
+
+
+## 语音信号频谱的计算示例
+
+
+下面以语音分类模型(PANNs)代码自带的一个打电话语音文件`R9_ZSCveAHg_7s.wav`为例，使用torchlibrosa库中的Spectrogram和LogmelFilterBank分别进行线性频谱图和梅尔刻度频谱图的生成流程。
+
+
+```python
+import torch
+import librosa
+import numpy as np
+import matplotlib.pyplot as plt
+from torchlibrosa.stft import Spectrogram, LogmelFilterBank
+
+audio_path = "resources/R9_ZSCveAHg_7s.wav" # 语音文件
+
+sample_rate = 32000
+window_size = 1024
+hop_size = 320
+mel_bins = 64
+fmin = 50
+fmax = 14000
+
+# 从wav文件中读取语音信号序列
+waveform, _ = librosa.core.load(audio_path, sr=sample_rate, mono=True)
+print(f"原始音频形状: {waveform.shape}")
+print(f"音频时长: {len(waveform) / sample_rate:.2f} 秒")
+
+waveform = torch.from_numpy(waveform).float()
+waveform = waveform.unsqueeze(0)
+print(f"模型输入形状: {waveform.shape}")
+
+spectrogram_extractor = Spectrogram(
+    n_fft=window_size,
+    hop_length=hop_size,
+    win_length=window_size,
+    window='hann',
+    center=True,
+    pad_mode='reflect',
+    freeze_parameters=True
+)
+
+logmel_extractor = LogmelFilterBank(
+    sr=sample_rate,
+    n_fft=window_size,
+    n_mels=mel_bins,
+    fmin=fmin,
+    fmax=fmax,
+    freeze_parameters=True
+)
+
+with torch.no_grad():
+    spectrogram = spectrogram_extractor(waveform)
+    print(f"频谱图形状: {spectrogram.shape}")
+
+    logmel_spectrogram = logmel_extractor(spectrogram)
+    print(f"Log Mel 频谱图形状: {logmel_spectrogram.shape}")
+
+# 画出频谱图
+fig, axes = plt.subplots(2, 1, figsize=(14, 8))
+
+spectrogram_np = spectrogram.squeeze().numpy()
+spectrogram_plot = spectrogram_np.transpose(1, 0)
+im1 = axes[0].imshow(spectrogram_plot, aspect='auto', origin='lower', cmap='jet')
+axes[0].set_title('Spectrogram (Linear Frequency)')
+axes[0].set_ylabel('Frequency bins ({})'.format(spectrogram_plot.shape[0]))
+axes[0].set_xlabel('Time frames ({})'.format(spectrogram_plot.shape[1]))
+plt.colorbar(im1, ax=axes[0])
+
+logmel_np = logmel_spectrogram.squeeze().numpy()
+logmel_plot = logmel_np.transpose(1, 0)
+im2 = axes[1].imshow(logmel_plot, aspect='auto', origin='lower', cmap='jet')
+axes[1].set_title('Log Mel Spectrogram')
+axes[1].set_ylabel('Mel bins ({})'.format(logmel_plot.shape[0]))
+axes[1].set_xlabel('Time frames ({})'.format(logmel_plot.shape[1]))
+plt.colorbar(im2, ax=axes[1])
+
+plt.tight_layout()
+plt.savefig('spectrogram_visualization.png', dpi=150)
+print("\n频谱图已保存到 spectrogram_visualization.png")
+```
+
+
+通过以上代码绘制的频谱图如下所示：
+
+
+![image.png](/images/blog/音频FFT计算流程总结与频谱图解读-4.png)
+
+
+从上面的频谱图可以看到，无论是上方的线性频谱图，还是下方的梅尔刻度频谱图，其横坐标都是音频帧的索引。这个音频文件的长度是7s，采样率32KHz，单通道，总共包含有224000个采样（7s * 32000=224000）。FFT计算频谱的窗口大小为1024个音频采样点，音频帧间隔（Hop size）的样本数为320，因此最终整个wav文件的224000个音频采样被切分为701个（224000 / 320 +1=701）重叠的音频帧。因此，两个频谱图的横坐标都是连续701个音频帧。
+
+
+线性频谱图的纵坐标方面，因为FFT计算频谱的窗口大小为1024个音频采样点，FFT计算得到的1024个频域结果，因为FFT计算结果是镜像对称的，所以线性频谱图的频点数量就是 $1024 / 2 +1 = 513$. 采样率为32K，每个频点对应的频率就是：
+
+- Index 0: $0\text{Hz}$（直流分量 DC）
+- Index 1: $1 \cdot 32000 / 1024 \approx 31.25\text{Hz}$
+- Index 2: $2 \cdot 32000 / 1024 \approx 62.5\text{Hz}$
+- ...
+- Index 512: $512 \cdot 32000 / 1024 = 16000\text{Hz}$
+
+梅尔频谱图是在线性频谱图的基础上生成，在代码中通过`mel_bins`参数设置梅尔滤波器组的数量为64，按照低频密集、高频稀疏的方式对线性频谱图各个频段的能量进行过滤和汇总，最终在梅尔刻度频谱图的纵坐标上形成64个从低频和高频的能量密度分布。
+
+
+## 参考资料
+
+- [语音信号处理中的“窗函数” - 凌逆战 - 博客园](https://www.cnblogs.com/LXP-Never/p/18175066)
+
+---
+
+# 安全摄像头的Webhooks和HTTP Push功能
+
+> URL: https://pavelhan.tech/zh/article/2026-07-22-the-webhooks-and-http-push-feature-of-security-camera
+> 摘要: 本文介绍了部分安全摄像头产品中所支持的WebHooks和HTTP Push的第三方报警平台的功能，以及该功能实现的架构与通信流程最佳实践。
+
+本文介绍了部分安全摄像头产品中所支持的WebHooks和HTTP Push的第三方报警平台的功能，以及该功能实现的架构与通信流程最佳实践。
+
+
+## 摄像头Webhooks和HTTP Push告警功能
+
+
+常规的摄像头，在通过 PIR 或者 AI（如人形检测、人脸识别、车牌识别）等方式检测到事件后，可以把这个事件的消息以及录像视频推送到自己的云平台，并由自己的云平台转发到用户的手机 APP 上。所有的事件推送流程以及与之相关的事件录像文件都局限于摄像头厂商的封闭生态之中。
+
+
+相比于以上这种传统的只绑定自家 APP 的封闭生态，通过 Webhook 或者 HTTP Push 的功能对外推送事件通知，意味着这个摄像头设备可以直接接入第三方中控系统或安保报警平台。
+
+
+_实际上，Webhook 本身并不是什么高深的新协议或新技术，它的底层逻辑实际上就是：__**当特定事件发生的时候，系统会自动向预先配置好的 HTTP Server 发送一条 HTTP 请求（通常是 POST）来告知事件信息而已。所以在某些系统的配置中，这个功能也被称之为HTTP PUSH、Alarm Upload。**_
+
+
+![6f83a518-7eb6-4b00-b356-b3cf0b863d8f.png](/images/blog/安全摄像头的Webhooks和HTTP-Push功能-1.png)
+
+
+**实际上，绝大部分面向企业级（B2B/SMB）和高端商用的品牌（如海康，大华，Axis，Meraki）都原生支持 Webhook/HTTP 请求推送，而面向纯C端消费级（B2C）的品牌（如Ring，Arlo，Nest，Eufy，Wyze）大多倾向于建立封闭生态，不原生开放 Webhook，这样可以把用户锁定在自己的 App 生态内，并推广自己的云存储订阅服务。**
+
+
+以下是一个典型的安全摄像头系统的 Webhooks 的配置界面：
+
+
+![c00a0634-a6f1-481c-af0e-44f589234235.png](/images/blog/安全摄像头的Webhooks和HTTP-Push功能-2.png)
+
+
+## WebHook实现的两种架构方案
+
+
+针对 WebHook 或者 HTTP Push 的具体实现，主要有端侧直推和云端转发两种技术方案，分别针对于不同的应用场景。
+
+
+端侧直推
+
+
+以下为端侧直推方案的架构：第三方告警服务器的 URL 直接设置到摄像头端，由摄像头内部的固件直接发起 HTTP POST 请求，通过自己的网络将数据直接推给第三方 URL。
+
+
+![ca544108-6ceb-4f9b-8640-225d345f28e7.png](/images/blog/安全摄像头的Webhooks和HTTP-Push功能-3.png)
+
+
+**这种方案的适用场景是对数据隐私要求极高（纯局域网或禁止数据过第三方云）、常电IPC设备。**  
+
+
+其优点是设计架构最简单，该功能不需要依赖于厂商部署专门的云服务，客户数据不经过云服务器的中转，隐私性最好。
+
+
+缺点也很明显，每次发生的告警事件都要在端侧建立 TLS/HTTPS 握手，这个过程对于低功耗电池 IPC 来说极其耗电。而且如果第三方服务器宕机，摄像头端侧的内部系统很难维持长时间的指数退避重试队列，很容易丢消息。
+
+
+云端转发
+
+
+以下是云端转发方案的架构：第三方服务器的URL设置到云端，摄像头通过轻量的长连接协议（如 MQTT、WebSocket）将告警信号发给厂商的云服务器，再由厂商云端服务器组织标准的 HTTP POST Webhook 推送给第三方客户服务器。
+
+
+![19174867-adc4-4e9f-8e1e-a97065931363.png](/images/blog/安全摄像头的Webhooks和HTTP-Push功能-4.png)
+
+
+**这种方案的适用场景是电池类低功耗摄像头、需要高可靠性消息触达的商业化项目。当然相比之下，也是更可靠的方案。**  
+
+
+**其优点更省电，**摄像头端侧只需要发送很小的 MQTT Payload（甚至只发个触发信号），然后就可以快速重新进入休眠状态。而且云端拥有强大的消息队列处理能力（如 Kafka、RabbitMQ），可以轻松实现失败重试、死信队列，这样可以确保告警消息100%送达第三方服务器。另外，这种云云交互的方式安全性也更好，云端可以集中管理各个批次设备的 Webhook URL、密钥和证书等。
+
+
+## WebHooks功能的安全机制
+
+
+因为是与第三方服务器之间进行通信，那么第三方服务器在通过 Webhook 接收事件告警通知时，一个很大的安全性隐患就是被恶意伪造告警。
+
+
+因此在这个第三方告警接入的系统设计上，必须至少包含有以下安全机制（主要有第三方告警服务器端来进行设计）：
+
+- **基于HTTPS 强制加密**：也就是说，Webhook 目标 URL 地址必须是 [`https://`](https://xn--,,camera-l39ljlv5ccxg65igv9e4jt6w4b2g9enfiy9xyme7nb/)[，防止通信链路上的中间人攻击，Camera](https://xn--,,camera-l39ljlv5ccxg65igv9e4jt6w4b2g9enfiy9xyme7nb/) 和 ODM 厂商服务器与第三方告警服务器之间一定要通过 HTTPS 来对通信进行加密且验证服务器身份证的正确性。
+- **通过签名机制 (HMAC-SHA256)对告警消息进行加密保护**：一般是在发送的 HTTP 消息的 Header 中带上一个 `X-Signature`字段。该字段的计算方式为：将 Request Body 与客户在后台设置的 `Secret Key` 进行 HMAC-SHA256 运算，第三方服务器收到后使用相同的密钥进行验签，确认消息确实来源于合法的设备或 ODM 厂商的云端。
+
+Webhook 的 Payload 需要结构清晰，以方便服务器端收到后解析。此外，因为告警事件对应的事件缩略图和录像文件所占的体积较大，Webhook 的 JSON 结构中一般只包含缩略图 URL 或视频下载链接，第三方系统收到 Webhook 后，再通过Payload中包含的链接按需拉取媒体文件。
+
+
+以下是目前业界标准的 JSON 定义参考：
+
+
+```json
+{
+  "eventId": "evt_123456789",
+  "timestamp": 1716382910,
+  "deviceSn": "CAM-5G-889900",
+  "eventType": "human_detection", // 事件类型：PIR, motion, human, vehicle, face
+  "data": {
+    "snapshotUrl": "https://cdn.your-odm.com/xxx.jpg", // 事件截图
+    "videoClipUrl": "https://cdn.your-odm.com/xxx.mp4", // 事件录像文件
+    "batteryLevel": 85, //电池电量
+    "signalStrength": 4 // WiFi 信号强度
+  }
+}
+```
+
+
+## 参考资料
+
+- [How-to Setup IP Camera API Webhook Events](https://videos.cctvcamerapros.com/support/topic/ip-camera-api-webbooks)
+

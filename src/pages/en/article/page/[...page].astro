@@ -38,7 +38,7 @@ const canonicalUrl = currentPage === 1
   : `${config.site.base_url}/en/article/page/${currentPage}`;
 ---
 
-<Base title={`Articles - Page ${currentPage}`} canonical={canonicalUrl} noindex={true}>
+<Base title={`Articles - Page ${currentPage}`} canonical={canonicalUrl} noindex={true} lang="en">
   <section class="section">
     <div class="container">
       <h1 class="h2 mb-16 text-center">All Articles</h1>

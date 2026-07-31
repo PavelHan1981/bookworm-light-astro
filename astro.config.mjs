@@ -20,6 +20,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
+      lastmod: new Date(),
       filter: (page) => {
         const url = new URL(page);
         const p = url.pathname.replace(/\/$/, "");

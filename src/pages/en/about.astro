@@ -9,12 +9,51 @@ const aboutEntries = await getCollection("about");
 const entry = aboutEntries.find((e) => e.id.startsWith("en/")) || aboutEntries[0];
 const { Content } = await render(entry);
 const { title, meta_title, image, tech_tags, competencies } = entry.data;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${config.site.base_url}/#person`,
+      "name": "Pavel Han",
+      "url": `${config.site.base_url}/en/about`,
+      "image": image ? `${config.site.base_url}${image}` : `${config.site.base_url}${config.metadata.meta_image}`,
+      "jobTitle": "Technical Specialist / Creator",
+      "description": config.metadata.meta_description,
+      "sameAs": [
+        "https://github.com/PavelHan1981",
+        "https://pavelhan.tech",
+        "WeChat Official Account: Pavel Han"
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": `${config.site.base_url}/en`
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "About Me",
+          "item": `${config.site.base_url}/en/about`
+        }
+      ]
+    }
+  ]
+};
 ---
 
 <Base
   title="About Me - Pavel Han"
   meta_title="About Pavel Han"
   image={image}
+  lang="en"
+  jsonLd={JSON.stringify(jsonLd)}
   canonical={`${config.site.base_url}/en/about`}
 >
   <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/about`} />

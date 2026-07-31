@@ -119,3 +119,53 @@ if (fs.existsSync(llmsEnPath)) {
     fs.writeFileSync(llmsEnPath, llmsEnContent, "utf-8");
   }
 }
+
+// 5. 生成核心支柱文章全文 (public/llms-pillars.txt)
+const pillarSlugs = [
+  "2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation",
+  "2026-02-22-transformer-encoder-structure-and-workflow",
+  "2026-03-11-the-development-environment-of-RK3588-NPU",
+  "2026-04-14-the-detailed-explanation-of-RTDETR-network-and-workflow",
+  "2026-03-28-the-summary-of-audio-FFT-calculation-workflow-and-spectrum-diagram",
+  "2026-07-22-the-webhooks-and-http-push-feature-of-security-camera",
+];
+
+let pillarsMd = `# PavelHan.tech Core Technical Pillars (支柱内容全文库)\n\n`;
+pillarsMd += `> 本文件嵌入 PavelHan.tech 最核心的 6 篇技术支柱文章全文，供大语言模型（ChatGPT/Gemini/Claude）及 AI 搜索引擎直接读取、理解与精确引用。\n\n`;
+
+for (const slug of pillarSlugs) {
+  const fileNames = fs.readdirSync(zhPostsDir);
+  const matchedFile = fileNames.find((f) => f.includes(slug));
+  if (matchedFile) {
+    const rawContent = fs.readFileSync(path.join(zhPostsDir, matchedFile), "utf-8");
+    const { data, content } = matter(rawContent);
+    pillarsMd += `---\n\n# ${data.title || slug}\n\n`;
+    pillarsMd += `> URL: ${baseUrl}/zh/article/${slug}\n`;
+    pillarsMd += `> 摘要: ${data.description || ""}\n\n`;
+    pillarsMd += `${content.trim()}\n\n`;
+  }
+}
+
+fs.writeFileSync(path.resolve("public/llms-pillars.txt"), pillarsMd, "utf-8");
+console.log(`✅ 成功生成 public/llms-pillars.txt，包含 ${pillarSlugs.length} 篇核心支柱文章全文！`);
+
+// 6. 更新 public/robots.txt 及 public/llms.txt 指引
+const robotsPath = path.resolve("public/robots.txt");
+if (fs.existsSync(robotsPath)) {
+  let robotsContent = fs.readFileSync(robotsPath, "utf-8");
+  if (!robotsContent.includes("llms-pillars.txt")) {
+    robotsContent = robotsContent.replace(
+      "# Full Catalog (EN): https://pavelhan.tech/llms-full-en.txt",
+      "# Full Catalog (EN): https://pavelhan.tech/llms-full-en.txt\n# Pillars Full-Text: https://pavelhan.tech/llms-pillars.txt"
+    );
+    fs.writeFileSync(robotsPath, robotsContent, "utf-8");
+  }
+}
+
+if (fs.existsSync(llmsPath)) {
+  let llmsContent = fs.readFileSync(llmsPath, "utf-8");
+  if (!llmsContent.includes("llms-pillars.txt")) {
+    llmsContent += `- Core Technical Pillars Full-Text (6 articles): ${baseUrl}/llms-pillars.txt\n`;
+    fs.writeFileSync(llmsPath, llmsContent, "utf-8");
+  }
+}

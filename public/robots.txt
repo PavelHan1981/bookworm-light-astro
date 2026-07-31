@@ -10,6 +10,7 @@ Sitemap: https://pavelhan.tech/sitemap-index.xml
 # Curated Guide (EN): https://pavelhan.tech/llms-en.txt
 # Full Catalog (ZH): https://pavelhan.tech/llms-full.txt
 # Full Catalog (EN): https://pavelhan.tech/llms-full-en.txt
+# Pillars Full-Text: https://pavelhan.tech/llms-pillars.txt
 
 # RSS Feeds
 # Global RSS: https://pavelhan.tech/rss.xml

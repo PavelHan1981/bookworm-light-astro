@@ -91,6 +91,16 @@ const postsCollection = defineCollection({
     authors: z.array(z.string()).default(() => ["Admin"]),
     tags: z.array(z.string()).default(() => ["others"]),
     draft: z.boolean().optional(),
+    faq: z
+      .array(
+        z.object({
+          q: z.string().optional(),
+          question: z.string().optional(),
+          a: z.string().optional(),
+          answer: z.string().optional(),
+        })
+      )
+      .optional(),
   }),
 });
 
