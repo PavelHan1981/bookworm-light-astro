@@ -7,7 +7,3 @@
 # 旧版无语言前缀的文章路径 301 到中文版本（保留历史权重，避免权重丢失）
 /article  /zh/article  301
 /article/*  /zh/article/:splat  301
-
-# 历史 slug 含 Unicode 右单引号（%E2%80%99），301 到 ASCII 规范形式
-/zh/article/2025-03-10-What%E2%80%99s-MCP-in-LLM-modal  /zh/article/2025-03-10-Whats-MCP-in-LLM-modal  301
-/en/article/2025-03-10-What%E2%80%99s-MCP-in-LLM-modal  /en/article/2025-03-10-Whats-MCP-in-LLM-modal  301
