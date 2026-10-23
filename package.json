@@ -8,7 +8,7 @@
     "dev": "astro dev",
     "sync": "node sync.mjs",
     "deploy": "node auto-deploy.mjs",
-    "build": "node generate-llms.mjs && astro build",
+    "build": "node generate-llms.mjs && astro build --force",
     "preview": "astro preview",
     "format": "prettier -w .",
     "check": "astro check",
