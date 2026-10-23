@@ -1,3 +1,6 @@
+import fs from "node:fs";
+import path from "node:path";
+import matter from "gray-matter";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
@@ -10,6 +13,46 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import config from "./src/config/config.json";
 
+// 构建「文章路径 → 内容最后修改时间」的映射，供 sitemap 输出真实的 lastmod。
+// 不能用文件 mtime：CI 构建 checkout 时会把所有文件的 mtime 重置为构建时刻，
+// 那等于把全站 lastmod 都写成"今天"，Google 会直接忽略整个字段。
+function buildLastmodMap() {
+  const map = new Map();
+  const sources = [
+    { dir: "src/content/posts/zh", prefix: "/zh/article/" },
+    { dir: "src/content/posts/en", prefix: "/en/article/" },
+  ];
+
+  for (const { dir, prefix } of sources) {
+    if (!fs.existsSync(dir)) continue;
+
+    for (const file of fs.readdirSync(dir)) {
+      if (!/\.mdx?$/.test(file)) continue;
+
+      const full = path.join(dir, file);
+      let data;
+      try {
+        data = matter(fs.readFileSync(full, "utf-8")).data;
+      } catch {
+        continue;
+      }
+
+      const slug = data.slug || file.replace(/\.mdx?$/, "");
+      const raw = data.dateModified || data.date;
+      if (!raw) continue;
+
+      const date = new Date(raw);
+      if (Number.isNaN(date.getTime())) continue;
+
+      map.set(`${prefix}${slug}`, date);
+    }
+  }
+
+  return map;
+}
+
+const lastmodMap = buildLastmodMap();
+
 // https://astro.build/config
 export default defineConfig({
   site: config.site.base_url ? config.site.base_url : "http://examplesite.com",
@@ -20,7 +63,6 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      lastmod: new Date(),
       filter: (page) => {
         const url = new URL(page);
         const p = url.pathname.replace(/\/$/, "");
@@ -50,6 +92,27 @@ export default defineConfig({
         }
 
         return true;
+      },
+      // 逐条写入真实的最后修改时间；没有日期的页面不输出 lastmod，
+      // 这比全站统一输出构建时间更诚实（后者会被 Google 直接忽略）。
+      serialize(item) {
+        const { pathname } = new URL(item.url);
+        let p = pathname;
+        try {
+          p = decodeURIComponent(pathname);
+        } catch {
+          // 解码失败则保留原始形式参与匹配
+        }
+        p = p.replace(/\/$/, "");
+
+        const date = lastmodMap.get(p);
+        if (date) {
+          item.lastmod = date.toISOString();
+        } else {
+          delete item.lastmod;
+        }
+
+        return item;
       },
     }),
     AutoImport({
