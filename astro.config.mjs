@@ -86,7 +86,9 @@ export default defineConfig({
           p === "/elements" ||
           p === "/article" ||
           p === "/search" ||
-          p.startsWith("/article/")
+          p.startsWith("/article/") ||
+          // 主题自带的 UI 组件演示页（含 /zh/elements、/en/elements）已 noindex
+          p.endsWith("/elements")
         ) {
           return false;
         }

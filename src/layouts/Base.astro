@@ -1,7 +1,6 @@
 ---
 import TwSizeIndicator from "@/components/TwSizeIndicator.astro";
 import config from "@/config/config.json";
-import theme from "@/config/theme.json";
 import { plainify } from "@/lib/utils/textConverter";
 import Footer from "@/partials/Footer.astro";
 import Header from "@/partials/Header.astro";
@@ -10,13 +9,7 @@ import {
   GoogleTagmanager,
   GoogleTagmanagerNoscript,
 } from "@digi4care/astro-google-tagmanager";
-import { Font } from "astro:assets";
 import { ClientRouter } from "astro:transitions";
-
-// font families - extract font names for Font component (filter out type keys)
-const fontEntries = Object.entries(theme.fonts.font_family).filter(
-  ([key]) => !key.includes("_type"),
-);
 
 // types for frontmatters
 export interface Props {
@@ -25,6 +18,8 @@ export interface Props {
   description?: string;
   image?: string;
   noindex?: boolean;
+  /** 直接指定 robots 内容，优先级高于 noindex/enNoindex（如分页需要 noindex,follow） */
+  robots?: string;
   canonical?: string;
   jsonLd?: string;
   lang?: string;
@@ -43,6 +38,7 @@ const {
   description,
   image,
   noindex,
+  robots,
   canonical,
   jsonLd,
   lang,
@@ -70,6 +66,8 @@ const enNoindex =
 <!doctype html>
 <html lang={computedLang}>
   <head>
+    <meta charset="utf-8" />
+
     <!-- google tag manager -->
     {
       config.google_tag_manager.enable && (
@@ -119,15 +117,21 @@ const enNoindex =
       media="(prefers-color-scheme: dark)"
       content="#000"
     />
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-    <!-- google font css with preconnect -->
+    <!-- google font css with preconnect：改为非阻塞，避免第三方样式表卡住首屏渲染 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap"
       rel="stylesheet"
+      media="print"
+      onload="this.media='all'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <!-- responsive meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -206,9 +210,7 @@ const enNoindex =
 
 
     <!-- title -->
-    <title>
-      {plainify(meta_title ? meta_title : title ? title : config.site.title)}
-    </title>
+    <title>{plainify(meta_title ? meta_title : title ? title : config.site.title)}</title>
 
     <!-- canonical url -->
     <link
@@ -229,10 +231,10 @@ const enNoindex =
     <slot name="head" />
 
     <!-- noindex robots -->
-    {(noindex || enNoindex) && (
+    {(robots || noindex || enNoindex) && (
       <meta
         name="robots"
-        content={noindex ? "noindex,nofollow" : "noindex,follow"}
+        content={robots ?? (noindex ? "noindex,nofollow" : "noindex,follow")}
       />
     )}
 

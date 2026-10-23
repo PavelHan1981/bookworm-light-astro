@@ -2,6 +2,17 @@
 import config from "@/config/config.json";
 import menu from "@/config/menu.json";
 import { markdownify } from "@/lib/utils/textConverter";
+
+// 与 Header 保持一致：footer 链接也要补语言前缀。
+// 否则 /、/article 每次点击都要多走一次 301，/about 则落到 noindex 的旧页面上。
+const pathname = Astro.url.pathname;
+const isEn = pathname.startsWith("/en");
+const langPrefix = isEn ? "/en" : "/zh";
+
+const localizedFooter = menu.footer.map((item) => ({
+  ...item,
+  url: item.url === "/" ? langPrefix : `${langPrefix}${item.url}`,
+}));
 ---
 
 <footer class="section bg-dark">
@@ -9,7 +20,7 @@ import { markdownify } from "@/lib/utils/textConverter";
     {/* footer menu */}
     <ul class="mb-8 space-x-4">
       {
-        menu.footer.map((menu) => (
+        localizedFooter.map((menu) => (
           <li class="inline-block">
             <a
               href={menu.url}

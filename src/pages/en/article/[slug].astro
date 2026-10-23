@@ -147,8 +147,6 @@ const hasMath = Boolean(post.body && (/\$|\\\(|\\\[|\\begin/.test(post.body)));
   jsonLd={JSON.stringify(jsonLd)}
   canonical={`${config.site.base_url}/en/article/${slug}`}
 >
-  <link slot="head" rel="alternate" hreflang="en" href={`${config.site.base_url}/en/article/${slug}`} />
-  <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/article/${slug}`} />
-  <link slot="head" rel="alternate" hreflang="x-default" href={`${config.site.base_url}/zh/article/${slug}`} />
+  {/* en 全站 noindex，不再输出 hreflang —— 单向注解会触发 GSC 的“缺少返回链接”告警 */}
   <PostSingle post={post} />
 </Base>

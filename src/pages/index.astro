@@ -1,6 +1,6 @@
 ---
 import Base from "@/layouts/Base.astro";
-import Excerpts from "@/helpers/Excerpts";
+import Quotes from "@/helpers/Quotes.astro";
 import config from "@/config/config.json";
 
 // 站点根路径。/ 由 public/_redirects 以 301 落到 /zh；
@@ -55,7 +55,7 @@ const jsonLd = {
     <div class="container relative z-10 text-center">
       <!-- Excerpts -->
       <div class="max-w-4xl mx-auto animate-intro-top">
-        <Excerpts client:load />
+        <Quotes />
       </div>
 
       <!-- Vertical Line -->

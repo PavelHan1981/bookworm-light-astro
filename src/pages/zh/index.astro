@@ -1,7 +1,36 @@
 ---
 import Base from "@/layouts/Base.astro";
-import Excerpts from "@/helpers/Excerpts";
+import Quotes from "@/helpers/Quotes.astro";
 import config from "@/config/config.json";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import { excerpt, humanize, slugify } from "@/lib/utils/textConverter";
+import dateFormat from "@/lib/utils/dateFormat";
+
+const posts = await getSinglePage("posts", "zh");
+const sortedPosts = sortByDate(posts);
+const latestPosts = sortedPosts.slice(0, 6);
+
+// 主题入口：按文章数降序，避免首页把冷门分类排在最前
+const categoryMap = new Map<string, { name: string; count: number }>();
+for (const post of sortedPosts) {
+  for (const raw of post.data.categories ?? []) {
+    const key = slugify(raw);
+    if (!key) continue;
+    const entry = categoryMap.get(key) ?? { name: humanize(raw), count: 0 };
+    entry.count += 1;
+    categoryMap.set(key, entry);
+  }
+}
+const categories = [...categoryMap.entries()].sort(
+  (a, b) => b[1].count - a[1].count,
+);
+
+const postUrl = (post: (typeof posts)[number]) => {
+  const slug =
+    post.data.slug || post.id.replace(/^zh\//, "").replace(/\.mdx?$/, "");
+  return `/zh/article/${slug}`;
+};
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -9,28 +38,38 @@ const jsonLd = {
     {
       "@type": "WebSite",
       "@id": `${config.site.base_url}/#website`,
-      "url": `${config.site.base_url}/zh`,
-      "name": "Pavel Han - 技术博客",
-      "description": config.metadata.meta_description,
-      "inLanguage": "zh-CN",
-      "potentialAction": {
+      url: `${config.site.base_url}/zh`,
+      name: "Pavel Han - 技术博客",
+      description: config.metadata.meta_description,
+      inLanguage: "zh-CN",
+      potentialAction: {
         "@type": "SearchAction",
-        "target": `${config.site.base_url}/search?q={search_term_string}`,
-        "query-input": "required name=search_term_string"
-      }
+        target: `${config.site.base_url}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
     },
     {
       "@type": "Organization",
       "@id": `${config.site.base_url}/#organization`,
-      "name": "Pavel Han",
-      "url": config.site.base_url,
-      "logo": `${config.site.base_url}${config.site.logo}`,
-      "sameAs": [
+      name: "Pavel Han",
+      url: config.site.base_url,
+      logo: `${config.site.base_url}${config.site.logo}`,
+      sameAs: [
         "https://github.com/PavelHan1981",
-        "WeChat Official Account: Pavel Han"
-      ]
-    }
-  ]
+        "WeChat Official Account: Pavel Han",
+      ],
+    },
+    {
+      "@type": "ItemList",
+      name: "最新文章",
+      itemListElement: latestPosts.map((post, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${config.site.base_url}${postUrl(post)}`,
+        name: post.data.title,
+      })),
+    },
+  ],
 };
 ---
 
@@ -40,59 +79,135 @@ const jsonLd = {
   jsonLd={JSON.stringify(jsonLd)}
   canonical={`${config.site.base_url}/zh`}
 >
-  <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh`} />
-  <link slot="head" rel="alternate" hreflang="x-default" href={`${config.site.base_url}/zh`} />
-  <section class="section relative overflow-hidden flex flex-col justify-center min-h-[85vh] bg-[radial-gradient(circle_at_50%_50%,rgba(255,248,230,0.4)_0%,rgba(255,255,255,0)_70%)]">
-    <!-- Grainy Texture Overlay -->
-    <div class="absolute inset-0 z-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+  <link
+    slot="head"
+    rel="alternate"
+    hreflang="zh"
+    href={`${config.site.base_url}/zh`}
+  />
+  <link
+    slot="head"
+    rel="alternate"
+    hreflang="x-default"
+    href={`${config.site.base_url}/zh`}
+  />
 
-    <!-- Floating Decor Elements -->
-    <div class="absolute top-1/4 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
-    <div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-blue-400/5 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
-    
+  <!-- Hero：给首页一个明确的 H1 与站点定位 -->
+  <section
+    class="section relative overflow-hidden pt-20 pb-16 md:pt-28 bg-[radial-gradient(circle_at_50%_30%,rgba(255,248,230,0.5)_0%,rgba(255,255,255,0)_70%)]"
+  >
     <div class="container relative z-10 text-center">
-      <!-- Excerpts -->
-      <div class="max-w-4xl mx-auto animate-intro-top">
-        <Excerpts client:load />
+      <p
+        class="mb-6 text-xs font-medium uppercase tracking-[0.25em] text-text-light"
+      >
+        嵌入式 Linux · Camera ISP · 音视频编解码
+      </p>
+
+      <h1
+        class="mx-auto max-w-3xl text-3xl font-bold leading-tight text-dark md:text-5xl"
+      >
+        从底层原理理解技术
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text">
+        记录嵌入式 Linux、Camera 与 ISP、音视频编解码、边缘 AI 的一线实践。
+        不满足于“能跑起来”，而是把每一层都拆开看明白。
+      </p>
+
+      <div class="mx-auto mt-10 max-w-4xl">
+        <Quotes />
       </div>
-      
-      <!-- Vertical Line -->
-      <div class="w-[1px] h-24 bg-gradient-to-b from-primary/30 to-transparent mx-auto mt-8 mb-12 animate-grow-y"></div>
-      
-      <!-- Slogan -->
-      <div class="animate-intro-bottom inline-block" style="animation-delay: 0.6s;">
-        <p class="text-xl md:text-2xl font-bold tracking-[0.1em] text-black mb-4">
-          尝试从底层原理的角度去理解和解释技术问题
-        </p>
-        <div class="w-full h-[2px] bg-green-500/40 rounded-full"></div>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/zh/article"
+          class="inline-block rounded-lg bg-primary px-6 py-3 font-semibold text-white transition hover:opacity-90"
+        >
+          浏览 {posts.length} 篇文章
+        </a>
+        <a
+          href="/zh/about"
+          class="inline-block rounded-lg border border-neutral-300 px-6 py-3 font-semibold text-dark transition hover:border-primary hover:text-primary"
+        >
+          关于作者
+        </a>
       </div>
     </div>
   </section>
 
-  <style>
-    @keyframes introTop {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes introBottom {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes growY {
-      from { height: 0; opacity: 0; }
-      to { height: 6rem; opacity: 1; }
-    }
-    
-    .animate-intro-top {
-      animation: introTop 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .animate-intro-bottom {
-      opacity: 0;
-      animation: introBottom 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    }
-    .animate-grow-y {
-      opacity: 0;
-      animation: growY 1.5s cubic-bezier(0.22, 1, 0.36, 1) 0.4s forwards;
-    }
-  </style>
+  <!-- 最新文章：首页的核心内容出口 -->
+  <section class="section pt-4">
+    <div class="container">
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <h2 class="h3 mb-0">最新文章</h2>
+        <a
+          href="/zh/article"
+          class="font-medium text-primary transition hover:opacity-80"
+        >
+          查看全部
+        </a>
+      </div>
+
+      <div class="row gy-5 gx-4">
+        {
+          latestPosts.map((post) => (
+            <div class="col-12 sm:col-6">
+              <article class="h-full">
+                <ul class="mb-3 flex flex-wrap items-center gap-4 text-sm text-text">
+                  <li class="flex items-center font-medium">
+                    <time datetime={new Date(post.data.date!).toISOString()}>
+                      {dateFormat(post.data.date!)}
+                    </time>
+                  </li>
+                  {(post.data.categories ?? []).slice(0, 2).map((category) => (
+                    <li>
+                      <a
+                        href={`/categories/${slugify(category)}`}
+                        class="font-medium hover:text-primary"
+                      >
+                        {humanize(category)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <h3 class="mb-3 text-xl font-semibold leading-snug">
+                  <a
+                    href={postUrl(post)}
+                    class="block transition-colors duration-300 hover:text-primary"
+                  >
+                    {post.data.title}
+                  </a>
+                </h3>
+                <p class="line-clamp-2 text-text">
+                  {excerpt(post.body ?? "", 120)}
+                </p>
+              </article>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 主题入口：把首页权重分发到分类枢纽 -->
+  <section class="section pt-0">
+    <div class="container">
+      <h2 class="h3 mb-8">按主题浏览</h2>
+      <ul class="flex flex-wrap gap-3">
+        {
+          categories.map(([slug, meta]) => (
+            <li>
+              <a
+                href={`/categories/${slug}`}
+                class="inline-flex items-center gap-2 rounded-lg bg-light px-4 py-2 font-medium text-dark transition hover:text-primary"
+              >
+                {meta.name}
+                <span class="text-sm text-text-light">{meta.count}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
 </Base>

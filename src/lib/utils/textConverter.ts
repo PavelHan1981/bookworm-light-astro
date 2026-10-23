@@ -73,3 +73,12 @@ export const plainify = (content: string): string => {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'");
 };
+
+// excerpt：列表页摘要，必须在服务端截断。
+// 之前列表页直接输出 plainify(post.body) 再用 CSS line-clamp-2 视觉截断，
+// 结果是整篇正文都被写进 HTML（分类页因此膨胀到 700KB+）。
+export const excerpt = (content: string, limit = 140): string => {
+  const text = plainify(content).replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  return text.length > limit ? `${text.slice(0, limit)}…` : text;
+};

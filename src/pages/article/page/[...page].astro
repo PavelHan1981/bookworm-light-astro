@@ -35,7 +35,10 @@ const indexOfFirstPost = indexOfLastPost - pagination;
 const currentPosts = sortedPosts.slice(indexOfFirstPost, indexOfLastPost);
 ---
 
-<Base title={`Articles - Page ${currentPage}`} noindex={true}>
+<Base
+  title={`Articles - Page ${currentPage}`}
+  robots="noindex,follow"
+>
   <section class="section">
     <div class="container">
       <h1 class="h2 mb-16 text-center">All Articles</h1>

@@ -19,9 +19,7 @@ const { Content } = await render(page);
   lang="en"
   canonical={`${config.site.base_url}/en/elements`}
 >
-  <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/elements`} />
-  <link slot="head" rel="alternate" hreflang="en" href={`${config.site.base_url}/en/elements`} />
-  <link slot="head" rel="alternate" hreflang="x-default" href={`${config.site.base_url}/zh/elements`} />
+  {/* en 全站 noindex，不输出 hreflang */}
   <section class="section">
     <div class="container">
       <h1 set:html={markdownify(title)} class="h2 page-heading" />

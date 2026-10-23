@@ -17,9 +17,9 @@ const { Content } = await render(page);
   description={description}
   image={image}
   canonical={`${config.site.base_url}/zh/elements`}
+  noindex={true}
 >
-  <link slot="head" rel="alternate" hreflang="zh" href={`${config.site.base_url}/zh/elements`} />
-  <link slot="head" rel="alternate" hreflang="x-default" href={`${config.site.base_url}/zh/elements`} />
+  {/* 主题自带的 UI 组件演示页，无检索价值，不进索引也不声明 hreflang */}
   <section class="section">
     <div class="container">
       <h1 set:html={markdownify(title)} class="h2 page-heading" />
