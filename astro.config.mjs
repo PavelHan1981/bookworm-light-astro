@@ -24,6 +24,19 @@ export default defineConfig({
       filter: (page) => {
         const url = new URL(page);
         const p = url.pathname.replace(/\/$/, "");
+
+        // 英文版为机器翻译，已统一输出 noindex，不应出现在 sitemap 中
+        const enIndexable = config.settings.en_indexable !== false;
+        if (!enIndexable && (p === "/en" || p.startsWith("/en/"))) {
+          return false;
+        }
+
+        // 分页页面本身是 noindex（含语言前缀的 /zh|/en/article/page/N）
+        if (p.startsWith("/page/") || /^\/(?:en|zh)?\/?article\/page\//.test(p)) {
+          return false;
+        }
+
+        // 无语言前缀的旧路径与工具页
         if (
           p === "" ||
           p === "/about" ||
@@ -31,11 +44,11 @@ export default defineConfig({
           p === "/elements" ||
           p === "/article" ||
           p === "/search" ||
-          p.startsWith("/article/") ||
-          p.startsWith("/page/")
+          p.startsWith("/article/")
         ) {
           return false;
         }
+
         return true;
       },
     }),

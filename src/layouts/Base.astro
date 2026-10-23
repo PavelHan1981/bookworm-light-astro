@@ -60,6 +60,11 @@ const computedLang =
   lang ?? (Astro.url.pathname.startsWith("/en") ? "en" : "zh-CN");
 const ogLocale = computedLang.startsWith("en") ? "en_US" : "zh_CN";
 const ogLocaleAlternate = computedLang.startsWith("en") ? "zh_CN" : "en_US";
+
+// 英文版目前为机器翻译，通过 config.settings.en_indexable 统一控制是否参与索引。
+// 关闭时输出 noindex,follow —— 不索引，但仍允许爬虫沿链接传递权重。
+const enNoindex =
+  config.settings.en_indexable === false && computedLang.startsWith("en");
 ---
 
 <!doctype html>
@@ -224,7 +229,12 @@ const ogLocaleAlternate = computedLang.startsWith("en") ? "zh_CN" : "en_US";
     <slot name="head" />
 
     <!-- noindex robots -->
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {(noindex || enNoindex) && (
+      <meta
+        name="robots"
+        content={noindex ? "noindex,nofollow" : "noindex,follow"}
+      />
+    )}
 
     <!-- meta-description -->
     <meta
