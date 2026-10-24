@@ -7,7 +7,7 @@
 # 详细总结毫米波雷达FMCW的工作原理与计算过程
 
 > URL: https://pavelhan.tech/zh/article/2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation
-> 摘要: 在
+> 摘要: 详细拆解毫米波雷达 FMCW（Frequency Modulated Continuous Wave，调频连续波）模式的工作原理：Chirp 信号的组织结构、混频与中频信号生成、距离 FFT 与多普勒 FFT 的解算流程，以及多目标场景下的距离-多普勒图构建。
 
 在 [一文搞懂mmWave Sensing雷达技术的工作原理](https://pavelhan.tech/zh/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing/)一文中，对雷达以及毫米波雷达mmWave的基本工作原理和两种工作模式的计算过程进行了简要的总结。本文主要针对mmWave Sensing的FMCW模式的工作原理以及距离和速度的计算流程进行详细的整理，从而对该工作模式雷达的概念和工作过程建立更深刻的理解。
 

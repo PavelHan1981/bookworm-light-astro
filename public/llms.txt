@@ -38,6 +38,7 @@
 - [Google EddyStone BLE 广播协议详解](https://pavelhan.tech/zh/article/2026-04-13-the-detailed-summary-of-Google-EddyStone-BLE-advertising-protocol): 低功耗蓝牙广播数据包格式（UID, URL, TLM）与解析逻辑。
 - [NFC 近场通信技术全面总结](https://pavelhan.tech/zh/article/2026-06-22-the-comprehensive-summary-of-NFC): 13.56MHz 电磁感应原理、Tag 类型、NDEF 数据格式与读写流程。
 - [芯片内部结温 (Junction Temperature) 的计算原理与工程实战](https://pavelhan.tech/zh/article/2026-06-15-How-to-calculate-the-internal-junction-temperature-in-chips): 热阻（RthJA, RthJC）、功耗与热平衡公式求解。
+- [一文入门 eSIM 技术](https://pavelhan.tech/zh/article/2026-10-22-the-summary-of-eSIM): eSIM 物理封装形态（MFF2/MFF1）、LPA 架构与核心术语、首次 Profile 下载、动态切卡与跨区域回滚、RSP 远程写卡全流程，结合移远 RG255C 等 5G RedCap 模组实践。
 
 ## Language Versions & Links
 - English LLM Guide: https://pavelhan.tech/llms-en.txt
