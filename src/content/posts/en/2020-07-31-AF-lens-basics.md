@@ -4,7 +4,7 @@ slug: "2020-07-31-AF-lens-basics"
 description: "This article briefly summarizes the differences between digital zoom and optical zoom, and their specific technical implementation principles."
 date: 2020-07-31T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio/Video"]
+categories: ["Audio & Video"]
 tags: ["Audio/Video","Auto Focus"]
 draft: false
 ---

@@ -4,7 +4,7 @@ slug: "2021-02-01-wifi-lowpower"
 description: "This article summarizes the Wi-Fi low-power modes, workflows, and state transitions defined in the 802.11 specification."
 date: 2021-02-01T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Wi-Fi"]
+categories: ["WiFi"]
 tags: ["Wireless Communication","Wi-Fi"]
 draft: false
 ---

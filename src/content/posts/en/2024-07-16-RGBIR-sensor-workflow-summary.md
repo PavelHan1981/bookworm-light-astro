@@ -4,7 +4,7 @@ slug: "2024-07-16-RGBIR-sensor-workflow-summary"
 description: "This article compares the differences between Bayer RGB image sensors commonly used in the IPC field and RGB-IR image sensors. Based on the components of the RGB-IR sensor image processing system and several typical RGB-IR image applications, it provides a preliminary summary of the technical working principles and applications of RGB-IR image sensors."
 date: 2024-07-16T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio and Video"]
+categories: ["Audio & Video"]
 tags: ["Image Sensor","Audio and Video"]
 draft: false
 ---

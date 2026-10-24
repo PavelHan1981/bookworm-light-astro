@@ -4,7 +4,7 @@ slug: "2025-05-01-the-summary-of-lens-shading-issue"
 description: "This article provides a detailed summary of the pervasive Lens Shading issue in optical imaging, analyzing the root causes and organizing the strategies for resolving it during camera product image tuning."
 date: 2025-05-01T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio and Video"]
+categories: ["Audio & Video"]
 tags: ["Audio and Video", "Lens"]
 draft: false
 ---

@@ -4,7 +4,7 @@ slug: "2025-01-20-the-study-of-RF-components"
 description: "This note provides a brief summary of the basic working principles and applications of various common component circuits in wireless radio frequency (RF) circuits, laying a solid foundation for understanding and designing complete RF circuit system architectures in the future."
 date: 2025-01-20T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Wireless Communications"]
+categories: ["Wireless Communication"]
 tags: ["Hardware", "Wireless Communications"]
 draft: false
 ---

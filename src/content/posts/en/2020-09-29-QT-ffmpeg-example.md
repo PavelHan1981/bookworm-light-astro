@@ -4,7 +4,7 @@ slug: "2020-09-29-QT-ffmpeg-example"
 description: "This article summarizes a simple example of developing a player using QT and ffmpeg."
 date: 2020-09-29T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Multimedia"]
+categories: ["Audio & Video"]
 tags: ["ffmpeg","QT"]
 draft: false
 ---

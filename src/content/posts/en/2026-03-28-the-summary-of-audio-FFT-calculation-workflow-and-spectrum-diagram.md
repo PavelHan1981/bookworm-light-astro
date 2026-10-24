@@ -4,7 +4,7 @@ slug: "2026-03-28-the-summary-of-audio-FFT-calculation-workflow-and-spectrum-dia
 description: "This article summarizes the principles, parameters, and calculation workflows for performing FFT on speech signal sequences to obtain their corresponding spectra. It also provides a Python example to compute and interpret the spectrogram of a WAV file."
 date: 2026-03-28T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio/Video"]
+categories: ["Audio & Video"]
 tags: ["Audio", "Audio/Video", "AudioCodec"]
 draft: false
 ---

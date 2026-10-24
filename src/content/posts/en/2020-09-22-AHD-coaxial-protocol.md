@@ -4,7 +4,7 @@ slug: "2020-09-22-AHD-coaxial-protocol"
 description: "This article summarizes the Coaxial protocol used for reverse control of PTZ and other devices on AHD cameras via coaxial cable."
 date: 2020-09-22T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio/Video"]
+categories: ["Audio & Video"]
 tags: ["Audio/Video","AHD"]
 draft: false
 ---

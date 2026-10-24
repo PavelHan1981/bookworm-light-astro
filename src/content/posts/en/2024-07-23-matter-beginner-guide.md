@@ -4,7 +4,7 @@ slug: "2024-07-23-matter-beginner-guide"
 description: "This article studies and summarizes Matter, the universal standard protocol for the smart home ecosystem, helping you build a preliminary and comprehensive understanding of Matter."
 date: 2024-07-23T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Internet of Things"]
+categories: ["IoT"]
 tags: ["Smart Home"]
 draft: false
 ---

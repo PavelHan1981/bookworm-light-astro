@@ -4,7 +4,7 @@ slug: "2021-01-12-WiFi-Beacon-tim-dtim"
 description: "This article summarizes the Beacon frame format defined in the 802.11 protocol specification and the differences between TIM and DTIM frames."
 date: 2021-01-12T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Wi-Fi"]
+categories: ["WiFi"]
 tags: ["Wi-Fi"]
 draft: false
 ---

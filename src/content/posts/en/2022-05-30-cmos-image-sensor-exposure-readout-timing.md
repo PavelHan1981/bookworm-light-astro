@@ -4,7 +4,7 @@ slug: "2022-05-30-cmos-image-sensor-exposure-readout-timing"
 description: "A summary of CMOS Image Sensor exposure and readout timing, compiled and structured based on online resources and research."
 date: 2022-05-30T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio and Video"]
+categories: ["Audio & Video"]
 tags: ["Image Sensor","Hardware","Audio and Video"]
 draft: false
 ---

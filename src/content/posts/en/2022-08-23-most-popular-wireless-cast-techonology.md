@@ -4,7 +4,7 @@ slug: "2022-08-23-most-popular-wireless-cast-techonology"
 description: "This article compares the main workflows and features of mainstream wireless casting technologies currently available on the market, based on a compilation of relevant online resources."
 date: 2022-08-23T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio and Video"]
+categories: ["Audio & Video"]
 tags: ["Audio and Video","WiFi"]
 draft: false
 ---

@@ -59,7 +59,7 @@ const graphElements: any[] = [
       "@id": `${config.site.base_url}/en/article/${slug}`,
     },
     headline: title,
-    description: description || config.metadata.meta_description,
+    description: description || config.metadata.meta_description_en,
     image: image
       ? `${config.site.base_url}${image}`
       : `${config.site.base_url}${config.metadata.meta_image}`,

@@ -4,7 +4,7 @@ slug: "2024-08-12-Secure-Boot-in-Embedded-System"
 description: "This document summarizes and studies the role of the Secure Boot mechanism used in embedded systems, the underlying workflow, hardware and software design principles, and the complete embedded Secure Boot process."
 date: 2024-08-12T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Embedded Systems"]
+categories: ["Embedded"]
 tags: ["Cryptography","Embedded Systems"]
 draft: false
 ---

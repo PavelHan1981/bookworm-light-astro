@@ -4,7 +4,7 @@ slug: "2020-09-24-qt-creator-ffmpeg"
 description: "A summary of setting up an FFmpeg development environment with QT Creator in a Windows environment, including test code."
 date: 2020-09-24T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio/Video"]
+categories: ["Audio & Video"]
 tags: ["QT","ffmpeg"]
 draft: false
 ---

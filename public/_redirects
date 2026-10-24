@@ -27,3 +27,14 @@
 # 两篇英文文章的 slug 有拼写错误（uboot-uboot / EMMMC），已与中文对齐
 /en/article/2022-06-21-sigmastar-uboot-uboot-ufu-firmware-upgrade-mode  /en/article/2022-06-21-sigmastar-uboot-ufu-firmware-upgrade-mode  301
 /en/article/2025-03-04-the-difference-of-SD-SDIO-EMMMC  /en/article/2025-03-04-the-difference-of-SD-SDIO-EMMC  301
+
+# 英文分类同义词合并：25 个分类收敛到 16 个，旧 slug 全部 301 到合并后的分类
+/en/categories/audiovideo  /en/categories/audio-video  301
+/en/categories/audio-and-video  /en/categories/audio-video  301
+/en/categories/multimedia  /en/categories/audio-video  301
+/en/categories/wi-fi  /en/categories/wifi  301
+/en/categories/internet-of-things  /en/categories/iot  301
+/en/categories/embedded-systems  /en/categories/embedded  301
+/en/categories/mobile-communications  /en/categories/mobile-communication  301
+/en/categories/wireless-communications  /en/categories/wireless-communication  301
+/en/categories/cybersecurity  /en/categories/network-security  301

@@ -4,7 +4,7 @@ slug: "2020-05-26-hisilicon-35xx-himpp-framework-vi"
 description: "This article summarizes some basic knowledge of VI module development under the Hisilicon 35XX HiMPP framework, based on the study of relevant documentation for Hisilicon 35XX processors."
 date: 2020-05-26T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio/Video"]
+categories: ["Audio & Video"]
 tags: ["Audio/Video","Hisilicon","ISP"]
 draft: false
 ---

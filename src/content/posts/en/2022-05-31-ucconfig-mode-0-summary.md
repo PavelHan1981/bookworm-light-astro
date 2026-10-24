@@ -4,7 +4,7 @@ slug: "2022-05-31-ucconfig-mode-0-summary"
 description: "Based on the UCConfig specification document and Teams certification requirements for H.264 encoders, this article summarizes the H.264 encoding structure and bitstream structure of UCConfig Mode 0."
 date: 2022-05-31T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio and Video"]
+categories: ["Audio & Video"]
 tags: ["H.264","Audio and Video"]
 draft: false
 ---

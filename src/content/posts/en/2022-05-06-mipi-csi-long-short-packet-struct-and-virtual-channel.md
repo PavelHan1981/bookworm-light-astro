@@ -4,7 +4,7 @@ slug: "2022-05-06-mipi-csi-long-short-packet-struct-and-virtual-channel"
 description: "Based on a study of reference documents, this article summarizes the data structures of long and short packets commonly used in image sensor MIPI CSI interface transmissions, as well as the concept of virtual channels."
 date: 2022-05-06T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio and Video"]
+categories: ["Audio & Video"]
 tags: ["Hardware","Image Sensor"]
 draft: false
 ---

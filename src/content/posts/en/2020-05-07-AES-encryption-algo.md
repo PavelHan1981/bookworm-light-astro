@@ -4,7 +4,7 @@ slug: "2020-05-07-AES-encryption-algo"
 description: "This article summarizes the differences between block ciphers and stream ciphers, as well as the six encryption modes for the AES encryption algorithm's execution flow."
 date: 2020-05-07T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Cybersecurity"]
+categories: ["Network Security"]
 tags: ["Cybersecurity"]
 draft: false
 ---

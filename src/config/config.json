@@ -1,6 +1,7 @@
 {
   "site": {
     "title": "PavelHan.tech | 尝试从底层原理的角度去理解和解释技术问题",
+    "title_en": "PavelHan.tech | Understanding technology from first principles",
     "base_url": "https://pavelhan.tech",
     "base_path": "/",
     "trailing_slash": false,
@@ -19,7 +20,8 @@
   "metadata": {
     "meta_author": "Pavel Han",
     "meta_image": "/images/og-image.png",
-    "meta_description": "PavelHan.tech - 尝试从底层原理的角度去理解和解释技术问题。由技术专家 Pavel Han 维护，深度解析技术核心。"
+    "meta_description": "PavelHan.tech - 尝试从底层原理的角度去理解和解释技术问题。由技术专家 Pavel Han 维护，深度解析技术核心。",
+    "meta_description_en": "PavelHan.tech - Understanding and explaining technical topics from low-level fundamental principles. Deep dives into embedded Linux, camera SoCs, wireless protocols and networking."
   },
 
   "google_tag_manager": {

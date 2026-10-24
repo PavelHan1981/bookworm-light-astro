@@ -4,7 +4,7 @@ slug: "2024-09-10-lte-cat1-module-summary"
 description: "Based on online resources, this article compiles technical background information on LTE CAT 1 modules commonly used in projects, providing a brief summary of their selection pros and cons as well as working principles."
 date: 2024-09-10T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Mobile Communications"]
+categories: ["Mobile Communication"]
 tags: ["LTE"]
 draft: false
 ---

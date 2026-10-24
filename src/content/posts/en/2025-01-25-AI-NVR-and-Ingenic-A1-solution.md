@@ -4,7 +4,7 @@ slug: "2025-01-25-AI-NVR-and-Ingenic-A1-solution"
 description: "Ingenic's A1 series is an integrated solution tailored for the NVR market. Compared to traditional NVR solutions, its standout feature is the integration of robust AI computing power. Therefore, Ingenic deliberately named this solution using the xVR format to emphasize its AI capabilities."
 date: 2025-01-25T00:00:00.000Z
 image: "/images/blog/default.jpg"
-categories: ["Audio/Video"]
+categories: ["Audio & Video"]
 tags: ["Audio/Video","NVR"]
 draft: false
 ---
