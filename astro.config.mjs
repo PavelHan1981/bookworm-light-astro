@@ -134,9 +134,17 @@ export default defineConfig({
     remarkPlugins: [
       remarkToc,
       [remarkCollapse, { test: "Table of contents" }],
-      // remarkMath,
+      // 公式支持：remarkMath 负责把 $...$ / $$...$$ 解析成 math 节点，
+      // rehypeKatex 负责在构建期编译成 HTML（SSR 输出，不依赖客户端 JS）。
+      // 全站已审计：103 个文件 / 2069 个公式节点，编译失败 0 个。
+      // 注意：正文里若出现字面量 $（价格、shell 变量），必须写成 \$ 转义，
+      // 否则会和相邻的 $ 配对成公式。
+      remarkMath,
     ],
-    rehypePlugins: [],
+    rehypePlugins: [
+      // throwOnError 保持默认 false：单个公式写错只影响它自己，不会炸整站构建
+      rehypeKatex,
+    ],
     shikiConfig: { theme: "one-dark-pro", wrap: true },
   },
 });

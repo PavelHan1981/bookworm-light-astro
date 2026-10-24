@@ -24,7 +24,7 @@ Softmax分类器的计算流程详细总结-Softmax多分类器.png
 The calculation flow of the Softmax operation is explained in detail below. Assume there are $n$ elements in array $a$:
 
 $$
-a=[a_1,a_2,...，a_n]
+a=[a_1,a_2,...,a_n]
 $$
 
 The Softmax calculation flow for this array $a$ is as follows. First, take the exponential with base $e$ for each element in $a$ to obtain a new array $t$:

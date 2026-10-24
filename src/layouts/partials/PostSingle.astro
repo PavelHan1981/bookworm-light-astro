@@ -8,6 +8,8 @@ import { taxonomyBase } from "@/lib/utils/taxonomyUrl";
 import { Image } from "astro:assets";
 import { render } from "astro:content";
 import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
+// KaTeX 样式只在这里引入：只有文章页会渲染公式，避免首页/列表页白背 20KB+ 字体
+import "katex/dist/katex.min.css";
 
 const allAuthors = await getSinglePage("authors");
 const { post } = Astro.props;
