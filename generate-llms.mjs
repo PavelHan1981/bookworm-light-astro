@@ -4,6 +4,7 @@ import matter from "gray-matter";
 
 const baseUrl = "https://pavelhan.tech";
 const zhPostsDir = path.resolve("src/content/posts/zh");
+const enPostsDir = path.resolve("src/content/posts/en");
 
 function getPosts(dir, lang) {
   if (!fs.existsSync(dir)) return [];
@@ -66,21 +67,56 @@ for (const [cat, posts] of Object.entries(zhGrouped)) {
 
 zhFullMd += `## Language Versions & Links\n`;
 zhFullMd += `- Curated Chinese LLM Guide: ${baseUrl}/llms.txt\n`;
+zhFullMd += `- Full English Catalog (${zhPosts.length} articles): ${baseUrl}/llms-full-en.txt\n`;
 zhFullMd += `- Full Sitemap Index: ${baseUrl}/sitemap-index.xml\n`;
 
 fs.writeFileSync(path.resolve("public/llms-full.txt"), zhFullMd, "utf-8");
 console.log(`✅ 成功生成 public/llms-full.txt，包含 ${zhPosts.length} 篇中文文章！`);
 
-// 英文目录已停止构建（机翻内容不再参与索引），因此不再生成 llms-full-en.txt。
-// 英文正文仍保留在 src/content/posts/en/ 下，恢复时重新启用本节即可。
+// 2. 生成全量英文文章库 (public/llms-full-en.txt)
+const enPosts = getPosts(enPostsDir, "en");
+const enGrouped = groupByCategory(enPosts);
 
-// 2. 更新 public/llms.txt 中的全量链接指引
+let enFullMd = `# PavelHan.tech (Full English Technical Articles Catalog)\n\n`;
+enFullMd += `> This file contains the complete index of all ${enPosts.length} English technical articles on PavelHan.tech, covering mmWave radar sensing principles, computer vision (YOLO, RT-DETR), Transformer/LLM architectures, RK3588 edge NPU deployment, audio signal processing, and IoT hardware engineering.\n\n`;
+enFullMd += `## Complete Article Index (${enPosts.length} Articles)\n\n`;
+
+for (const [cat, posts] of Object.entries(enGrouped)) {
+  enFullMd += `### Category: ${cat} (${posts.length} Articles)\n`;
+  for (const p of posts) {
+    const descStr = p.description ? `: ${p.description.replace(/\n/g, " ")}` : "";
+    enFullMd += `- [${p.title}](${p.url})${descStr}\n`;
+  }
+  enFullMd += `\n`;
+}
+
+enFullMd += `## Language Versions & Links\n`;
+enFullMd += `- Curated English LLM Guide: ${baseUrl}/llms-en.txt\n`;
+enFullMd += `- Full Chinese Catalog (${enPosts.length} articles): ${baseUrl}/llms-full.txt\n`;
+enFullMd += `- Full Sitemap Index: ${baseUrl}/sitemap-index.xml\n`;
+
+fs.writeFileSync(path.resolve("public/llms-full-en.txt"), enFullMd, "utf-8");
+console.log(`✅ 成功生成 public/llms-full-en.txt，包含 ${enPosts.length} 篇英文文章！`);
+
+// 3. 更新 public/llms.txt 中的全量链接指引
 const llmsPath = path.resolve("public/llms.txt");
 if (fs.existsSync(llmsPath)) {
   let llmsContent = fs.readFileSync(llmsPath, "utf-8");
   if (!llmsContent.includes("llms-full.txt")) {
     llmsContent += `\n- Full Chinese Catalog (${zhPosts.length} articles): ${baseUrl}/llms-full.txt\n`;
+    llmsContent += `- Full English Catalog (${enPosts.length} articles): ${baseUrl}/llms-full-en.txt\n`;
     fs.writeFileSync(llmsPath, llmsContent, "utf-8");
+  }
+}
+
+// 4. 更新 public/llms-en.txt 中的全量链接指引
+const llmsEnPath = path.resolve("public/llms-en.txt");
+if (fs.existsSync(llmsEnPath)) {
+  let llmsEnContent = fs.readFileSync(llmsEnPath, "utf-8");
+  if (!llmsEnContent.includes("llms-full-en.txt")) {
+    llmsEnContent += `\n- Full English Catalog (${enPosts.length} articles): ${baseUrl}/llms-full-en.txt\n`;
+    llmsEnContent += `- Full Chinese Catalog (${zhPosts.length} articles): ${baseUrl}/llms-full.txt\n`;
+    fs.writeFileSync(llmsEnPath, llmsEnContent, "utf-8");
   }
 }
 

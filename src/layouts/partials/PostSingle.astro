@@ -4,6 +4,7 @@ import { getSinglePage } from "@/lib/contentParser.astro";
 import dateFormat from "@/lib/utils/dateFormat";
 import similerItems from "@/lib/utils/similarItems";
 import { humanize, markdownify, slugify, slugifyTaxonomy } from "@/lib/utils/textConverter";
+import { taxonomyBase } from "@/lib/utils/taxonomyUrl";
 import { Image } from "astro:assets";
 import { render } from "astro:content";
 import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
@@ -64,7 +65,7 @@ const { title, description, authors, categories, date, tags } =
                 categories.map((category: string, i: number) => (
                   <li class="inline-block">
                     <a
-                      href={`/categories/${slugifyTaxonomy(category)}`}
+                      href={`${taxonomyBase(isEn ? "en" : "zh", "categories")}/${slugifyTaxonomy(category)}`}
                       class="mr-2 hover:text-primary font-medium"
                     >
                       {humanize(category)}
@@ -88,7 +89,7 @@ const { title, description, authors, categories, date, tags } =
               tags.map((tag: string) => (
                 <li class="inline-block">
                   <a
-                    href={`/tags/${slugifyTaxonomy(tag)}`}
+                    href={`${taxonomyBase(isEn ? "en" : "zh", "tags")}/${slugifyTaxonomy(tag)}`}
                     class="block rounded-lg bg-light px-4 py-2 font-semibold text-dark text-sm hover:text-primary transition duration-300"
                   >
                     #{humanize(tag)}

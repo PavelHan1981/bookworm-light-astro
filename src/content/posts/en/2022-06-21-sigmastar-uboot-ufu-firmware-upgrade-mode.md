@@ -1,6 +1,6 @@
 ---
 title: "SigmaStar's Uboot UFU Firmware Upgrade Mode"
-slug: "2022-06-21-sigmastar-uboot-uboot-ufu-firmware-upgrade-mode"
+slug: "2022-06-21-sigmastar-uboot-ufu-firmware-upgrade-mode"
 description: "This article summarizes the UFU mode added to Uboot by SigmaStar, which allows end-users to perform secure firmware upgrades via a USB connection in Uboot under this scheme."
 date: 2022-06-21T00:00:00.000Z
 image: "/images/blog/default.jpg"

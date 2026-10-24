@@ -5,20 +5,25 @@
 # 站点根路径统一 301 到中文首页（/ 不再作为独立页面参与索引）
 /  /zh  301
 
-# 英文目录已停止构建（机翻内容不再参与索引）
-# 旧链接统一 301 到中文对应页，保留外链权重
-/en  /zh  301
-/en/*  /zh/:splat  301
-
 # 旧版无语言前缀的文章路径 301 到中文版本（保留历史权重，避免权重丢失）
 /article  /zh/article  301
 /article/*  /zh/article/:splat  301
 
-# 旧版无前缀分页 301 到中文文章列表分页
+# 旧版无前缀的分页 301 到中文文章列表分页
 /page  /zh/article  301
 /page/*  /zh/article/page/:splat  301
+
+# 分类/标签页已统一到 /zh 与 /en 两个命名空间（此前挂在根路径下）
+/categories  /zh/categories  301
+/categories/*  /zh/categories/:splat  301
+/tags  /zh/tags  301
+/tags/*  /zh/tags/:splat  301
 
 # 旧版无前缀的静态页（原为 JS 跳转桩页，改为服务端 301）
 /about  /zh/about  301
 /privacy-policy  /zh/privacy-policy  301
 /elements  /zh/elements  301
+
+# 两篇英文文章的 slug 有拼写错误（uboot-uboot / EMMMC），已与中文对齐
+/en/article/2022-06-21-sigmastar-uboot-uboot-ufu-firmware-upgrade-mode  /en/article/2022-06-21-sigmastar-uboot-ufu-firmware-upgrade-mode  301
+/en/article/2025-03-04-the-difference-of-SD-SDIO-EMMMC  /en/article/2025-03-04-the-difference-of-SD-SDIO-EMMC  301

@@ -40,8 +40,12 @@
 - [芯片内部结温 (Junction Temperature) 的计算原理与工程实战](https://pavelhan.tech/zh/article/2026-06-15-How-to-calculate-the-internal-junction-temperature-in-chips): 热阻（RthJA, RthJC）、功耗与热平衡公式求解。
 
 ## Language Versions & Links
+- English LLM Guide: https://pavelhan.tech/llms-en.txt
 - Chinese LLM Guide: https://pavelhan.tech/llms.txt
 - Full Sitemap Index: https://pavelhan.tech/sitemap-index.xml
 - Chinese Portal: https://pavelhan.tech/zh
+- English Portal: https://pavelhan.tech/en
+
 - Full Chinese Catalog (226 articles): https://pavelhan.tech/llms-full.txt
+- Full English Catalog (226 articles): https://pavelhan.tech/llms-full-en.txt
 - Core Technical Pillars Full-Text (6 articles): https://pavelhan.tech/llms-pillars.txt

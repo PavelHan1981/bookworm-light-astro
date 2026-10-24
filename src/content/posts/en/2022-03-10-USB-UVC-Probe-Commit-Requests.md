@@ -10,7 +10,7 @@ draft: false
 ---
 
 
-The communication workflow for video transmission format negotiation between a UVC device and a Host takes place via the Video Streaming Interface of the UVC device. The packet formats used in this communication are detailed in the VideoStreaming Requests section of the article [UVC Protocol SET/GET Request Structure Analysis](/0e7651f9d27e4eee80b5f743cdb273fd).
+The communication workflow for video transmission format negotiation between a UVC device and a Host takes place via the Video Streaming Interface of the UVC device. The packet formats used in this communication are detailed in the VideoStreaming Requests section of the article [UVC Protocol SET/GET Request Structure Analysis](/en/article/2022-03-02-usb-uvc-get-set-request-data-structure).
 
 
 ## Probe & Commit Workflow

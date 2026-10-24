@@ -13,7 +13,7 @@
 
   "settings": {
     "pagination": 15,
-    "en_indexable": false
+    "en_indexable": true
   },
 
   "metadata": {

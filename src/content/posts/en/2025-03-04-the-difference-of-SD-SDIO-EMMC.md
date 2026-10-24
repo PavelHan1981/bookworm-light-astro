@@ -1,6 +1,6 @@
 ---
 title: "The Connections and Differences Between SD Cards, SDIO Interfaces, and eMMC"
-slug: "2025-03-04-the-difference-of-SD-SDIO-EMMMC"
+slug: "2025-03-04-the-difference-of-SD-SDIO-EMMC"
 description: "SDIO (Secure Digital Input Output) and SD cards (Secure Digital Memory Card) both belong to the SD (Secure Digital) standard system, but their design goals and functional implementations have distinct differences: an SD card is a dedicated storage device, whereas SDIO provides a high-speed expansion interface for general-purpose peripherals using the same SD interface and a similar SD protocol framework. Simply put, SDIO and SD cards are fully compatible at the hardware physical layer, but they have developed their own independent systems for specific communication protocols."
 date: 2025-03-04T00:00:00.000Z
 image: "/images/blog/default.jpg"

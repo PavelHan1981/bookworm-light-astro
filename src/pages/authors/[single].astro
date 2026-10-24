@@ -79,7 +79,7 @@ const currentPosts = sortPostsByDate.filter((post) => {
                       {post.data.categories.map((category, i: number) => (
                         <li class="inline-block">
                           <a
-                            href={`/categories/${slugifyTaxonomy(category)}`}
+                            href={`/zh/categories/${slugifyTaxonomy(category)}`}
                             class="mr-2 hover:text-primary font-medium"
                           >
                             {humanize(category)}

@@ -1,0 +1,54 @@
+---
+const rawPathname = Astro.url.pathname;
+const pathname =
+  rawPathname.length > 1 && rawPathname.endsWith("/")
+    ? rawPathname.slice(0, -1)
+    : rawPathname;
+
+const isEn = pathname.startsWith("/en");
+
+// 只存在于中文的页面（作者页、站内搜索）没有英文版本，不渲染切换器，
+// 否则会拼出 404 的 /en/authors/... 或 /zh/search。
+const zhOnly = /^\/(authors|search)(\/|$)/.test(pathname);
+
+// 中英两套分类/标签的 slug 完全不同（一边是中文分类名，一边是英文分类名），
+// 无法按路径一一映射，统一跳到另一语言的 taxonomy 索引页。
+const taxonomyMatch = pathname.match(/^\/(zh|en)\/(categories|tags)(\/|$)/);
+const taxonomyKind = taxonomyMatch ? taxonomyMatch[2] : null;
+
+let zhPath = "/zh";
+let enPath = "/en";
+
+if (taxonomyKind) {
+  zhPath = `/zh/${taxonomyKind}`;
+  enPath = `/en/${taxonomyKind}`;
+} else if (pathname.startsWith("/en")) {
+  zhPath = "/zh" + pathname.slice(3);
+  enPath = pathname;
+} else if (pathname.startsWith("/zh")) {
+  zhPath = pathname;
+  enPath = "/en" + pathname.slice(3);
+}
+---
+
+{
+  !zhOnly && (
+    <div class="inline-flex items-center space-x-1 text-xs font-medium border border-neutral-200 rounded-full px-2 py-0.5 bg-white/90 shadow-xs hover:border-neutral-300 transition-all duration-200">
+      <a
+        href={zhPath}
+        class={`px-2 py-0.5 rounded-full transition-colors ${!isEn ? "bg-black text-white font-semibold" : "text-neutral-600 hover:text-black"}`}
+        onclick="localStorage.setItem('preferred_lang', 'zh')"
+      >
+        中
+      </a>
+      <span class="text-neutral-300">/</span>
+      <a
+        href={enPath}
+        class={`px-2 py-0.5 rounded-full transition-colors ${isEn ? "bg-black text-white font-semibold" : "text-neutral-600 hover:text-black"}`}
+        onclick="localStorage.setItem('preferred_lang', 'en')"
+      >
+        EN
+      </a>
+    </div>
+  )
+}

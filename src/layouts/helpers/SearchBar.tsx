@@ -151,7 +151,7 @@ export default function SearchBar() {
                     {item.categories.map((category: string, i: number) => (
                       <li key={i} className="inline-block">
                         <a
-                          href={`/categories/${slugifyTaxonomy(category)}`}
+                          href={`/zh/categories/${slugifyTaxonomy(category)}`}
                           className="mr-2 hover:text-primary font-medium"
                         >
                           {humanize(category)}

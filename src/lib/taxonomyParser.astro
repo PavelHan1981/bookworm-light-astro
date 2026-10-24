@@ -2,9 +2,14 @@
 import { getSinglePage } from "@/lib/contentParser.astro";
 import { slugifyTaxonomy } from "@/lib/utils/textConverter";
 
-// get taxonomy from frontmatter
-export const getTaxonomy = async (collection: any, name: string) => {
-  const singlePages = await getSinglePage(collection);
+// 按语言收集 taxonomy：zh 与 en 各自生成一套，避免两种语言的分类混在同一个页面里，
+// 也避免英文独有的分类（Hardware、Cybersecurity…）因为只从中文文章收集而 404。
+export const getTaxonomy = async (
+  collection: any,
+  name: string,
+  lang: string = "zh",
+) => {
+  const singlePages = await getSinglePage(collection, lang);
   const taxonomyPages = singlePages.map((page: any) => page.data[name] ?? []);
   let taxonomies: string[] = [];
   for (let i = 0; i < taxonomyPages.length; i++) {
@@ -19,8 +24,12 @@ export const getTaxonomy = async (collection: any, name: string) => {
 };
 
 // get all taxonomies from frontmatter
-export const getAllTaxonomy = async (collection: any, name: string) => {
-  const singlePages = await getSinglePage(collection);
+export const getAllTaxonomy = async (
+  collection: any,
+  name: string,
+  lang: string = "zh",
+) => {
+  const singlePages = await getSinglePage(collection, lang);
   const taxonomyPages = singlePages.map((page: any) => page.data[name] ?? []);
   let taxonomies: string[] = [];
   for (let i = 0; i < taxonomyPages.length; i++) {

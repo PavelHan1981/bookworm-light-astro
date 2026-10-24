@@ -1,0 +1,49 @@
+# PavelHan.tech (English Knowledge Guide)
+
+> PavelHan.tech is a technical blog maintained by Technology Expert Pavel Han, dedicated to "understanding and explaining technical topics from low-level fundamental principles." Articles cover physics and signal processing for mmWave radar sensing, deep learning models (YOLO, RT-DETR, ViT, SAM3) and NPU deployment (RK3588, LiteRT/TFLite), Transformer architectures and KV Cache optimization, audio signal processing (FFT, PANNs), IoT protocols (BLE, NFC, Webhooks), and hardware thermal engineering.
+
+## Core Topics & Featured English Articles
+
+### 1. mmWave Radar & Sensing Technology
+- [Principle and Application Summary of mmWave Sensing](https://pavelhan.tech/en/article/2026-06-29-the-priciple-and-application-of-mmwave-sensing): Electromagnetic wave propagation, FMCW chirp signals, and mathematical principles for distance, speed, and angle estimation.
+- [Detailed Summary of FMCW mmWave Sensing Workflow & Calculation](https://pavelhan.tech/en/article/2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation): Step-by-step breakdown of Chirp generation, mixing, IF signal FFT spectrum analysis, and range-velocity resolution.
+- [How Angle Information is Measured and Calculated in mmWave Radar](https://pavelhan.tech/en/article/2026-07-02-How-to-measure-the-angle-information-mmsense-radar): Antenna array (MIMO), phase difference, and 2D-FFT/DBF angle estimation principles.
+- [How Point Cloud Data is Built in mmWave Radar System](https://pavelhan.tech/en/article/2026-07-08-How-the-point-cloud-data-of-mmwave-radar-built): Pipeline from raw ADC sampling to 3D Range-Doppler-Azimuth point cloud generation.
+
+### 2. Deep Learning & Computer Vision (YOLO, DETR, ViT)
+- [Summary of YOLOv5 Loss Functions](https://pavelhan.tech/en/article/2026-02-11-the-summary-of-YOLOv5-loss-function): Analysis of Classification Loss, Bounding Box Loss (CIoU/GIoU), and Objectness Loss.
+- [Network Structure of YOLOv8 Model](https://pavelhan.tech/en/article/2025-11-20-the-network-structure-of-YOLOv8-model): C2f module, Anchor-Free Decoupled Head, and Loss calculation workflow.
+- [Detailed Explanation of RT-DETR Architecture and Workflow](https://pavelhan.tech/en/article/2026-04-14-the-detailed-explanation-of-RTDETR-network-and-workflow): Baidu's Real-Time Vision Transformer Detector, Hybrid Encoder, and Query initialization.
+- [Structure and Principle of Vision Transformer (ViT)](https://pavelhan.tech/en/article/2026-02-25-the-strcture-of-ViT-Modal): Image Patching, Position Embedding, and Transformer Encoder for vision tasks.
+- [SAM3 Model Setup and Video Object Segmentation Test](https://pavelhan.tech/en/article/2026-02-09-SAM3-model-development-environment-and-video-segmentation-test): Environment setup and video segmentation benchmarking with Segment Anything 3.
+
+### 3. Large Language Models & Transformer Architecture
+- [Transformer Encoder Structure and Detailed Workflow](https://pavelhan.tech/en/article/2026-02-22-transformer-encoder-structure-and-workflow): Self-Attention mechanism, FFN, and LayerNorm mathematical calculations.
+- [Transformer Decoder Architecture & Autoregressive Generation Summary](https://pavelhan.tech/en/article/2026-03-09-the-summary-of-the-structure-and-workflow-of-transformer-decoder): Masked Self-Attention and Cross-Attention in sequence generation.
+- [Understanding Multi-Head Attention Mechanism in Transformer](https://pavelhan.tech/en/article/2026-02-23-how-to-understand-multi-head-attention-in-transformer): Q/K/V matrix projections, parallel head computing, and feature space representation.
+- [KV Cache Mechanism and Optimization in Large Language Models](https://pavelhan.tech/en/article/2026-05-11-the-summary-of-KV-cache-workflow-in-LLM): Eliminating redundant matrix operations during autoregressive decoding.
+
+### 4. Edge Computing & NPU Deployment (RK3588, LiteRT)
+- [RK3588 NPU Development Environment & Model Deployment](https://pavelhan.tech/en/article/2026-03-11-the-development-environment-of-RK3588-NPU): RKNN-Toolkit2 setup, model conversion, and NPU inference tuning.
+- [Deploying Qwen2.5-0.5B LLM on RK3588 NPU](https://pavelhan.tech/en/article/2026-03-16-the-Qwen2.5-0.5B-model-deployment-on-RK3588): Edge LLM quantization and C++ NPU execution pipeline.
+- [Converting PyTorch Models to LiteRT/TFLite & Edge Quantization](https://pavelhan.tech/en/article/2026-04-29-how-to-convert-PT-model-to-LiteRT-format): ONNX export, opset compatibility, and INT8/FP16 quantization best practices.
+- [Running TFLite Models on Android via Flutter LiteRT Plugin](https://pavelhan.tech/en/article/2026-04-01-how-to-use-flitter_litert-plugin-run-tflite-model-on-android): Cross-platform mobile AI integration.
+
+### 5. Audio Signal Processing
+- [Audio FFT Calculation Workflow & Spectrogram Generation](https://pavelhan.tech/en/article/2026-03-28-the-summary-of-audio-FFT-calculation-workflow-and-spectrum-diagram): PCM sampling, windowing (Hamming/Hanning), STFT, and Mel Spectrogram.
+- [PANNs Audio Event Detection Neural Network Summary](https://pavelhan.tech/en/article/2026-03-26-the-summary-of-audio-tagging-model-PANNs): Pre-trained Audio Neural Networks for sound event classification.
+
+### 6. IoT Protocols & Hardware Engineering
+- [Security Camera Webhooks and HTTP Push Feature Guide](https://pavelhan.tech/en/article/2026-07-22-the-webhooks-and-http-push-feature-of-security-camera): Event notification architecture (Direct Device Push vs Cloud Relay).
+- [Google EddyStone BLE Beacon Protocol Specifications](https://pavelhan.tech/en/article/2026-04-13-the-detailed-summary-of-Google-EddyStone-BLE-advertising-protocol): Payload structure (UID, URL, TLM) and BLE parsing logic.
+- [Comprehensive Overview of NFC Technology](https://pavelhan.tech/en/article/2026-06-22-the-comprehensive-summary-of-NFC): 13.56MHz inductive coupling, NDEF structure, and R/W operations.
+- [Calculating Chip Junction Temperature: Formulas and Engineering Practice](https://pavelhan.tech/en/article/2026-06-15-How-to-calculate-the-internal-junction-temperature-in-chips): Thermal resistance (RthJA, RthJC) and thermal equilibrium analysis.
+
+## Links & Sitemap
+- Full Sitemap Index: https://pavelhan.tech/sitemap-index.xml
+- English Home: https://pavelhan.tech/en
+- Chinese Home: https://pavelhan.tech/zh
+- Chinese LLM Guide: https://pavelhan.tech/llms.txt
+
+- Full English Catalog (226 articles): https://pavelhan.tech/llms-full-en.txt
+- Full Chinese Catalog (226 articles): https://pavelhan.tech/llms-full.txt

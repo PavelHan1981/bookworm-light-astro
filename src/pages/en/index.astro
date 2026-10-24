@@ -1,0 +1,224 @@
+---
+import Base from "@/layouts/Base.astro";
+import Quotes from "@/helpers/Quotes.astro";
+import config from "@/config/config.json";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import { excerpt, humanize, slugifyTaxonomy } from "@/lib/utils/textConverter";
+import { taxonomyBase } from "@/lib/utils/taxonomyUrl";
+import dateFormat from "@/lib/utils/dateFormat";
+
+const posts = await getSinglePage("posts", "en");
+const sortedPosts = sortByDate(posts);
+const latestPosts = sortedPosts.slice(0, 6);
+
+// 主题入口：按文章数降序，避免首页把冷门分类排在最前
+const categoryMap = new Map<string, { name: string; count: number }>();
+for (const post of sortedPosts) {
+  for (const raw of post.data.categories ?? []) {
+    const key = slugifyTaxonomy(raw);
+    if (!key) continue;
+    const entry = categoryMap.get(key) ?? { name: humanize(raw), count: 0 };
+    entry.count += 1;
+    categoryMap.set(key, entry);
+  }
+}
+const categories = [...categoryMap.entries()].sort(
+  (a, b) => b[1].count - a[1].count,
+);
+
+const categoryBase = taxonomyBase("en", "categories");
+
+const postUrl = (post: (typeof posts)[number]) => {
+  const slug =
+    post.data.slug || post.id.replace(/^en\//, "").replace(/\.mdx?$/, "");
+  return `/en/article/${slug}`;
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${config.site.base_url}/#website`,
+      url: `${config.site.base_url}/en`,
+      name: "Pavel Han - Tech Blog",
+      description:
+        "Understanding and explaining technical topics from first principles.",
+      inLanguage: "en",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: `${config.site.base_url}/search?q={search_term_string}`,
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${config.site.base_url}/#organization`,
+      name: "Pavel Han",
+      url: config.site.base_url,
+      logo: `${config.site.base_url}${config.site.logo}`,
+      sameAs: [
+        "https://github.com/PavelHan1981",
+        "WeChat Official Account: Pavel Han",
+      ],
+    },
+    {
+      "@type": "ItemList",
+      name: "Latest articles",
+      itemListElement: latestPosts.map((post, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: `${config.site.base_url}${postUrl(post)}`,
+        name: post.data.title,
+      })),
+    },
+  ],
+};
+---
+
+<Base
+  title="Pavel Han - Tech Blog"
+  lang="en"
+  jsonLd={JSON.stringify(jsonLd)}
+  canonical={`${config.site.base_url}/en`}
+>
+  <link
+    slot="head"
+    rel="alternate"
+    hreflang="zh"
+    href={`${config.site.base_url}/zh`}
+  />
+  <link
+    slot="head"
+    rel="alternate"
+    hreflang="en"
+    href={`${config.site.base_url}/en`}
+  />
+  <link
+    slot="head"
+    rel="alternate"
+    hreflang="x-default"
+    href={`${config.site.base_url}/zh`}
+  />
+
+  <!-- Hero：给首页一个明确的 H1 与站点定位 -->
+  <section
+    class="section relative overflow-hidden pt-20 pb-16 md:pt-28 bg-[radial-gradient(circle_at_50%_30%,rgba(255,248,230,0.5)_0%,rgba(255,255,255,0)_70%)]"
+  >
+    <div class="container relative z-10 text-center">
+      <p
+        class="mb-6 text-xs font-medium uppercase tracking-[0.25em] text-text-light"
+      >
+        Embedded Linux · Camera ISP · Audio/Video · Edge AI
+      </p>
+
+      <h1
+        class="mx-auto max-w-3xl text-3xl font-bold leading-tight text-dark md:text-5xl"
+      >
+        Understanding technology from first principles
+      </h1>
+
+      <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-text">
+        Field notes on embedded Linux, camera and ISP pipelines, audio/video
+        codecs and edge AI. Not satisfied with "it works" — every layer gets
+        taken apart until it makes sense.
+      </p>
+
+      <div class="mx-auto mt-10 max-w-4xl">
+        <Quotes />
+      </div>
+
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+        <a
+          href="/en/article"
+          class="inline-block rounded-lg bg-primary px-6 py-3 font-semibold text-white transition hover:opacity-90"
+        >
+          Browse {posts.length} articles
+        </a>
+        <a
+          href="/en/about"
+          class="inline-block rounded-lg border border-neutral-300 px-6 py-3 font-semibold text-dark transition hover:border-primary hover:text-primary"
+        >
+          About the author
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 最新文章：首页的核心内容出口 -->
+  <section class="section pt-4">
+    <div class="container">
+      <div class="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <h2 class="h3 mb-0">Latest articles</h2>
+        <a
+          href="/en/article"
+          class="font-medium text-primary transition hover:opacity-80"
+        >
+          View all
+        </a>
+      </div>
+
+      <div class="row gy-5 gx-4">
+        {
+          latestPosts.map((post) => (
+            <div class="col-12 sm:col-6">
+              <article class="h-full">
+                <ul class="mb-3 flex flex-wrap items-center gap-4 text-sm text-text">
+                  <li class="flex items-center font-medium">
+                    <time datetime={new Date(post.data.date!).toISOString()}>
+                      {dateFormat(post.data.date!)}
+                    </time>
+                  </li>
+                  {(post.data.categories ?? []).slice(0, 2).map((category) => (
+                    <li>
+                      <a
+                        href={`${categoryBase}/${slugifyTaxonomy(category)}`}
+                        class="font-medium hover:text-primary"
+                      >
+                        {humanize(category)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+                <h3 class="mb-3 text-xl font-semibold leading-snug">
+                  <a
+                    href={postUrl(post)}
+                    class="block transition-colors duration-300 hover:text-primary"
+                  >
+                    {post.data.title}
+                  </a>
+                </h3>
+                <p class="line-clamp-2 text-text">
+                  {excerpt(post.body ?? "", 120)}
+                </p>
+              </article>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- 主题入口：把首页权重分发到分类枢纽 -->
+  <section class="section pt-0">
+    <div class="container">
+      <h2 class="h3 mb-8">Browse by topic</h2>
+      <ul class="flex flex-wrap gap-3">
+        {
+          categories.map(([slug, meta]) => (
+            <li>
+              <a
+                href={`${categoryBase}/${slug}`}
+                class="inline-flex items-center gap-2 rounded-lg bg-light px-4 py-2 font-medium text-dark transition hover:text-primary"
+              >
+                {meta.name}
+                <span class="text-sm text-text-light">{meta.count}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>

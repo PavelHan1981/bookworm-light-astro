@@ -1,6 +1,7 @@
 ---
 import dateFormat from "@/lib/utils/dateFormat";
 import { humanize, slugifyTaxonomy } from "@/lib/utils/textConverter";
+import { taxonomyBase, taxonomyLang } from "@/lib/utils/taxonomyUrl";
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
@@ -9,6 +10,14 @@ type Props = {
   posts: CollectionEntry<"posts">[];
 };
 const { posts } = Astro.props;
+
+// 此前这里直接拼 `/${post.id}`，在没有 slug 兜底的情况下会产出一串坏链接
+const articleUrl = (post: CollectionEntry<"posts">) => {
+  const prefix = post.id.startsWith("en/") ? "/en" : "/zh";
+  const rawSlug =
+    post.data.slug || post.id.replace(/^(zh|en)\//, "").replace(/\.mdx?$/, "");
+  return `${prefix}/article/${rawSlug}`;
+};
 ---
 
 <div class="row gy-4 justify-center">
@@ -17,7 +26,7 @@ const { posts } = Astro.props;
       <div class={`col-12 sm:col-6 md:col-4 ${i === 2 && "hidden md:block"}`}>
         {post.data.image && (
           <a
-            href={`/${post.id}`}
+            href={articleUrl(post)}
             class="rounded-lg block hover:text-primary overflow-hidden group"
           >
             <Image
@@ -41,7 +50,7 @@ const { posts } = Astro.props;
               {post.data.categories.map((category: string, i: number) => (
                 <li class="inline-block">
                   <a
-                    href={`/categories/${slugifyTaxonomy(category)}`}
+                    href={`${taxonomyBase(taxonomyLang(post.id), "categories")}/${slugifyTaxonomy(category)}`}
                     class="mr-2 hover:text-primary font-medium"
                   >
                     {humanize(category)}
@@ -54,7 +63,7 @@ const { posts } = Astro.props;
         </ul>
         <h3 class="h5">
           <a
-            href={`/${post.id}`}
+            href={articleUrl(post)}
             class="block hover:text-primary transition duration-300"
           >
             {post.data.title}

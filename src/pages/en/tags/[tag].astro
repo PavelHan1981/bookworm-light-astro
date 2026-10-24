@@ -1,0 +1,48 @@
+---
+import Posts from "@/components/Posts.astro";
+import Base from "@/layouts/Base.astro";
+import { getSinglePage } from "@/lib/contentParser.astro";
+import { getTaxonomy } from "@/lib/taxonomyParser.astro";
+import { sortByDate } from "@/lib/utils/sortFunctions";
+import taxonomyFilter from "@/lib/utils/taxonomyFilter";
+import { humanize, safeDecode, slugifyTaxonomy } from "@/lib/utils/textConverter";
+
+export async function getStaticPaths() {
+  const tags = await getTaxonomy("posts", "tags", "en");
+
+  return tags
+    .filter((tag) => tag !== undefined && tag !== null && tag !== "")
+    .map((tag) => {
+      return {
+        params: { tag },
+      };
+    });
+}
+
+const { tag } = Astro.params;
+const currentTag = safeDecode(tag);
+
+const posts = await getSinglePage("posts", "en");
+const filterByTags = taxonomyFilter(posts, "tags", currentTag);
+const sortedPosts = sortByDate(filterByTags);
+
+const displayName =
+  posts
+    .flatMap((post: any) => post.data.tags ?? [])
+    .find((term: string) => slugifyTaxonomy(term) === currentTag) ??
+  humanize(currentTag);
+
+const title = displayName || "Tag";
+const description = `${sortedPosts.length} technical articles tagged ${displayName}.`;
+---
+
+<Base title={title} description={description} lang="en">
+  <div class="section">
+    <div class="container">
+      <p class="text-center text-2xl mb-4">Showing Posts From</p>
+      <h1 class="h2 mb-4 text-center text-primary">{title}</h1>
+      <p class="mb-16 text-center text-text">{sortedPosts.length} articles</p>
+      <Posts posts={sortedPosts} fluid={false} />
+    </div>
+  </div>
+</Base>
