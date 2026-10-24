@@ -1,7 +1,7 @@
 ---
 title: "AHD模拟摄像头的反向控制协议-CoaxialProtocol"
 slug: "2020-09-22-AHD-coaxial-protocol"
-description: "本文总结了在AHD摄像头上通过使用同轴线缆对云台等设备进行反向控制的Coaxial协议。"
+description: "解析 AHD 模拟摄像头如何在同一条同轴线缆上实现反向控制：控制信号与模拟视频信号的频分耦合方式、PELCO Coaxitron 协议的命令格式，以及 Nextchip 方案的反向控制实现逻辑。"
 date: 2020-09-22T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

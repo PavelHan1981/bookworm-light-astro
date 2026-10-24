@@ -1,7 +1,7 @@
 ---
 title: "PANNs音频分类模型在RK3588平台上的适配全记录"
 slug: "2026-04-04-the-porting-of-PANNs-audio-tagging-model-on-rk3588"
-description: "之前在"
+description: "记录把基于 ECS50 数据集训练的 PANNs 音频分类模型（CNN14 架构）移植到瑞芯微 RK3588 平台的完整过程：模型转换、rknn-toolkit-lite2 环境配置，以及用 Python 脚本在板端实现推理的适配步骤与踩坑记录。"
 date: 2026-04-04T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

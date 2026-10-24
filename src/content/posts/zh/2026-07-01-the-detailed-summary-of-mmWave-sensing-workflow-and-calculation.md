@@ -1,7 +1,7 @@
 ---
 title: "详细总结毫米波雷达FMCW的工作原理与计算过程"
 slug: "2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation"
-description: "在"
+description: "详细拆解毫米波雷达 FMCW（Frequency Modulated Continuous Wave，调频连续波）模式的工作原理：Chirp 信号的组织结构、混频与中频信号生成、距离 FFT 与多普勒 FFT 的解算流程，以及多目标场景下的距离-多普勒图构建。"
 date: 2026-07-01T00:00:00.000Z
 last_edited_time: "2026-07-24T00:54:00.000Z"
 image: "/images/blog/default.jpg"

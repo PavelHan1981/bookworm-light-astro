@@ -1,7 +1,7 @@
 ---
 title: "详细解释空洞卷积和可变形卷积的计算流程"
 slug: "2026-03-25-the-detailed-summary-of-the-deformable-conv-workflow"
-description: "有关卷积神经网络中的标准卷积核的计算流程，在"
+description: "详细解释两种特殊卷积的计算流程：空洞卷积（Dilated Convolution）如何在不增加参数量的前提下扩大感受野（Receptive Field），以及可变形卷积（Deformable Convolution）如何通过学习偏移量让采样点自适应目标的几何形变。"
 date: 2026-03-25T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

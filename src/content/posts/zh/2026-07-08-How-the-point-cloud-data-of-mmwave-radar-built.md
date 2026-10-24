@@ -1,7 +1,7 @@
 ---
 title: "毫米波雷达的点云数据是如何构建出来的？"
 slug: "2026-07-08-How-the-point-cloud-data-of-mmwave-radar-built"
-description: "在"
+description: "从雷达芯片与模块的使用视角，说明毫米波雷达点云（Point Cloud）数据是如何构建出来的：射频回波经 DSP 处理后提取距离、速度、角度信息的完整流程，芯片与模块的输出数据格式，以及点云坐标的组装方式。"
 date: 2026-07-08T00:00:00.000Z
 last_edited_time: "2026-07-24T00:57:00.000Z"
 image: "/images/blog/default.jpg"

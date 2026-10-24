@@ -1,7 +1,7 @@
 ---
 title: "音频3A处理简介：AEC，ANS，AGC"
 slug: "2025-03-31-the-summary-of-auido-3A-AEC-ANS-AGC"
-description: ""
+description: "总结消费类摄像头音频 3A 处理的理论与工作流程：AEC（Acoustic Echo Cancellation，声学回声消除）的回声路径识别与消除逻辑、ANS（Auto Noise Suppression，自动噪声抑制）的噪声估计、AGC（Auto Gain Control，自动增益控制）的动态调整流程。"
 date: 2025-03-31T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

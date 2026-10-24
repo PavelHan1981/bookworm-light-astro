@@ -1,7 +1,7 @@
 ---
 title: "半波对称振子天线基础及其天线增益"
 slug: "2025-01-15-the-basics-of-dipolor-antenna"
-description: "半波振子天线是天线最基本的结构单位，相当于是化学中的分子"
+description: "系统整理半波对称振子天线的基础知识：1/2 波长结构的设计由来、波长与频率的换算关系、辐射方向图与天线增益的计算，作为理解更复杂天线系统（阵列天线、双频天线、MIMO）的基础。"
 date: 2025-01-15T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["无线通信"]

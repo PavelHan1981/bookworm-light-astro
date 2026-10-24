@@ -1,7 +1,7 @@
 ---
 title: "在Debian下使用CppCheck对C代码进行静态扫描"
 slug: "2020-06-01-debian-linux-cppcheck"
-description: "本文总结了在Linux中使用cppcheck工具对C代码进行静态扫描的流程。"
+description: "记录在 Debian/Linux 环境下使用 CppCheck 对 C 代码做静态扫描的完整流程：安装方式、单文件与整个目录的扫描命令、常用执行选项与输出解读，以及与 clang、PC-lint、Coverity 等静态分析工具的对比。"
 date: 2020-06-01T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["软件工程"]

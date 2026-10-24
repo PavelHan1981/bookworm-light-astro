@@ -1,7 +1,7 @@
 ---
 title: "An Analysis of the Network Structure and Output Data of the YOLOv8-Pose Model"
 slug: "2026-05-13-the-summary-of-network-structure-and-output-of-YOLOv8-Pose"
-description: "In"
+description: "Compares the network structure of YOLOv8-Pose and standard YOLOv8, focusing on the keypoint branch design of the Pose detection head, the meaning of each output tensor dimension, post-processing filters, and how keypoint coordinates are decoded from the raw output."
 date: 2026-05-13T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

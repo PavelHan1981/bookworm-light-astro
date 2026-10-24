@@ -1,9 +1,7 @@
 ---
 title: "SD卡的分类及其各种规格参数总结"
 slug: "2025-02-21-the-summary-of-SDcard-catalogue-and-parameters"
-description: "尺寸类型
-- SD：32×24×2.1mm（全尺寸），基本上以及很少使用了
-- "
+description: "梳理 SD 卡的多维度分类体系：按尺寸（SD/microSD）、触点与总线（UHS-I 9 触点、UHS-II 17 触点、SD Express）、电压（3.3V 与 1.8V 双电压）、容量等级（SDSC/SDHC/SDXC/SDUC）及速度等级的划分，并说明各标准的演进关系。"
 date: 2025-02-21T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["硬件"]

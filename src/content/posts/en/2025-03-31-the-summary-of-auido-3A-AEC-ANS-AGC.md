@@ -1,7 +1,7 @@
 ---
 title: "Introduction to Audio 3A Processing: AEC, ANS, and AGC"
 slug: "2025-03-31-the-summary-of-auido-3A-AEC-ANS-AGC"
-description: ""
+description: "Summarizes the audio 3A pipeline in consumer cameras: AEC (Acoustic Echo Cancellation) echo path identification and removal, ANS (Auto Noise Suppression) noise estimation, and the dynamic adjustment flow of AGC (Auto Gain Control)."
 date: 2025-03-31T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Audio & Video"]

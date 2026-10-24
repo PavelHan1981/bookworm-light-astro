@@ -1,14 +1,7 @@
 ---
 title: "SD通信命令协议解析之CMD6"
 slug: "2025-03-06-the-CMD6-command-of-SD-card"
-description: "在SD协议中，SD主控与SD卡之间交互流程中的CMD6是一个相对比较复杂的命令。其复杂性体现在：
-- 同一个命令既可以实现对SD卡支持特性的读取，也可以对其进行设置。
-- CMD6命令的执行及其从SD卡上读取的响应消息，双方不仅在SD的CMD pin上通信，也涉及到了在DAT引脚上传输部分数据，而其他CMD命令的交互执行基本上都只涉及到CMD pin。
-- CMD6命令中所支持的功能比较多，包含多个function group，每个function group又包含多个function mode。
-
-所以，本篇比较在较为深入的学习SD物理层协议规范文件（V6.00版本）的基础上，详细的整理出来CMD6命令交互的流程。
-
-"
+description: "深入解析 SD 协议中 CMD6 命令的复杂度所在：既能读取也能设置卡的特性、交互同时涉及 CMD 与 DAT 引脚、包含多个 function group 与 function mode，并给出完整的命令交互数据结构与执行流程。"
 date: 2025-03-06T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["硬件"]

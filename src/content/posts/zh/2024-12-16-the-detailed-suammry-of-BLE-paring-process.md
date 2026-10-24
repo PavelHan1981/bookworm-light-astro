@@ -1,7 +1,7 @@
 ---
 title: "BLE设备配对模式和流程详细解析"
 slug: "2024-12-16-the-detailed-suammry-of-BLE-paring-process"
-description: ""
+description: "详细解析 BLE 蓝牙设备的配对与绑定（Pairing & Bonding）完整流程：三阶段机制、配对特性交换、Association Model 协商、LE Legacy Pairing 与 LE Secure Connections 两种加密链路建立方式，以及 LTK 密钥的生成与分发。"
 date: 2024-12-16T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Bluetooth"]

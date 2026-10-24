@@ -1,7 +1,7 @@
 ---
 title: "如何把PT格式的模型转换为TFLite/LiteRT模型？"
 slug: "2026-04-29-how-to-convert-PT-model-to-LiteRT-format"
-description: "之前在尝试把Ultralytics的YOLOv8模型运行在Android手机上的过程（参考"
+description: "解决通用 PyTorch 模型（.pt）转 TFLite/LiteRT 的工程问题：借助 Google AI Edge Torch 完成模型转换的完整链路、动态与静态量化（INT8/FP16）的配置差异，以及转换后模型在 Android 端的推理验证。"
 date: 2026-04-29T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

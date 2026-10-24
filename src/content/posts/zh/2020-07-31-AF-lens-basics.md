@@ -1,7 +1,7 @@
 ---
 title: "变焦镜头的分类及变焦原理总结"
 slug: "2020-07-31-AF-lens-basics"
-description: "本文简单总结了数码变焦和光学变焦的区别以及具体的技术实现原理。"
+description: "对比光学变焦（Optical Zoom）与数码变焦（Digital Zoom）的本质差异：光学变焦通过镜片组移动改变焦距、放大后不损失分辨率；数码变焦仅裁切并插值放大原有像素。并说明光学变焦镜头的成像原理与结构组成。"
 date: 2020-07-31T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

@@ -1,7 +1,7 @@
 ---
 title: "百度RT-DETRv2模型的训练以及在RK3588平台上的适配"
 slug: "2026-04-17-the-training-process-and-the-deployment-on-RK3588-of-Baidu-RTDETRv2"
-description: "百度RT-DETRv2模型的官方Github地址为："
+description: "记录百度 RT-DETRv2 目标检测模型的完整落地流程：源码获取与自定义数据集准备、PyTorch 版本训练与本地推理测试、ONNX 模型导出，以及在 RK3588 开发板上的模型转换与板端运行适配。"
 date: 2026-04-17T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

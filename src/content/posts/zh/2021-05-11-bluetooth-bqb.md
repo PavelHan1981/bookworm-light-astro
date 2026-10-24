@@ -1,7 +1,7 @@
 ---
 title: "蓝牙设备的BQB认证"
 slug: "2021-05-11-bluetooth-bqb"
-description: "对蓝牙BQB认证的相关信息做一个简单的总结。"
+description: "总结蓝牙 BQB（Bluetooth Qualification Body）认证的关键信息：认证的必要性与未认证的法律风险、DID 费用与测试费用的构成、认证内容与申请流程，以及如何在蓝牙 SIG 官方数据库中查询认证状态。"
 date: 2021-05-11T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Bluetooth"]

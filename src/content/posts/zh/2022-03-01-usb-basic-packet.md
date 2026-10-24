@@ -1,7 +1,7 @@
 ---
 title: "USB标准包类型总结"
 slug: "2022-03-01-usb-basic-packet"
-description: "本文基于对usb in a nutshell的学习，总结了USB通信中的基本数据包类型。"
+description: "总结 USB 通信中四种基本包类型：Token Packet（令牌包，声明通信意图与目标端点）、Data Packet（数据包）、Handshake Packet（握手应答包）、SOF Packet（帧起始包），并说明一个完整 USB Transaction 如何由它们组合而成。"
 date: 2022-03-01T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["硬件"]

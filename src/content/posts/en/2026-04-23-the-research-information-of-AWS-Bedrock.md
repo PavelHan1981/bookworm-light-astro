@@ -1,7 +1,7 @@
 ---
 title: "Study Notes on Amazon AWS Bedrock Service"
 slug: "2026-04-23-the-research-information-of-AWS-Bedrock"
-description: "Amazon Bedrock"
+description: "An overview of Amazon Bedrock: unified serverless APIs for foundation models from Anthropic, Meta, Mistral and others, cross-region inference routing, knowledge bases and agents, plus how Bedrock differs from SageMaker and Amazon Q."
 date: 2026-04-23T00:00:00.000Z
 last_edited_time: "2026-05-06T01:38:00.000Z"
 image: "/images/blog/default.jpg"

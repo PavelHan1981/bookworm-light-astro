@@ -1,7 +1,7 @@
 ---
 title: "WiFi低功耗工作模式的完整工作流程总结"
 slug: "2021-02-01-wifi-lowpower"
-description: "在本文中对802.11规范中定义的WiFi低功耗模式、工作流程及其不同模式下的切换进行总结。"
+description: "总结 802.11 规范定义的 STA 低功耗机制：Active Mode 与 PS（Power Saving）Mode 的差异、STA 如何通过监听 Beacon 判断是否有缓存数据、PS-Poll 取包流程，以及进入和退出省电模式的触发条件。"
 date: 2021-02-01T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["WiFi"]

@@ -1,7 +1,7 @@
 ---
 title: "Nordic nRF54L系列信息汇总"
 slug: "2024-11-27-the-summary-of-nordic-nrf54l-series"
-description: "本文汇总了Nordic在2024年11月份最新发布的nRF54L系列蓝牙系列芯片方案的规格参数。"
+description: "汇总 Nordic nRF54L 系列蓝牙芯片（nRF54L15/L10/L05）的规格参数：NVM 与 RAM 容量差异、TX Power、支持的蓝牙版本与协议栈能力，并说明该系列作为 nRF52 迭代产品在性能与功耗上的改进。"
 date: 2024-11-27T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Bluetooth"]

@@ -1,7 +1,7 @@
 ---
 title: "exFAT文件系统详细解析"
 slug: "2024-09-04-exfat-file-system-summary"
-description: "通过对网络资料的学习整理了exFAT文件系统的结构，对其内部如何管理数据和文件进行总结。"
+description: "解析 exFAT（FAT64）文件系统的内部结构：保留扇区、FAT 表与数据区的布局，目录项的组织方式，以及它相对 FAT32 在单文件大小（16EB）、分区容量（64ZB）与簇大小（最大 32MB）上的扩展，并说明其专利授权限制。"
 date: 2024-09-04T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["嵌入式"]

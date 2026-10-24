@@ -1,7 +1,7 @@
 ---
 title: "毫米波雷达是如何测量和计算角度信息的？"
 slug: "2026-07-02-How-to-measure-the-angle-information-mmsense-radar"
-description: "在"
+description: "解析毫米波雷达点云中的角度信息是如何计算出来的：到达角（AoA，Angle of Arrival）的定义、基于阵列天线相位差的测角原理、角度分辨率的影响因素，以及 3D 雷达与 4D 雷达在方位角/俯仰角维度上的差异。"
 date: 2026-07-02T00:00:00.000Z
 last_edited_time: "2026-07-24T00:55:00.000Z"
 image: "/images/blog/default.jpg"

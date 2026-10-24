@@ -1,7 +1,7 @@
 ---
 title: "AES的加密模式总结"
 slug: "2020-05-07-AES-encryption-algo"
-description: "本文总结了分组密码与流密码的区别，以及AES加密算法执行流程的六种加密模式。"
+description: "区分分组密码与流密码的设计差异，并逐一解析 AES 的六种工作模式：ECB、CBC、CFB、OFB、CTR 及 GCM 的加解密流程、是否需要 IV 与 Padding、并行性，以及各自的安全缺陷与适用场景。"
 date: 2020-05-07T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["网络安全"]

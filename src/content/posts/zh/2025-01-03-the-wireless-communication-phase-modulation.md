@@ -1,7 +1,7 @@
 ---
 title: "基础相位调制技术之BPSK/QPSK/DQPSK"
 slug: "2025-01-03-the-wireless-communication-phase-modulation"
-description: ""
+description: "总结三种基础相位调制方式的原理与差异：BPSK 用 0°/180° 两个相位承载 1 bit、QPSK 用四个相位承载 2 bit、DQPSK 采用差分编码规避相位模糊。并分析载波相位切换点选择不当引起的 high slope transition 与带外干扰问题。"
 date: 2025-01-03T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["无线通信"]

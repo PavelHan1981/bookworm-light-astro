@@ -1,7 +1,7 @@
 ---
 title: "YOLOv5模型的损失函数计算总结"
 slug: "2026-02-11-the-summary-of-YOLOv5-loss-function"
-description: "本文以YOLOv5模型的v6.0/v6.1版本为基础，详细总结和解释了损失函数各个部分的计算流程。"
+description: "拆解 YOLOv5（v6.0/v6.1）损失函数的三个组成部分：目标框定位损失 Box Loss（CIoU）、目标置信度损失 Obj Loss、分类损失 Cls Loss（BCE），说明正负样本如何分配以及各部分在总损失中的权重计算。"
 date: 2026-02-11T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

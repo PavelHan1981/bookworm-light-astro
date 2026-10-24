@@ -1,7 +1,7 @@
 ---
 title: "Amazon AWS之Bedrock Service学习笔记"
 slug: "2026-04-23-the-research-information-of-AWS-Bedrock"
-description: "Amazon Bedrock"
+description: "梳理 Amazon Bedrock 的核心能力：通过统一的 Serverless API 访问 Anthropic、Meta、Mistral 等厂商的基座模型（FMs），跨区域推理路由、知识库与 Agent 等周边功能，并对比 Bedrock、SageMaker 与 Amazon Q 三者的定位差异。"
 date: 2026-04-23T00:00:00.000Z
 last_edited_time: "2026-05-06T01:38:00.000Z"
 image: "/images/blog/default.jpg"

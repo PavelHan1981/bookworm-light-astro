@@ -1,7 +1,7 @@
 ---
 title: "Sony的DOL（Digital Overlay） HDR技术总结"
 slug: "2022-04-26-sony-dol-hdr-basics"
-description: "通过对网络上查到的相关资料文档的学习，整理了Sony DOL HDR技术的工作原理与流程。"
+description: "解析 Sony DOL（Digital Overlap，数字重叠）HDR 技术的工作原理：DOL-2 长短两次曝光、DOL-3 长中短三次曝光的时序安排，与 Frame Based HDR 在曝光与读出流程上的差异，以及 DOL 模式存在的运动伪影等问题。"
 date: 2022-04-26T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

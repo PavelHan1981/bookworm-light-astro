@@ -1,9 +1,7 @@
 ---
 title: "对双频WiFi天线复用理解的纠正以及对Duplexer和Diplexer的比较"
 slug: "2025-01-17-the-comparison-of-duplexer-and-diplexer"
-description: "总结起来：
-- Diplexer主要用于不同频段之间共享同一根天线或者传输链路来进行通信的应用，最典型的就是双频WiFi两个频段，以及LTE多个BAND之间。
-- Duplexer则主要在用于同一个频段内，使用FDD模式下的不同上下行信道通信频点上，实现同时收发全双工通信的应用。最典型的应用就是LTE FDD模式的通信。"
+description: "纠正此前对双频 WiFi 天线复用的理解偏差，并对比 Duplexer（双工器）与 Diplexer（双频合路器）的工作原理与应用差异，分析题头框图中为何选用 SPDT 射频开关而不是 Diplexer 来实现频段切换。"
 date: 2025-01-17T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["无线通信"]

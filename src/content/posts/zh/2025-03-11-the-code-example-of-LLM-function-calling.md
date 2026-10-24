@@ -1,7 +1,7 @@
 ---
 title: "以代码案例来详细介绍Function Calling"
 slug: "2025-03-11-the-code-example-of-LLM-function-calling"
-description: "众所周知，大语言模型本身只是一个文本生成的工具，虽然有很强的文本生成能力和逻辑推理能力，但是"
+description: "以完整代码案例讲解大语言模型 Function Calling 的工作机制：模型如何根据工具描述（JSON Schema）决定调用哪个函数、参数如何生成与回传、多轮工具调用循环如何组织，以及它在构建 AI Agent 系统中的核心作用。"
 date: 2025-03-11T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

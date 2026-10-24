@@ -1,7 +1,7 @@
 ---
 title: "WiFi不同制式下最大速率的计算"
 slug: "2024-12-25-the-computation-of-wifi-datarate"
-description: "本文整理出来各种wifi制式下能够支持的速率列表，以及这些理论速率是如何计算出来的。"
+description: "给出 WiFi 理论最大速率的通用计算公式，并按 802.11a/g、11n、11ac、11ax 各制式逐项代入参数验证：symbol 时长、GI 保护间隔、空间流数、有效子载波数、每 symbol 比特数与编码率如何共同决定最终速率。"
 date: 2024-12-25T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["WiFi"]

@@ -1,7 +1,7 @@
 ---
 title: "主流无线投屏技术对比"
 slug: "2022-08-23-most-popular-wireless-cast-techonology"
-description: "本文通过对网上相关资料的收集和整理，对比了目前市面上主流的无线投屏技术的主要工作流程和功能。"
+description: "对比主流无线投屏技术在推送投屏与镜像投屏两类场景下的差异：AirPlay、DLNA、Miracast、Chromecast、WiDi 各自依赖的协议栈、工作流程、延迟表现与生态限制，并给出家庭观影与办公会议场景下的选型建议。"
 date: 2022-08-23T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

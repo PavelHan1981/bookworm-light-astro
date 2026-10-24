@@ -1,7 +1,7 @@
 ---
 title: "搭建基于QT Creator的ffmpeg开发环境"
 slug: "2020-09-24-qt-creator-ffmpeg"
-description: "总结在Windows环境中基于QT Creator搭建ffmpeg的开发环境及其测试代码。"
+description: "记录在 Windows 下基于 QT Creator 搭建 FFmpeg 开发环境的步骤：下载 Shared 与 Dev 预编译包、配置系统环境变量中的动态库路径、修改 .pro 文件引入头文件与库，并用测试代码验证解码调用是否正常。"
 date: 2020-09-24T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

@@ -1,7 +1,7 @@
 ---
 title: "Detailed Summary of FMCW mmWave Radar Principles and Calculation Process"
 slug: "2026-07-01-the-detailed-summary-of-mmWave-sensing-workflow-and-calculation"
-description: "In"
+description: "A detailed breakdown of FMCW (Frequency Modulated Continuous Wave) mmWave radar: how chirp signals are organized, mixing and IF signal generation, the range FFT and Doppler FFT solving flow, and how a range-Doppler map is built for multi-target scenarios."
 date: 2026-07-01T00:00:00.000Z
 last_edited_time: "2026-07-24T00:54:00.000Z"
 image: "/images/blog/default.jpg"

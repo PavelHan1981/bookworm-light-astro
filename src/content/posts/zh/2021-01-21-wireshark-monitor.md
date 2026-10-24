@@ -1,7 +1,7 @@
 ---
 title: "Wireshark抓包环境的工作原理与使用技巧总结"
 slug: "2021-01-21-wireshark-monitor"
-description: "本文总结了有线与无线网络抓包背后的工作原理，以及使用Wireshark进行抓包的基本操作流程选型。"
+description: "解析有线和无线抓包背后的工作原理：有线网卡的混杂模式（Promiscuous Mode）与无线网卡的监听模式（Monitor Mode）的区别、抓包环境分类，以及 Wireshark 的过滤器语法、着色规则等实用技巧。"
 date: 2021-01-21T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["WiFi"]

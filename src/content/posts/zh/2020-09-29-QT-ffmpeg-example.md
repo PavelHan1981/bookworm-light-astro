@@ -1,7 +1,7 @@
 ---
 title: "最简单的基于QT+ffmpeg的播放器的例子"
 slug: "2020-09-29-QT-ffmpeg-example"
-description: "本文总结了一个使用QT进行ffmpeg进行播放器开发的一个简单例子。"
+description: "给出一个基于 QT Widgets 与 FFmpeg 库实现的最简视频播放器示例：工程配置与 UI 搭建、打开视频文件与解码流程、把解码后的 AVFrame 转成 QImage 并绘制到 Label 上的完整代码路径。"
 date: 2020-09-29T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

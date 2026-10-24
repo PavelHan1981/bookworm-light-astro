@@ -1,7 +1,7 @@
 ---
 title: "基于ECS50数据集对PANNs语音分类模型进行的训练流程"
 slug: "2026-04-01-the-training-process-of-PANNs-audio-tagging-model-using-ECS50-dataset"
-description: "本文使用ECS50数据集对语音检测和分类模型PANNs进行自定义训练的完整流程进行了记录。"
+description: "记录使用 ESC-50 环境音数据集对 PANNs（CNN14 架构）预训练模型做微调的完整流程：数据集结构、训练参数配置、损失收敛情况与推理验证，说明如何让通用音频分类模型适配特定场景的识别需求。"
 date: 2026-04-01T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

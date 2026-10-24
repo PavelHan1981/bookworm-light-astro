@@ -1,7 +1,7 @@
 ---
 title: "USB接口与端点的概念总结"
 slug: "2022-03-18-usb-interface-endpoint-summary"
-description: "本文基于对usb in a nutshell的学习，总结了USB标准协议中接口和端点的相关概念。"
+description: "总结 USB 协议中接口（Interface）与端点（Endpoint）的概念体系：端点作为设备端 FIFO 的定位方式（设备地址 + 端点号）、四种传输类型对应的端点特性、接口描述符的结构，以及 Alternative Setting 机制的作用。"
 date: 2022-03-18T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["硬件"]

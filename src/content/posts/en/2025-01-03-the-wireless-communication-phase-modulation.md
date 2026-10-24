@@ -1,7 +1,7 @@
 ---
 title: "Fundamental Phase Modulation Techniques: BPSK, QPSK, and DQPSK"
 slug: "2025-01-03-the-wireless-communication-phase-modulation"
-description: ""
+description: "Compares three basic phase modulation schemes: BPSK (0/180 degrees, 1 bit per symbol), QPSK (four phases, 2 bits per symbol) and DQPSK (differential encoding to avoid phase ambiguity), plus the high slope transition and out-of-band interference caused by poor phase switching points."
 date: 2025-01-03T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Wireless Communication"]

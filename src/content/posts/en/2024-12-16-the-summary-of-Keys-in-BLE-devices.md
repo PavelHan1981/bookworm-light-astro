@@ -1,7 +1,7 @@
 ---
 title: "Summary of Security Keys in BLE Devices"
 slug: "2024-12-16-the-summary-of-Keys-in-BLE-devices"
-description: ""
+description: "Summarizes the three keys behind BLE link security: LTK (Long Term Key) for connection encryption, CSRK (Connection Signature Resolving Key) for data signing, and IRK (Identity Resolving Key) for resolving private addresses, including how each is generated and stored."
 date: 2024-12-16T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Bluetooth"]

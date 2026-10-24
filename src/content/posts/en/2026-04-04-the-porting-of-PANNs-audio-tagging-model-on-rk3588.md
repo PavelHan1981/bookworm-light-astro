@@ -1,7 +1,7 @@
 ---
 title: "Complete Guide to Porting the PANNs Audio Classification Model to the RK3588 Platform"
 slug: "2026-04-04-the-porting-of-PANNs-audio-tagging-model-on-rk3588"
-description: "Previously in"
+description: "A complete record of porting a PANNs audio classification model (CNN14 architecture) trained on the ECS50 dataset to the Rockchip RK3588 platform: model conversion, rknn-toolkit-lite2 setup, and on-board inference with Python scripts."
 date: 2026-04-04T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

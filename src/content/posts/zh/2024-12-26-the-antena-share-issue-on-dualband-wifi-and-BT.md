@@ -1,7 +1,7 @@
 ---
 title: "双频WiFi和蓝牙之间的天线是如何复用的？"
 slug: "2024-12-26-the-antena-share-issue-on-dualband-wifi-and-BT"
-description: ""
+description: "从射频半双工特性出发，解析 WiFi 与蓝牙如何共用一根天线：TX/RX 时分复用的冲突规避逻辑、2.4GHz Combo 模块的天线共享机制，以及双频 WiFi 在 2.4GHz/5GHz 波长差异下如何兼顾两个频段的射频性能。"
 date: 2024-12-26T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Tech"]

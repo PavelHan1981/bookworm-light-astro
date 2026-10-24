@@ -1,7 +1,7 @@
 ---
 title: "USB控制传输中的Setup Packet"
 slug: "2022-02-25-usb-setup-packet"
-description: "本文总结了USB标准定义的通用包中Setup Packet的结构和分类。"
+description: "解析 USB 控制传输中 Setup Packet 的 8 字节固定结构：bmRequestType、bRequest、wValue、wIndex、wLength 五个字段的含义，标准请求与 Class 类请求（如 UVC 摄像头的 SET/GET 参数）的分类与典型用法。"
 date: 2022-02-25T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["硬件"]

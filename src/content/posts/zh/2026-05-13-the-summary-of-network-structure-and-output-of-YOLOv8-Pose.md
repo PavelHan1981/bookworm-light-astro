@@ -1,7 +1,7 @@
 ---
 title: "YOLOv8-Pose模型的网络结构及其输出数据解读"
 slug: "2026-05-13-the-summary-of-network-structure-and-output-of-YOLOv8-Pose"
-description: "在"
+description: "对比 YOLOv8-Pose 与标准 YOLOv8 的网络结构差异，重点解析 Pose 模型检测头的关键点分支设计、输出张量的维度含义与后处理过滤逻辑，并结合源码说明关键点坐标如何从模型输出解码得到。"
 date: 2026-05-13T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["AI"]

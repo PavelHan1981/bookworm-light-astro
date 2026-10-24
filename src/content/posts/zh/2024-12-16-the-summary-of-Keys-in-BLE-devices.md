@@ -1,7 +1,7 @@
 ---
 title: "BLE设备之间安全密钥总结"
 slug: "2024-12-16-the-summary-of-Keys-in-BLE-devices"
-description: ""
+description: "总结 BLE 通信安全性所依赖的三大密钥：LTK（Long Term Key，用于连接加密）、CSRK（Connection Signature Resolving Key，用于数据签名验证）、IRK（Identity Resolving Key，用于随机地址解析），说明各自的生成、存储与使用场景。"
 date: 2024-12-16T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Bluetooth"]

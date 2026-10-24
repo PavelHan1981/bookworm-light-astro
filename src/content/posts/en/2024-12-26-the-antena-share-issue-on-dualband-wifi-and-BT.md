@@ -1,7 +1,7 @@
 ---
 title: "How is the Antenna Shared Between Dual-Band WiFi and Bluetooth?"
 slug: "2024-12-26-the-antena-share-issue-on-dualband-wifi-and-BT"
-description: ""
+description: "Explains how Wi-Fi and Bluetooth share a single antenna: half-duplex TX/RX time-sharing to avoid conflicts, antenna sharing in 2.4GHz combo modules, and how dual-band Wi-Fi keeps RF performance on both 2.4GHz and 5GHz despite the wavelength difference."
 date: 2024-12-26T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Tech"]

@@ -1,7 +1,7 @@
 ---
 title: "锂电池的基础知识"
 slug: "2020-06-10-00-li-battery-basics"
-description: "针对电池类产品开发过程中对电池充放电特性不是很了解的问题，对锂电池的相关技术进行的学习总结"
+description: "总结锂电池的基础知识：正极（LFP、三元 NCM/NCA）、负极、隔膜、电解液四大组成部分的作用，充放电过程中锂离子的迁移原理，以及容量、内阻、循环寿命等关键参数与实际使用中的安全注意事项。"
 date: 2020-06-10T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["硬件"]

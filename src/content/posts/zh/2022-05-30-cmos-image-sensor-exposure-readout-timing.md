@@ -1,7 +1,7 @@
 ---
 title: "CMOS Sensor的曝光与读出时序"
 slug: "2022-05-30-cmos-image-sensor-exposure-readout-timing"
-description: "通过对网络上收集资料的学习，整理了CMOS Image Sensor的曝光和读出的时序。"
+description: "整理 CMOS Image Sensor 的曝光与读出时序：Line Time 的定义与计算公式（line_time = line_length / pclk）、曝光时间为何以行时间为单位、Rolling Shutter 与 Global Shutter 的时序差异，以及 DOL HDR 模式下的时序安排。"
 date: 2022-05-30T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["音视频"]

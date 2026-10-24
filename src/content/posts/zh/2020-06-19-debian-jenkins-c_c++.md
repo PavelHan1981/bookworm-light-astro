@@ -1,7 +1,7 @@
 ---
 title: "在Debian/Linux环境下配置C/C++的Jenkins持续集成环境"
 slug: "2020-06-19-debian-jenkins-c_c++"
-description: "本文介绍了在Debian环境下搭建基于Jenkins的C/C++持续集成环境的流程。"
+description: "记录在 Debian 环境搭建 Jenkins + C/C++ 持续集成环境的步骤：JDK 与 Tomcat 的安装及环境变量配置、Jenkins 初始化、配置拉取 GitHub 上的 C 代码自动编译任务与构建触发器。"
 date: 2020-06-19T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["软件工程"]

@@ -1,7 +1,7 @@
 ---
 title: "BLE的跳频机制和流程实现详细总结"
 slug: "2024-12-10-the-frequency-hopping-suammery-in-BLE"
-description: "本文对BLE的跳频工作流程，跳频机制的相关参数，以及跳频信道的计算逻辑进行了详细的整理。"
+description: "详细整理 BLE 的跳频机制：Connection Event 与 Connection Interval 的关系、连接建立时协商的跳频参数、Channel Map 的作用，以及连接态与广播态下信道选择算法的具体计算逻辑。"
 date: 2024-12-10T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["Bluetooth"]

@@ -1,7 +1,7 @@
 ---
 title: "GPS基础及其定位的工作原理"
 slug: "2021-01-11-GPS-basics"
-description: "本文总结了GPS相关的一些基础知识及其定位的原理。"
+description: "总结 GPS（Global Positioning System，全球定位系统）的基础知识与定位原理：系统组成、导航电文内容、基于伪距的三角定位计算、单点定位与差分定位（DGPS）的精度差异，以及 GLONASS、伽利略、北斗等同类卫星导航系统的对比。"
 date: 2021-01-11T00:00:00.000Z
 image: "/images/blog/default.jpg"
 categories: ["硬件"]
