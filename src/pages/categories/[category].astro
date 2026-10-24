@@ -5,7 +5,7 @@ import { getSinglePage } from "@/lib/contentParser.astro";
 import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import { sortByDate } from "@/lib/utils/sortFunctions";
 import taxonomyFilter from "@/lib/utils/taxonomyFilter";
-import { humanize } from "@/lib/utils/textConverter";
+import { humanize, safeDecode, slugifyTaxonomy } from "@/lib/utils/textConverter";
 
 export async function getStaticPaths() {
   const categories = await getTaxonomy("posts", "categories");
@@ -20,19 +20,30 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.params;
+const currentCategory = safeDecode(category);
 
 const posts = await getSinglePage("posts");
-const filterByCategory = taxonomyFilter(posts, "categories", category);
+const filterByCategory = taxonomyFilter(posts, "categories", currentCategory);
 const sortedPosts = sortByDate(filterByCategory);
 
-const title = humanize(category || "");
+// 展示名取 frontmatter 原始写法：slug 会丢掉 "/"、"&" 等字符，
+// 直接 humanize(slug) 会把 Audio/Video 显示成 "Audio Video"。
+const displayName =
+  posts
+    .flatMap((post: any) => post.data.categories ?? [])
+    .find((term: string) => slugifyTaxonomy(term) === currentCategory) ??
+  humanize(currentCategory);
+
+const title = displayName || "Category";
+const description = `${displayName} 分类下的 ${sortedPosts.length} 篇技术文章`;
 ---
 
-<Base title={title || "Category"}>
+<Base title={title} description={description}>
   <div class="section">
     <div class="container">
       <p class="text-center text-2xl mb-4">Showing Posts From</p>
-      <h1 class="h2 mb-16 text-center text-primary">{title}</h1>
+      <h1 class="h2 mb-4 text-center text-primary">{title}</h1>
+      <p class="mb-16 text-center text-text">共 {sortedPosts.length} 篇文章</p>
       <Posts posts={sortedPosts} fluid={false} />
     </div>
   </div>

@@ -1,6 +1,5 @@
 ---
 import Logo from "@/components/Logo.astro";
-import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
 import menu from "@/config/menu.json";
 import { IoSearch } from "react-icons/io5";
 
@@ -74,7 +73,6 @@ const localizedMain = main.map((item) => ({
     </ul>
     
     <div class="order-1 flex items-center space-x-3 md:order-2">
-      <LanguageSwitcher />
       <a
         class="inline-block cursor-pointer p-2 text-xl text-dark transition hover:text-primary"
         href="/search"

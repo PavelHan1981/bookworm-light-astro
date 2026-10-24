@@ -10,7 +10,7 @@ draft: false
 ---
 
 
-UVC设备与Host之间进行视频传输格式协商的通信流程，是Host与UVC设备的Video Streaming Interface来进行通信的。两者之间的通信数据包的格式如[UVC协议SET/GET Request结构解析](/0e7651f9d27e4eee80b5f743cdb273fd)一文中的VideoStreaming Requests部分所述。
+UVC设备与Host之间进行视频传输格式协商的通信流程，是Host与UVC设备的Video Streaming Interface来进行通信的。两者之间的通信数据包的格式如[UVC协议SET/GET Request结构解析](/zh/article/2022-03-02-usb-uvc-get-set-request-data-structure)一文中的VideoStreaming Requests部分所述。
 
 
 ## Probe&Commit工作流程

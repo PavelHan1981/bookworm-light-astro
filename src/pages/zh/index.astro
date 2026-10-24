@@ -4,7 +4,7 @@ import Quotes from "@/helpers/Quotes.astro";
 import config from "@/config/config.json";
 import { getSinglePage } from "@/lib/contentParser.astro";
 import { sortByDate } from "@/lib/utils/sortFunctions";
-import { excerpt, humanize, slugify } from "@/lib/utils/textConverter";
+import { excerpt, humanize, slugifyTaxonomy } from "@/lib/utils/textConverter";
 import dateFormat from "@/lib/utils/dateFormat";
 
 const posts = await getSinglePage("posts", "zh");
@@ -15,7 +15,7 @@ const latestPosts = sortedPosts.slice(0, 6);
 const categoryMap = new Map<string, { name: string; count: number }>();
 for (const post of sortedPosts) {
   for (const raw of post.data.categories ?? []) {
-    const key = slugify(raw);
+    const key = slugifyTaxonomy(raw);
     if (!key) continue;
     const entry = categoryMap.get(key) ?? { name: humanize(raw), count: 0 };
     entry.count += 1;
@@ -162,7 +162,7 @@ const jsonLd = {
                   {(post.data.categories ?? []).slice(0, 2).map((category) => (
                     <li>
                       <a
-                        href={`/categories/${slugify(category)}`}
+                        href={`/categories/${slugifyTaxonomy(category)}`}
                         class="font-medium hover:text-primary"
                       >
                         {humanize(category)}

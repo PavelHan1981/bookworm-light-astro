@@ -1,7 +1,7 @@
 ---
 import { getSinglePage } from "@/lib/contentParser.astro";
 import dateFormat from "@/lib/utils/dateFormat";
-import { excerpt, humanize, slugify } from "@/lib/utils/textConverter";
+import { excerpt, humanize, slugify, slugifyTaxonomy } from "@/lib/utils/textConverter";
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
@@ -65,7 +65,7 @@ const { className, posts, fluid } = Astro.props;
                 {post.data.categories.map((category, i: number) => (
                   <li class="inline-block">
                     <a
-                      href={`/categories/${slugify(category)}`}
+                      href={`/categories/${slugifyTaxonomy(category)}`}
                       class="mr-2 hover:text-primary font-medium"
                     >
                       {humanize(category)}

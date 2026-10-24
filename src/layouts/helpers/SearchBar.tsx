@@ -1,5 +1,5 @@
 import dateFormat from "@/lib/utils/dateFormat";
-import { humanize, slugify } from "@/lib/utils/textConverter";
+import { humanize, slugifyTaxonomy } from "@/lib/utils/textConverter";
 import Fuse from "fuse.js";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
@@ -151,7 +151,7 @@ export default function SearchBar() {
                     {item.categories.map((category: string, i: number) => (
                       <li key={i} className="inline-block">
                         <a
-                          href={`/categories/${slugify(category)}`}
+                          href={`/categories/${slugifyTaxonomy(category)}`}
                           className="mr-2 hover:text-primary font-medium"
                         >
                           {humanize(category)}

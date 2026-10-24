@@ -5,7 +5,7 @@ import dateFormat from "@/lib/utils/dateFormat";
 import { Image } from "astro:assets";
 
 import { sortByDate } from "@/lib/utils/sortFunctions";
-import { humanize, slugify } from "@/lib/utils/textConverter";
+import { humanize, slugify, slugifyTaxonomy } from "@/lib/utils/textConverter";
 import type { CollectionEntry } from "astro:content";
 import { BiCalendarEdit, BiCategoryAlt } from "react-icons/bi";
 import AuthorSingle from "@/partials/AuthorSingle.astro";
@@ -79,7 +79,7 @@ const currentPosts = sortPostsByDate.filter((post) => {
                       {post.data.categories.map((category, i: number) => (
                         <li class="inline-block">
                           <a
-                            href={`/categories/${slugify(category)}`}
+                            href={`/categories/${slugifyTaxonomy(category)}`}
                             class="mr-2 hover:text-primary font-medium"
                           >
                             {humanize(category)}

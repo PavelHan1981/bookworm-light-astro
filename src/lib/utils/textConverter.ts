@@ -8,6 +8,34 @@ export const slugify = (content: string): string => {
     .replace(/^-+|-+$/g, "");
 };
 
+// slugifyTaxonomy
+// 用于分类/标签（taxonomy）的 slug。与 slugify 的区别：保留 Unicode 字母，
+// 因此中文分类名（如「网络安全」）会生成可读 URL，而不是被剥成空串。
+// slugify 的 [^\w\s-] 会把所有 CJK 字符删掉，导致中文分类页从未被生成、
+// 文章页的分类链接退化成 href="/categories/"。
+export const slugifyTaxonomy = (content: string): string => {
+  if (!content) return "";
+  return String(content)
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{Letter}\p{Number}\s_-]/gu, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/-{2,}/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
+// safeDecode
+// Astro 的动态路由参数可能已被解码，也可能仍是百分号编码；二次解码遇到裸 % 会抛异常，
+// 这里统一兜住。
+export const safeDecode = (value?: string): string => {
+  if (!value) return "";
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+};
+
 // markdownify (Simplified version without heavy parser to avoid Vite environment crashes)
 export const markdownify = (content: string, div?: boolean): string => {
   if (!content) return "";

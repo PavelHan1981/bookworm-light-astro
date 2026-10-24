@@ -1,9 +1,24 @@
 # Cloudflare Workers 静态资源重定向规则
 # 格式: [source] [destination] [code]
+# 规则按顺序匹配，首个命中生效；精确路径放在通配之前。
 
 # 站点根路径统一 301 到中文首页（/ 不再作为独立页面参与索引）
 /  /zh  301
 
+# 英文目录已停止构建（机翻内容不再参与索引）
+# 旧链接统一 301 到中文对应页，保留外链权重
+/en  /zh  301
+/en/*  /zh/:splat  301
+
 # 旧版无语言前缀的文章路径 301 到中文版本（保留历史权重，避免权重丢失）
 /article  /zh/article  301
 /article/*  /zh/article/:splat  301
+
+# 旧版无前缀分页 301 到中文文章列表分页
+/page  /zh/article  301
+/page/*  /zh/article/page/:splat  301
+
+# 旧版无前缀的静态页（原为 JS 跳转桩页，改为服务端 301）
+/about  /zh/about  301
+/privacy-policy  /zh/privacy-policy  301
+/elements  /zh/elements  301

@@ -5,7 +5,7 @@ import { getSinglePage } from "@/lib/contentParser.astro";
 import { getTaxonomy } from "@/lib/taxonomyParser.astro";
 import { sortByDate } from "@/lib/utils/sortFunctions";
 import taxonomyFilter from "@/lib/utils/taxonomyFilter";
-import { humanize } from "@/lib/utils/textConverter";
+import { humanize, safeDecode, slugifyTaxonomy } from "@/lib/utils/textConverter";
 
 export async function getStaticPaths() {
   const tags = await getTaxonomy("posts", "tags");
@@ -20,19 +20,29 @@ export async function getStaticPaths() {
 }
 
 const { tag } = Astro.params;
+const currentTag = safeDecode(tag);
 
 const posts = await getSinglePage("posts");
-const filterByTags = taxonomyFilter(posts, "tags", tag);
+const filterByTags = taxonomyFilter(posts, "tags", currentTag);
 const sortedPosts = sortByDate(filterByTags);
 
-const title = humanize(tag || "");
+// 同 categories：展示名取 frontmatter 原始写法，而不是 slug
+const displayName =
+  posts
+    .flatMap((post: any) => post.data.tags ?? [])
+    .find((term: string) => slugifyTaxonomy(term) === currentTag) ??
+  humanize(currentTag);
+
+const title = displayName || "Tag";
+const description = `标签「${displayName}」下的 ${sortedPosts.length} 篇技术文章`;
 ---
 
-<Base title={title || "Tag"}>
+<Base title={title} description={description}>
   <div class="section">
     <div class="container">
       <p class="text-center text-2xl mb-4">Showing Posts From</p>
-      <h1 class="h2 mb-16 text-center text-primary">{title}</h1>
+      <h1 class="h2 mb-4 text-center text-primary">{title}</h1>
+      <p class="mb-16 text-center text-text">共 {sortedPosts.length} 篇文章</p>
       <Posts posts={sortedPosts} fluid={false} />
     </div>
   </div>

@@ -263,5 +263,4 @@
 
 ## Language Versions & Links
 - Curated Chinese LLM Guide: https://pavelhan.tech/llms.txt
-- Full English Catalog (225 articles): https://pavelhan.tech/llms-full-en.txt
 - Full Sitemap Index: https://pavelhan.tech/sitemap-index.xml
